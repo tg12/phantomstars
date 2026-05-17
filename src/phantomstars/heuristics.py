@@ -1,3 +1,6 @@
+# phantomstars | JS Labs -- https://labs.jamessawyer.co.uk/
+# AI Slop Intelligence -- https://labs.jamessawyer.co.uk/ai-slop-intelligence-dashboards/
+# Apache-2.0 -- https://github.com/tg12/phantomstars
 """Scoring engine. Each sub-scorer returns 0.0 (clean) to 1.0 (likely fake)."""
 
 from __future__ import annotations

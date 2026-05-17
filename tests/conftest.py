@@ -37,12 +37,12 @@ def _make_profile(
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def clean_profile() -> UserProfile:
     return _make_profile()
 
 
-@pytest.fixture()
+@pytest.fixture
 def bot_profile() -> UserProfile:
     return _make_profile(
         login="user12345",
@@ -57,6 +57,6 @@ def bot_profile() -> UserProfile:
     )
 
 
-@pytest.fixture()
+@pytest.fixture
 def make_profile():  # type: ignore[no-untyped-def]
     return _make_profile
