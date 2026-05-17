@@ -18,7 +18,7 @@ def load_allowlist(path: Path | None = None) -> set[str]:
     if not target.exists():
         return set()
     logins: set[str] = set()
-    for line in target.read_text(encoding="ascii").splitlines():
+    for line in target.read_text(encoding="utf-8").splitlines():
         line = line.strip()
         if line and not line.startswith("#"):
             logins.add(line.lower())

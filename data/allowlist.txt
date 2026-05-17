@@ -1,4 +1,4 @@
-# False-positive allowlist — one GitHub login per line.
+# False-positive allowlist -- one GitHub login per line.
 # Accounts listed here are excluded from future scans and from suspects.jsonl.
 # Add entries only after reviewing a false-positive report via the issue tracker.
 # Format: one login per line, no leading/trailing whitespace, no quotes.
