@@ -19,10 +19,9 @@ _DAILY_HEADER = (
     "|------|---------|-------------|------------|-----------|-----------------|"
 )
 
-_REPO_HEADER = (
+_REPO_TABLE_HEADER = (
     "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |\n"
-    "|------|----------|-------------|------------|-----------|\n"
-    "*Today's most-targeted repos, sorted by likely-fake engager count.*"
+    "|------|----------|-------------|------------|-----------|"
 )
 
 Record = dict[str, object]
@@ -59,19 +58,14 @@ def _build_daily_table(records: list[Record]) -> str:
 def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
     today = [r for r in repo_records if r.get("scan_date") == scan_date]
     if not today:
-        return f"{_REPO_HEADER}\n\n*No data yet for {scan_date}.*"
+        return f"{_REPO_TABLE_HEADER}\n| *No data for {scan_date}* | — | — | — | — |"
 
-    # Sort by likely_fake desc, then fakeness_ratio desc
     today_sorted = sorted(
         today,
         key=lambda r: (r.get("likely_fake", 0), r.get("fakeness_ratio", 0.0)),
         reverse=True,
     )[:25]
 
-    header = (
-        "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |\n"
-        "|------|----------|-------------|------------|-----------|"
-    )
     rows = []
     for r in today_sorted:
         repo = r.get("full_name", "unknown")
@@ -82,7 +76,7 @@ def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
         campaigns = r.get("campaign_count", 0)
         rows.append(f"| {repo} | {total} | {likely} | {pct} | {campaigns} |")
 
-    return f"{header}\n" + "\n".join(rows)
+    return f"{_REPO_TABLE_HEADER}\n" + "\n".join(rows)
 
 
 def _inject_block(content: str, start: str, end: str, block: str) -> str:
@@ -105,16 +99,13 @@ def update_readme(
 
     content = readme_path.read_text(encoding="utf-8")
 
-    # Daily summary block
     suspect_records = load_all(suspects_path)
     daily_table = _build_daily_table(suspect_records)
     content = _inject_block(content, README_START_MARKER, README_END_MARKER, daily_table)
 
-    # Per-repo block
     if repos_path is not None and repos_path.exists():
         repo_records = load_all(repos_path)
         if repo_records:
-            # Derive scan_date from the most recent repo record
             scan_date = str(max(r.get("scan_date", "") for r in repo_records))
             repo_table = _build_repo_table(repo_records, scan_date)
             content = _inject_block(content, _REPO_START_MARKER, _REPO_END_MARKER, repo_table)

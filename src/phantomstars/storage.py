@@ -26,17 +26,11 @@ def load_allowlist(path: Path | None = None) -> set[str]:
     return logins
 
 
-def _score_to_dict(score: SuspicionScore) -> dict[str, object]:
-    d = dataclasses.asdict(score)
-    # asdict converts tuple -> list, which is valid JSON; keep as list for consumers
-    return d
-
-
 def append_suspects(suspects: list[SuspicionScore], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
         for score in suspects:
-            fh.write(json.dumps(_score_to_dict(score)) + "\n")
+            fh.write(json.dumps(dataclasses.asdict(score)) + "\n")
     _log.info("Appended %d suspect records to %s", len(suspects), path)
 
 
@@ -62,21 +56,3 @@ def load_all(path: Path) -> list[dict]:  # type: ignore[type-arg]
             except json.JSONDecodeError as exc:
                 _log.warning("Corrupt JSONL at line %d: %s", lineno, exc)
     return records
-
-
-def load_known_fakes(path: Path) -> set[str]:
-    return {r["login"] for r in load_all(path) if r.get("classification") == "likely_fake"}
-
-
-def daily_stats(path: Path, scan_date: str) -> dict[str, int]:
-    records = [r for r in load_all(path) if r.get("scan_date") == scan_date]
-    total = len(records)
-    likely = sum(1 for r in records if r.get("classification") == "likely_fake")
-    suspicious = sum(1 for r in records if r.get("classification") == "suspicious")
-    campaigns = len({r.get("campaign_id") for r in records if r.get("campaign_id")})
-    return {
-        "total": total,
-        "likely_fake": likely,
-        "suspicious": suspicious,
-        "campaigns": campaigns,
-    }

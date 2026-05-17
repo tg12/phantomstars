@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+import hashlib
 from collections import defaultdict
 from dataclasses import dataclass
 from datetime import datetime, timedelta
@@ -71,9 +72,13 @@ def detect_campaigns(
         components[root].append(login)
 
     campaign_map: dict[str, str] = {}
-    for root, members in components.items():
+    for _root, members in components.items():
         if len(members) >= MIN_CAMPAIGN_SIZE:
-            campaign_id = f"c-{root[:12]}"
+            # Deterministic ID: hash of sorted member set so the same group of accounts
+            # produces the same campaign ID across independent scan runs.
+            member_key = "|".join(sorted(members))
+            digest = hashlib.sha256(member_key.encode()).hexdigest()[:8]
+            campaign_id = f"c-{digest}"
             for m in members:
                 campaign_map[m] = campaign_id
 

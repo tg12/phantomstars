@@ -22,6 +22,7 @@ def _score(login: str, composite: float = 0.80) -> SuspicionScore:
         classification="likely_fake",
         campaign_id=None,
         scan_date=SCAN_DATE,
+        account_created_at="2026-05-10",
     )
 
 

@@ -35,12 +35,10 @@ def _build_repo_reports(
     flat_events: list[EngagementEvent],
     scan_date: str,
 ) -> list[RepoReport]:
-    # Count all unique engagers per repo (denominator for fakeness ratio)
     repo_all_users: dict[str, set[str]] = defaultdict(set)
     for ev in flat_events:
         repo_all_users[ev.repo_full_name].add(ev.user_login)
 
-    # Aggregate suspect counts per repo
     repo_likely: dict[str, int] = defaultdict(int)
     repo_suspicious: dict[str, int] = defaultdict(int)
     repo_campaigns: dict[str, set[str]] = defaultdict(set)
@@ -77,6 +75,78 @@ def _build_repo_reports(
         )
 
     return sorted(reports, key=lambda r: r.likely_fake, reverse=True)
+
+
+def _write_step_summary(
+    suspects: list[SuspicionScore],
+    repo_reports: list[RepoReport],
+    campaign_map: dict[str, str],
+    scan_date: str,
+) -> None:
+    """Write a formatted markdown report to $GITHUB_STEP_SUMMARY if running in Actions."""
+    summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
+    if not summary_path:
+        return
+
+    likely_count = sum(1 for s in suspects if s.classification == "likely_fake")
+    suspicious_count = sum(1 for s in suspects if s.classification == "suspicious")
+    campaign_count = len(set(campaign_map.values()))
+    high_risk_repos = [r for r in repo_reports if r.classification == "likely_fake"]
+
+    lines = [
+        f"## Phantom Stars Scan — {scan_date}",
+        "",
+        "| Metric | Value |",
+        "|--------|-------|",
+        f"| Likely fake accounts | **{likely_count}** |",
+        f"| Suspicious accounts | {suspicious_count} |",
+        f"| Campaigns detected | **{campaign_count}** |",
+        f"| Repos targeted | {len(repo_reports)} |",
+        f"| High-risk repos (fakeness ≥ 40%) | **{len(high_risk_repos)}** |",
+        "",
+    ]
+
+    if repo_reports:
+        lines += [
+            "### Most-targeted repos",
+            "",
+            "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |",
+            "|------|----------|-------------|------------|-----------|",
+        ]
+        for r in repo_reports[:15]:
+            pct = f"{r.fakeness_ratio * 100:.1f}%"
+            flag = " :warning:" if r.classification == "likely_fake" else ""
+            lines.append(
+                f"| [{r.full_name}](https://github.com/{r.full_name}){flag}"
+                f" | {r.total_scanned} | {r.likely_fake} | {pct} | {r.campaign_count} |"
+            )
+        lines.append("")
+
+    if campaign_count > 0:
+        campaign_sizes: dict[str, int] = defaultdict(int)
+        for s in suspects:
+            if s.campaign_id:
+                campaign_sizes[s.campaign_id] += 1
+
+        lines += [
+            "### Active campaigns",
+            "",
+            "| Campaign ID | Members | Classification |",
+            "|-------------|---------|----------------|",
+        ]
+        for cid, size in sorted(campaign_sizes.items(), key=lambda x: x[1], reverse=True)[:10]:
+            lines.append(f"| `{cid}` | {size} | likely_fake |")
+        lines.append("")
+
+    lines += [
+        "---",
+        "*phantomstars performs read-only analysis of public GitHub data.*"
+        " *All findings are probabilistic. This tool does not interact with"
+        " or notify any external repository.*",
+    ]
+
+    Path(summary_path).write_text("\n".join(lines) + "\n", encoding="utf-8")
+    _log.info("GitHub Actions step summary written (%d lines)", len(lines))
 
 
 def main() -> None:
@@ -169,6 +239,10 @@ def main() -> None:
 
     # 10. Update README dashboard
     update_readme(suspects_path, repos_path)
+
+    # 11. Write GitHub Actions step summary
+    _write_step_summary(suspects, repo_reports, campaign_map, scan_date)
+
     _log.info("Scan complete for %s", scan_date)
 
 

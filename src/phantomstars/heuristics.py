@@ -118,4 +118,5 @@ def score_user(profile: UserProfile, scan_date: str) -> SuspicionScore:
         classification=_classify(composite),
         campaign_id=None,
         scan_date=scan_date,
+        account_created_at=profile.created_at.date().isoformat(),
     )

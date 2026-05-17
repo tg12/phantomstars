@@ -57,7 +57,8 @@ class SuspicionScore:
     classification: Classification
     campaign_id: str | None
     scan_date: str
-    target_repos: tuple[str, ...] = ()  # repos this account engaged with during the scan
+    account_created_at: str  # ISO date YYYY-MM-DD sourced from GitHub createdAt field
+    target_repos: tuple[str, ...] = ()
 
 
 @dataclass(frozen=True, slots=True)
