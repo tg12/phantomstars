@@ -12,10 +12,9 @@ MAX_NEW_REPOS: int = 100          # circuit breaker for search results
 MAX_EVENTS_PER_REPO: int = 300    # Events API hard cap
 
 # Scoring weights (must sum to 1.0)
-WEIGHT_ACCOUNT_AGE: float = 0.35
-WEIGHT_PROFILE: float = 0.30
+WEIGHT_ACCOUNT_AGE: float = 0.40
+WEIGHT_PROFILE: float = 0.35
 WEIGHT_REPO_PATTERN: float = 0.25
-WEIGHT_ACTIVITY: float = 0.10
 
 # Classification thresholds
 SCORE_LIKELY_FAKE: float = 0.75
@@ -31,7 +30,7 @@ MIN_CAMPAIGN_SIZE: int = 4
 CAMPAIGN_WINDOW_HOURS: int = 3
 
 # GitHub API
-GRAPHQL_BATCH_SIZE: int = 50
+GRAPHQL_BATCH_SIZE: int = 30
 RATE_LIMIT_PAUSE_THRESHOLD: int = 250  # remaining requests before pausing
 
 # Storage

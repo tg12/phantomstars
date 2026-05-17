@@ -31,7 +31,6 @@ def test_campaign_id_is_none_by_default(bot_profile: UserProfile) -> None:
 
 
 def test_composite_is_weighted_sum(make_profile) -> None:  # type: ignore[no-untyped-def]
-    # Account with only age signal: very new, but complete profile
     profile = make_profile(
         login="newdev",
         age_days=1,
@@ -40,17 +39,16 @@ def test_composite_is_weighted_sum(make_profile) -> None:  # type: ignore[no-unt
         bio="Engineer",
         location="Berlin",
         company="ACME",
-        contribution_count=50,
         total_repo_count=5,
         fork_repo_count=1,
     )
     result = score_user(profile, SCAN_DATE)
-    # Age drives score up but profile/activity pull it back
+    # New account drives age score high, but solid profile pulls composite down
     assert 0.25 < result.composite < 0.80
 
 
 def test_all_forks_scores_high(make_profile) -> None:  # type: ignore[no-untyped-def]
-    profile = make_profile(total_repo_count=5, fork_repo_count=5, contribution_count=0)
+    profile = make_profile(total_repo_count=5, fork_repo_count=5)
     result = score_user(profile, SCAN_DATE)
     assert result.repo_pattern_score >= 0.75
 

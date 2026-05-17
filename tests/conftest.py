@@ -16,7 +16,6 @@ def _make_profile(
     bio: str | None = "A developer",
     location: str | None = "UK",
     company: str | None = None,
-    contribution_count: int = 200,
     total_repo_count: int = 10,
     fork_repo_count: int = 2,
 ) -> UserProfile:
@@ -32,7 +31,6 @@ def _make_profile(
         bio=bio,
         location=location,
         company=company,
-        contribution_count=contribution_count,
         total_repo_count=total_repo_count,
         fork_repo_count=fork_repo_count,
     )
@@ -53,7 +51,6 @@ def bot_profile() -> UserProfile:
         bio=None,
         location=None,
         company=None,
-        contribution_count=0,
         total_repo_count=1,
         fork_repo_count=1,
     )

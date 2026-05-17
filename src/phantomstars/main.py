@@ -15,7 +15,7 @@ from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
 from phantomstars.models import EngagementEvent, SuspicionScore
 from phantomstars.reporter import update_readme
-from phantomstars.storage import append_suspects
+from phantomstars.storage import append_suspects, load_allowlist
 
 _log = logging.getLogger(__name__)
 
@@ -73,8 +73,14 @@ def main() -> None:
             record = score
         final_scores.append(record)
 
-    # 7. Persist suspects only (clean accounts are not stored)
-    suspects = [s for s in final_scores if s.classification != "clean"]
+    # 7. Persist suspects only — skip allowlisted accounts
+    allowlist = load_allowlist()
+    if allowlist:
+        _log.info("Allowlist contains %d entries", len(allowlist))
+    suspects = [
+        s for s in final_scores
+        if s.classification != "clean" and s.login.lower() not in allowlist
+    ]
     _log.info(
         "Suspects: %d likely_fake, %d suspicious",
         sum(1 for s in suspects if s.classification == "likely_fake"),

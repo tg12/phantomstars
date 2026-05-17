@@ -10,6 +10,20 @@ from phantomstars.models import SuspicionScore
 
 _log = logging.getLogger(__name__)
 
+ALLOWLIST_FILE: str = "data/allowlist.txt"
+
+
+def load_allowlist(path: Path | None = None) -> set[str]:
+    target = path or Path(ALLOWLIST_FILE)
+    if not target.exists():
+        return set()
+    logins: set[str] = set()
+    for line in target.read_text(encoding="ascii").splitlines():
+        line = line.strip()
+        if line and not line.startswith("#"):
+            logins.add(line.lower())
+    return logins
+
 
 def append_suspects(suspects: list[SuspicionScore], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)

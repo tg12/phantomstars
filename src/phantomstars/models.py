@@ -19,7 +19,6 @@ class UserProfile:
     bio: str | None
     location: str | None
     company: str | None
-    contribution_count: int
     total_repo_count: int
     fork_repo_count: int
 

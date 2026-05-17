@@ -1,0 +1,80 @@
+name: False Positive Report
+description: Report that your GitHub account has been incorrectly flagged as fake engagement
+title: "false-positive: YOUR_GITHUB_LOGIN"
+labels: ["false-positive", "needs-review"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form if your account has been incorrectly listed in `data/suspects.jsonl`.
+        All reports are reviewed manually before any removal. Providing clear evidence speeds up the process.
+        **Do not open this issue on behalf of someone else.**
+
+  - type: input
+    id: login
+    attributes:
+      label: Your GitHub username
+      description: The exact login that was flagged (case-sensitive).
+      placeholder: your-github-username
+    validations:
+      required: true
+
+  - type: dropdown
+    id: classification
+    attributes:
+      label: How were you classified?
+      description: Check data/suspects.jsonl for your entry.
+      options:
+        - likely_fake
+        - suspicious
+    validations:
+      required: true
+
+  - type: input
+    id: scan_date
+    attributes:
+      label: Scan date
+      description: The scan_date value from your entry in suspects.jsonl (YYYY-MM-DD).
+      placeholder: "2026-05-17"
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why is this classification incorrect?
+      description: >
+        Explain your situation clearly. When did you create your account? Why did you star or fork
+        the repo? Why might your profile appear sparse (new developer, just getting started, etc.)?
+      placeholder: |
+        I created my account on [date] because...
+        I starred [repo] because...
+        My profile looks sparse because...
+    validations:
+      required: true
+
+  - type: textarea
+    id: evidence
+    attributes:
+      label: Supporting evidence
+      description: >
+        Links to your commits, PRs, issues, projects, employer profile, conference talks,
+        or anything else that demonstrates legitimate GitHub activity.
+      placeholder: |
+        - My contributions: https://github.com/your-login?tab=contributions
+        - My projects: ...
+        - My employer profile: ...
+    validations:
+      required: false
+
+  - type: checkboxes
+    id: confirmation
+    attributes:
+      label: Confirmation
+      options:
+        - label: This is my own GitHub account. I am not filing this on behalf of anyone else.
+          required: true
+        - label: I understand this is reviewed manually and removal is not guaranteed.
+          required: true
+        - label: I understand that providing false information to remove a legitimately flagged account is bad faith.
+          required: true

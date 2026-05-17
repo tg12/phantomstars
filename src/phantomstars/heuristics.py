@@ -9,19 +9,18 @@ from phantomstars.config import (
     SCORE_LIKELY_FAKE,
     SCORE_SUSPICIOUS,
     WEIGHT_ACCOUNT_AGE,
-    WEIGHT_ACTIVITY,
     WEIGHT_PROFILE,
     WEIGHT_REPO_PATTERN,
 )
 from phantomstars.models import Classification, SuspicionScore, UserProfile
 
 _BOT_USERNAME_PATTERNS: list[re.Pattern[str]] = [
-    re.compile(r"^[a-z]+-[a-z]+-\d{4,}$"),       # word-word-1234
-    re.compile(r"^[a-z]+\d{4,}$"),                # word12345
-    re.compile(r"^[a-f0-9]{8,}$"),                # hex strings
-    re.compile(r"^user\d+$", re.IGNORECASE),       # user12345
+    re.compile(r"^[a-z]+-[a-z]+-\d{4,}$"),
+    re.compile(r"^[a-z]+\d{4,}$"),
+    re.compile(r"^[a-f0-9]{8,}$"),
+    re.compile(r"^user\d+$", re.IGNORECASE),
     re.compile(r"^github[_-]?\d+$", re.IGNORECASE),
-    re.compile(r"(.)\1{3,}"),                      # aaaa repeated chars
+    re.compile(r"(.)\1{3,}"),
 ]
 
 
@@ -63,18 +62,6 @@ def _score_repo_pattern(profile: UserProfile) -> float:
         return 0.80
     if profile.fork_ratio > 0.85:
         return 0.55
-    if profile.contribution_count == 0:
-        return 0.60
-    return 0.00
-
-
-def _score_activity(profile: UserProfile) -> float:
-    if profile.contribution_count == 0 and profile.account_age_days > 14:
-        return 0.85
-    if profile.contribution_count < 3:
-        return 0.45
-    if profile.contribution_count < 10:
-        return 0.15
     return 0.00
 
 
@@ -90,19 +77,17 @@ def score_user(profile: UserProfile, scan_date: str) -> SuspicionScore:
     age_s = _score_account_age(profile.account_age_days)
     prof_s = _score_profile(profile)
     repo_s = _score_repo_pattern(profile)
-    act_s = _score_activity(profile)
     composite = (
         age_s * WEIGHT_ACCOUNT_AGE
         + prof_s * WEIGHT_PROFILE
         + repo_s * WEIGHT_REPO_PATTERN
-        + act_s * WEIGHT_ACTIVITY
     )
     return SuspicionScore(
         login=profile.login,
         account_age_score=round(age_s, 3),
         profile_score=round(prof_s, 3),
         repo_pattern_score=round(repo_s, 3),
-        activity_score=round(act_s, 3),
+        activity_score=0.0,
         composite=round(composite, 3),
         classification=_classify(composite),
         campaign_id=None,

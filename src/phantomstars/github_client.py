@@ -39,9 +39,6 @@ fragment F on User {
   company
   allRepos: repositories(first: 1) { totalCount }
   forkRepos: repositories(isFork: true, first: 1) { totalCount }
-  contributionsCollection {
-    contributionCalendar { totalContributions }
-  }
 }
 """
 
@@ -62,9 +59,6 @@ def _parse_user_node(node: dict[str, Any]) -> UserProfile:
         bio=node.get("bio") or None,
         location=node.get("location") or None,
         company=node.get("company") or None,
-        contribution_count=node["contributionsCollection"]["contributionCalendar"][
-            "totalContributions"
-        ],
         total_repo_count=node["allRepos"]["totalCount"],
         fork_repo_count=node["forkRepos"]["totalCount"],
     )
@@ -222,17 +216,19 @@ class GitHubClient:
         return resp.get("data", {})
 
     @retry(
-        retry=retry_if_exception_type(requests.ConnectionError),
-        wait=wait_exponential(multiplier=1, min=2, max=30),
+        retry=retry_if_exception_type((requests.ConnectionError, requests.HTTPError)),
+        wait=wait_exponential(multiplier=2, min=5, max=60),
         stop=stop_after_attempt(4),
     )
     def _graphql_post(self, payload: dict[str, Any]) -> dict[str, Any]:
         resp = self._session.post(GITHUB_GRAPHQL_URL, json=payload, timeout=30)
         self._check_rate_limit(resp)
-        resp.raise_for_status()
+        if resp.status_code == 403:
+            _log.warning("GraphQL 403 — backing off before retry")
+            resp.raise_for_status()
         data: dict[str, Any] = resp.json()
         if "errors" in data:
-            _log.warning("GraphQL errors: %s", data["errors"])
+            _log.warning("GraphQL partial errors: %d error(s)", len(data["errors"]))
         return data
 
     @retry(
