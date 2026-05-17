@@ -48,7 +48,7 @@ No servers. No databases. No infrastructure bill.
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| — | — | — | — | — | — |
+| 2026-05-17 | 1366 | 240 | 1126 | 22 | 240 |
 <!-- STATS:END -->
 
 ---
