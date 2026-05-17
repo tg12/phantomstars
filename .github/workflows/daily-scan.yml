@@ -1,0 +1,59 @@
+name: Daily Phantom Stars Scan
+
+on:
+  schedule:
+    - cron: "0 7 * * *" # 07:00 UTC daily — after GitHub resets trending
+  workflow_dispatch:
+    inputs:
+      debug:
+        description: "Enable debug logging"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  scan:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_TOKEN }}
+
+      - name: Set up Python 3.13
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -e .
+
+      - name: Run scan
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PYTHONPATH: src
+        run: |
+          if [ "${{ github.event.inputs.debug }}" = "true" ]; then
+            python -c "
+          import logging
+          logging.basicConfig(level=logging.DEBUG)
+          from phantomstars.main import main
+          main()
+          "
+          else
+            python -m phantomstars.main
+          fi
+
+      - name: Commit results
+        run: |
+          git config user.name "phantomstars[bot]"
+          git config user.email "phantomstars[bot]@users.noreply.github.com"
+          git add data/ README.md
+          git diff --staged --quiet || (
+            git commit -m "scan: $(date -u +%Y-%m-%d)" && git push
+          )

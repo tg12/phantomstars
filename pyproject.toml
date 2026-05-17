@@ -1,0 +1,49 @@
+[project]
+name = "phantomstars"
+version = "0.1.0"
+description = "Automated detection of fake engagement on GitHub trending repos"
+requires-python = ">=3.12"
+dependencies = [
+    "requests>=2.32",
+    "tenacity>=9.0",
+    "colorlog>=6.8",
+    "beautifulsoup4>=4.12",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-cov>=5.0",
+    "black>=24.0",
+    "ruff>=0.5",
+    "mypy>=1.10",
+    "types-requests>=2.32",
+    "types-beautifulsoup4>=4.12",
+]
+
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.black]
+line-length = 100
+target-version = ["py313"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py313"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.13"
+strict = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--cov=src/phantomstars --cov-report=term-missing"
