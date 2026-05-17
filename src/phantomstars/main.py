@@ -16,6 +16,7 @@ from phantomstars.github_client import GitHubClient
 from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
 from phantomstars.models import Classification, EngagementEvent, RepoReport, SuspicionScore
+from phantomstars.notifier import notify_all
 from phantomstars.reporter import update_readme
 from phantomstars.storage import append_reports, append_suspects, load_allowlist
 
@@ -240,7 +241,12 @@ def main() -> None:
     # 10. Update README dashboard
     update_readme(suspects_path, repos_path)
 
-    # 11. Write GitHub Actions step summary
+    # 11. Create/update GitHub Issues for targeted repos
+    # GITHUB_REPOSITORY is set by Actions; falls back to the canonical repo for local runs.
+    ps_repo = os.environ.get("GITHUB_REPOSITORY", "tg12/phantomstars")
+    notify_all(client, repo_reports, suspects, ps_repo)
+
+    # 12. Write GitHub Actions step summary
     _write_step_summary(suspects, repo_reports, campaign_map, scan_date)
 
     _log.info("Scan complete for %s", scan_date)

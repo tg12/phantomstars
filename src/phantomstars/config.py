@@ -44,6 +44,10 @@ DATA_DIR: str = "data"
 SUSPECTS_FILE: str = "data/suspects.jsonl"
 REPOS_FILE: str = "data/repos.jsonl"
 
+# Issue notifier
+MIN_FAKENESS_FOR_ISSUE: float = 0.40  # repos below this threshold are not reported as issues
+MAX_ISSUES_PER_SCAN: int = 20  # cap to prevent flooding on high-activity days
+
 # README injection markers
 README_START_MARKER: str = "<!-- STATS:START -->"
 README_END_MARKER: str = "<!-- STATS:END -->"

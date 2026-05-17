@@ -249,6 +249,67 @@ class GitHubClient:
         resp.raise_for_status()
         return resp.json()
 
+    @retry(
+        retry=retry_if_exception_type(requests.ConnectionError),
+        wait=wait_exponential(multiplier=1, min=2, max=30),
+        stop=stop_after_attempt(3),
+    )
+    def _rest_post(self, url: str, payload: dict[str, Any]) -> Any:
+        resp = self._session.post(url, json=payload, timeout=20)
+        self._check_rate_limit(resp)
+        resp.raise_for_status()
+        return resp.json()
+
+    # ------------------------------------------------------------------
+    # Issue management
+    # ------------------------------------------------------------------
+
+    def ensure_labels(self, owner_repo: str, labels: list[dict[str, str]]) -> None:
+        """Create labels on owner_repo if they do not already exist."""
+        for label in labels:
+            try:
+                self._rest_post(f"{GITHUB_API_BASE}/repos/{owner_repo}/labels", label)
+            except requests.HTTPError as exc:
+                if exc.response is not None and exc.response.status_code == 422:
+                    pass  # already exists
+                else:
+                    _log.warning("Could not create label '%s': %s", label.get("name"), exc)
+
+    def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None:
+        """Return the issue number of an open fake-engagement issue whose title contains
+        title_fragment, or None if no such issue exists."""
+        for page in range(1, 5):
+            items = self._rest_get(
+                f"{GITHUB_API_BASE}/repos/{owner_repo}/issues",
+                params={
+                    "state": "open",
+                    "labels": "fake-engagement",
+                    "per_page": 100,
+                    "page": page,
+                },
+            )
+            if not isinstance(items, list) or not items:
+                break
+            for item in items:
+                if title_fragment in str(item.get("title", "")):
+                    return int(item["number"])
+        return None
+
+    def create_issue(self, owner_repo: str, title: str, body: str, labels: list[str]) -> int:
+        """Create an issue and return its number."""
+        data = self._rest_post(
+            f"{GITHUB_API_BASE}/repos/{owner_repo}/issues",
+            {"title": title, "body": body, "labels": labels},
+        )
+        return int(data["number"])
+
+    def add_comment(self, owner_repo: str, issue_number: int, body: str) -> None:
+        """Append a comment to an existing issue."""
+        self._rest_post(
+            f"{GITHUB_API_BASE}/repos/{owner_repo}/issues/{issue_number}/comments",
+            {"body": body},
+        )
+
     def _check_rate_limit(self, resp: requests.Response) -> None:
         remaining = int(resp.headers.get("X-RateLimit-Remaining", 9999))
         reset_at = int(resp.headers.get("X-RateLimit-Reset", 0))
