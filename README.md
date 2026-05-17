@@ -84,7 +84,7 @@ The output of this tool is the intelligence feed. What you do with it is your de
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-17 | 1366 | 240 | 1126 | 22 | 240 |
+| 2026-05-17 | 3560 | 798 | 2630 | 53 | 798 |
 <!-- STATS:END -->
 
 ---
@@ -94,6 +94,31 @@ The output of this tool is the intelligence feed. What you do with it is your de
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Fakeness % | Campaigns |
 |------|----------|-------------|------------|-----------|
+| Carolina313876/Quantum-Vanity-Address-Forge | 185 | 185 | 100.0% | 1 |
+| tonylinden54/palisade-security-nexus | 185 | 185 | 100.0% | 1 |
+| johanwolfaardt-ctrl/Account-Symphony-Dashboard | 185 | 185 | 100.0% | 1 |
+| keerthanapranesh/Claude-Code-Swarm-Toolkit | 185 | 185 | 100.0% | 1 |
+| psyicarus/quizlet-match-whisper | 185 | 185 | 100.0% | 1 |
+| yanilsa09cabrera-jpg/soundboard-studio-pro | 185 | 185 | 100.0% | 1 |
+| ogaawin/Draft-2026-CAD-Workspace | 185 | 185 | 100.0% | 1 |
+| nanasalgadas1000-cell/seraph-nuke-inferno | 185 | 185 | 100.0% | 1 |
+| 23k65A1408/Create-Aeronautics-Skywards | 185 | 185 | 100.0% | 1 |
+| shritanu16007-ctrl/Delta-Executor-Next-Gen | 185 | 185 | 100.0% | 1 |
+| 8015238355/mm2-analytics-dashboard-2026 | 185 | 185 | 100.0% | 1 |
+| johnicassere/lab-rat-race | 185 | 185 | 100.0% | 1 |
+| NazmulHudha/office-automation-toolkit | 185 | 185 | 100.0% | 1 |
+| e7137768-stack/Extreme-DAW-Beat-Forge-2026 | 185 | 185 | 100.0% | 1 |
+| jonathanngaboyeka/rust-movement-optimizer | 185 | 185 | 100.0% | 1 |
+| wilmer-afk/Apex-Injector | 185 | 185 | 100.0% | 1 |
+| husammuhayman/homm-legacy-lore-tome | 185 | 185 | 100.0% | 1 |
+| ImanFahrel/joystick-canvas | 185 | 185 | 100.0% | 1 |
+| ipinputra/GPT-Image-2-Unlocked-API-Toolkit | 185 | 185 | 100.0% | 1 |
+| MHuy9911/Game-Network-Turbo-Chamber | 185 | 185 | 100.0% | 1 |
+| LindyNongmaithem/guild-inflator-plus | 185 | 185 | 100.0% | 1 |
+| Khanhhayho-spec/jetbrains-enhancement-kit | 185 | 185 | 100.0% | 1 |
+| Aryanzzzz25/f95-zone-sync-manager | 185 | 185 | 100.0% | 1 |
+| JaideepN07/Crosshair-Studio-Engine | 185 | 185 | 100.0% | 1 |
+| ujan007/3dsmax-2027-studio-workflow | 185 | 185 | 100.0% | 1 |
 <!-- REPO_STATS:END -->
 
 ---
