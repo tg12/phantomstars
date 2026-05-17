@@ -1,9 +1,11 @@
-"""Creates and updates GitHub issues on the phantomstars repo for each targeted repo."""
+"""Creates and updates GitHub issues on targeted repos for each fake-engagement finding."""
 
 from __future__ import annotations
 
 import logging
 from collections import Counter
+
+import requests
 
 from phantomstars.config import MAX_ISSUES_PER_SCAN, MIN_FAKENESS_FOR_ISSUE
 from phantomstars.github_client import GitHubClient
@@ -11,29 +13,9 @@ from phantomstars.models import RepoReport, SuspicionScore
 
 _log = logging.getLogger(__name__)
 
-_LABEL_FAKE_ENGAGEMENT = "fake-engagement"
-_LABEL_LIKELY_FAKE = "likely-fake"
-_LABEL_CAMPAIGN = "campaign-detected"
-
-ISSUE_LABELS: list[dict[str, str]] = [
-    {
-        "name": _LABEL_FAKE_ENGAGEMENT,
-        "color": "d73a4a",
-        "description": "Fake engagement detected on this repository",
-    },
-    {
-        "name": _LABEL_LIKELY_FAKE,
-        "color": "b60205",
-        "description": "Repo classified as likely_fake (fakeness >= 40%)",
-    },
-    {
-        "name": _LABEL_CAMPAIGN,
-        "color": "e4e669",
-        "description": "Coordinated bot campaign detected",
-    },
-]
-
 _SUSPECT_TABLE_LIMIT = 30
+_ISSUE_TITLE = "[phantomstars] Fake engagement detected on this repository"
+_PHANTOMSTARS_REPO = "tg12/phantomstars"
 
 
 def _suspect_table(suspects: list[SuspicionScore]) -> str:
@@ -70,13 +52,15 @@ def _campaign_table(suspects: list[SuspicionScore]) -> str:
     return f"{header}\n" + "\n".join(rows)
 
 
-def _issue_body(report: RepoReport, suspects: list[SuspicionScore], ps_repo: str) -> str:
+def _issue_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     pct = f"{report.fakeness_ratio * 100:.1f}%"
     return f"""\
-## Fake Engagement Detected: `{report.full_name}`
+## Fake Engagement Alert for `{report.full_name}`
 
-**First detected:** {report.scan_date} &nbsp;|&nbsp; \
-Automated scan by [phantomstars](https://github.com/{ps_repo})
+[phantomstars]({_PHANTOMSTARS_REPO}) has detected a likely fake star/fork campaign \
+targeting this repository.
+
+**Scan date:** {report.scan_date}
 
 ### Summary
 
@@ -101,9 +85,9 @@ Automated scan by [phantomstars](https://github.com/{ps_repo})
 > **All findings are probabilistic indicators, not accusations. False positives exist.**
 > Individual accounts should be treated as suspicious signals, not confirmed fake actors.
 >
-> [View suspects.jsonl](https://github.com/{ps_repo}/blob/main/data/suspects.jsonl) \
-· [View repos.jsonl](https://github.com/{ps_repo}/blob/main/data/repos.jsonl) \
-· [Report a false positive](https://github.com/{ps_repo}/issues/new?template=false_positive.yml)
+> Automated scan by [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
+> [View full dataset](https://github.com/{_PHANTOMSTARS_REPO}/blob/main/data/repos.jsonl) \
+\xb7 [Report a false positive](https://github.com/{_PHANTOMSTARS_REPO}/issues/new?template=false_positive.yml)
 """
 
 
@@ -123,27 +107,52 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
 """
 
 
+def _find_existing_issue(client: GitHubClient, target_repo: str) -> int | None:
+    """Search the target repo for an existing open phantomstars issue by title."""
+    for page in range(1, 5):
+        try:
+            items = client._rest_get(
+                f"https://api.github.com/repos/{target_repo}/issues",
+                params={
+                    "state": "open",
+                    "per_page": 100,
+                    "page": page,
+                },
+            )
+        except requests.HTTPError as exc:
+            if exc.response is not None and exc.response.status_code in (404, 410):
+                return None
+            raise
+        if not isinstance(items, list) or not items:
+            break
+        for item in items:
+            if _ISSUE_TITLE in str(item.get("title", "")):
+                return int(item["number"])
+    return None
+
+
 def notify_repo(
     client: GitHubClient,
     report: RepoReport,
     suspects: list[SuspicionScore],
-    ps_repo: str,
 ) -> None:
-    """Create a new issue or add a scan-update comment to an existing one."""
-    title = f"[fake-engagement] {report.full_name}"
-    labels: list[str] = [_LABEL_FAKE_ENGAGEMENT]
-    if report.classification == "likely_fake":
-        labels.append(_LABEL_LIKELY_FAKE)
-    if report.campaign_count > 0:
-        labels.append(_LABEL_CAMPAIGN)
+    """Create a new issue or add a scan-update comment on the targeted external repo."""
+    target = report.full_name
 
-    existing = client.find_open_issue(ps_repo, report.full_name)
-    if existing is not None:
-        client.add_comment(ps_repo, existing, _comment_body(report, suspects))
-        _log.info("Commented on issue #%d for %s", existing, report.full_name)
-    else:
-        number = client.create_issue(ps_repo, title, _issue_body(report, suspects, ps_repo), labels)
-        _log.info("Created issue #%d for %s", number, report.full_name)
+    try:
+        existing = _find_existing_issue(client, target)
+        if existing is not None:
+            client.add_comment(target, existing, _comment_body(report, suspects))
+            _log.info("Commented on %s#%d", target, existing)
+        else:
+            number = client.create_issue(target, _ISSUE_TITLE, _issue_body(report, suspects), [])
+            _log.info("Created issue #%d on %s", number, target)
+    except requests.HTTPError as exc:
+        status = exc.response.status_code if exc.response is not None else 0
+        if status in (404, 410, 422):
+            _log.info("Issues disabled on %s (HTTP %d) -- skipping", target, status)
+        else:
+            raise
 
 
 def notify_all(
@@ -154,7 +163,7 @@ def notify_all(
     min_fakeness: float = MIN_FAKENESS_FOR_ISSUE,
     max_issues_per_scan: int = MAX_ISSUES_PER_SCAN,
 ) -> None:
-    """Create/update issues for qualifying repos, capped to avoid flooding."""
+    """Create/update issues on targeted repos, capped to avoid flooding."""
     qualifying = [
         r for r in repo_reports if r.fakeness_ratio >= min_fakeness or r.campaign_count > 0
     ]
@@ -166,13 +175,10 @@ def notify_all(
         )
         qualifying = qualifying[:max_issues_per_scan]
 
-    _log.info("Notifying %d repos via GitHub Issues", len(qualifying))
+    _log.info(
+        "Notifying %d repos via GitHub Issues (filing on each targeted repo)", len(qualifying)
+    )
 
-    # Ensure all required labels exist once per scan
-    if qualifying:
-        client.ensure_labels(ps_repo, ISSUE_LABELS)
-
-    # Build per-repo suspect list
     for report in qualifying:
         repo_suspects = [
             s
@@ -180,6 +186,6 @@ def notify_all(
             if report.full_name in s.target_repos and s.classification != "clean"
         ]
         try:
-            notify_repo(client, report, repo_suspects, ps_repo)
+            notify_repo(client, report, repo_suspects)
         except Exception as exc:
             _log.error("Issue notification failed for %s: %s", report.full_name, exc)
