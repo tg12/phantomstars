@@ -2,10 +2,17 @@
 from __future__ import annotations
 
 from collections import defaultdict
-from datetime import timedelta
+from dataclasses import dataclass
+from datetime import datetime, timedelta
 
 from phantomstars.config import CAMPAIGN_WINDOW_HOURS, MIN_CAMPAIGN_SIZE, SCORE_SUSPICIOUS
 from phantomstars.models import EngagementEvent, SuspicionScore
+
+
+@dataclass(frozen=True, slots=True)
+class _TimedEvent:
+    user_login: str
+    occurred_at: datetime
 
 
 class _UnionFind:
@@ -39,20 +46,22 @@ def detect_campaigns(
         login for login, s in scores.items() if s.composite >= SCORE_SUSPICIOUS
     }
 
-    # Bucket events by repo, filter to suspects with timestamps
-    repo_events: dict[str, list[EngagementEvent]] = defaultdict(list)
+    # Bucket events by repo, narrowing occurred_at to non-None
+    repo_events: dict[str, list[_TimedEvent]] = defaultdict(list)
     for ev in events:
         if ev.user_login in suspects and ev.occurred_at is not None:
-            repo_events[ev.repo_full_name].append(ev)
+            repo_events[ev.repo_full_name].append(
+                _TimedEvent(user_login=ev.user_login, occurred_at=ev.occurred_at)
+            )
 
     uf = _UnionFind()
     window = timedelta(hours=CAMPAIGN_WINDOW_HOURS)
 
     for repo_evs in repo_events.values():
-        sorted_evs = sorted(repo_evs, key=lambda e: e.occurred_at)  # type: ignore[arg-type]
+        sorted_evs = sorted(repo_evs, key=lambda e: e.occurred_at)
         for i, ev_i in enumerate(sorted_evs):
             for ev_j in sorted_evs[i + 1 :]:
-                if ev_j.occurred_at - ev_i.occurred_at > window:  # type: ignore[operator]
+                if ev_j.occurred_at - ev_i.occurred_at > window:
                     break
                 uf.union(ev_i.user_login, ev_j.user_login)
 

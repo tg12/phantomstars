@@ -36,18 +36,7 @@ jobs:
       - name: Run scan
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
-          PYTHONPATH: src
-        run: |
-          if [ "${{ github.event.inputs.debug }}" = "true" ]; then
-            python -c "
-          import logging
-          logging.basicConfig(level=logging.DEBUG)
-          from phantomstars.main import main
-          main()
-          "
-          else
-            python -m phantomstars.main
-          fi
+        run: python -m phantomstars.main
 
       - name: Commit results
         run: |

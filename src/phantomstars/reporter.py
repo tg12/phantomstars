@@ -14,32 +14,33 @@ _HEADER = """| Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes
 |------|---------|-------------|------------|-----------|-----------------|"""
 
 
-def _build_table(records: list[dict]) -> str:  # type: ignore[type-arg]
-    by_date: dict[str, list[dict]] = defaultdict(list)  # type: ignore[type-arg]
+Record = dict[str, object]
+
+
+def _build_table(records: list[Record]) -> str:
+    by_date: dict[str, list[Record]] = defaultdict(list)
     for r in records:
-        date = r.get("scan_date", "unknown")
+        date = str(r.get("scan_date", "unknown"))
         by_date[date].append(r)
 
+    # Single linear pass: accumulate seen logins as we go oldest → newest
+    seen_logins: set[str] = set()
     rows = []
-    for date in sorted(by_date.keys(), reverse=True)[:30]:
+    for date in sorted(by_date.keys())[-30:]:
         day = by_date[date]
+        likely_fake_logins = {
+            str(r["login"]) for r in day if r.get("classification") == "likely_fake"
+        }
+        new_fakes = len(likely_fake_logins - seen_logins)
+        seen_logins.update(str(r["login"]) for r in day)
+
         scanned = len(day)
-        likely = sum(1 for r in day if r.get("classification") == "likely_fake")
+        likely = len(likely_fake_logins)
         suspicious = sum(1 for r in day if r.get("classification") == "suspicious")
         campaigns = len({r.get("campaign_id") for r in day if r.get("campaign_id")})
-
-        # new fakes = accounts first seen on this date
-        prev_logins: set[str] = set()
-        for d2, recs in by_date.items():
-            if d2 < date:
-                prev_logins.update(r["login"] for r in recs)
-        new_fakes = sum(
-            1
-            for r in day
-            if r.get("classification") == "likely_fake" and r["login"] not in prev_logins
-        )
         rows.append(f"| {date} | {scanned} | {likely} | {suspicious} | {campaigns} | {new_fakes} |")
 
+    rows.reverse()  # newest first in the rendered table
     if not rows:
         return f"{_HEADER}\n| — | — | — | — | — | — |"
     return f"{_HEADER}\n" + "\n".join(rows)

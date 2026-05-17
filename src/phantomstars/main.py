@@ -13,20 +13,19 @@ from phantomstars.exceptions import TrendingParseError
 from phantomstars.github_client import GitHubClient
 from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
-from phantomstars.models import SuspicionScore
+from phantomstars.models import EngagementEvent, SuspicionScore
 from phantomstars.reporter import update_readme
 from phantomstars.storage import append_suspects
 
 _log = logging.getLogger(__name__)
 
-GH_TOKEN: str = os.environ["GH_TOKEN"]
-
 
 def main() -> None:
     setup_logging()
+    gh_token: str = os.environ["GH_TOKEN"]
     scan_date = datetime.now(timezone.utc).date().isoformat()
     suspects_path = Path(SUSPECTS_FILE)
-    client = GitHubClient(token=GH_TOKEN)
+    client = GitHubClient(token=gh_token)
 
     # 1. Collect repos to scan from both sources
     repo_set: set[str] = set()
@@ -44,7 +43,6 @@ def main() -> None:
     _log.info("Total repos to scan: %d", len(repo_set))
 
     # 2. Collect engagement events across all repos
-    from phantomstars.models import EngagementEvent
     flat_events: list[EngagementEvent] = []
     for repo in sorted(repo_set):
         _log.info("Scanning events: %s", repo)
