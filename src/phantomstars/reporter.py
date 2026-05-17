@@ -1,4 +1,5 @@
 """README dashboard injector. Rewrites content between marker comments."""
+
 from __future__ import annotations
 
 import logging
@@ -10,20 +11,29 @@ from phantomstars.storage import load_all
 
 _log = logging.getLogger(__name__)
 
-_HEADER = """| Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
-|------|---------|-------------|------------|-----------|-----------------|"""
+_REPO_START_MARKER = "<!-- REPO_STATS:START -->"
+_REPO_END_MARKER = "<!-- REPO_STATS:END -->"
 
+_DAILY_HEADER = (
+    "| Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |\n"
+    "|------|---------|-------------|------------|-----------|-----------------|"
+)
+
+_REPO_HEADER = (
+    "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |\n"
+    "|------|----------|-------------|------------|-----------|\n"
+    "*Today's most-targeted repos, sorted by likely-fake engager count.*"
+)
 
 Record = dict[str, object]
 
 
-def _build_table(records: list[Record]) -> str:
+def _build_daily_table(records: list[Record]) -> str:
     by_date: dict[str, list[Record]] = defaultdict(list)
     for r in records:
         date = str(r.get("scan_date", "unknown"))
         by_date[date].append(r)
 
-    # Single linear pass: accumulate seen logins as we go oldest → newest
     seen_logins: set[str] = set()
     rows = []
     for date in sorted(by_date.keys())[-30:]:
@@ -40,28 +50,74 @@ def _build_table(records: list[Record]) -> str:
         campaigns = len({r.get("campaign_id") for r in day if r.get("campaign_id")})
         rows.append(f"| {date} | {scanned} | {likely} | {suspicious} | {campaigns} | {new_fakes} |")
 
-    rows.reverse()  # newest first in the rendered table
+    rows.reverse()
     if not rows:
-        return f"{_HEADER}\n| — | — | — | — | — | — |"
-    return f"{_HEADER}\n" + "\n".join(rows)
+        return f"{_DAILY_HEADER}\n| -- | -- | -- | -- | -- | -- |"
+    return f"{_DAILY_HEADER}\n" + "\n".join(rows)
 
 
-def update_readme(suspects_path: Path, readme_path: Path = Path(README_PATH)) -> None:
+def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
+    today = [r for r in repo_records if r.get("scan_date") == scan_date]
+    if not today:
+        return f"{_REPO_HEADER}\n\n*No data yet for {scan_date}.*"
+
+    # Sort by likely_fake desc, then fakeness_ratio desc
+    today_sorted = sorted(
+        today,
+        key=lambda r: (r.get("likely_fake", 0), r.get("fakeness_ratio", 0.0)),
+        reverse=True,
+    )[:25]
+
+    header = (
+        "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |\n"
+        "|------|----------|-------------|------------|-----------|"
+    )
+    rows = []
+    for r in today_sorted:
+        repo = r.get("full_name", "unknown")
+        total = r.get("total_scanned", 0)
+        likely = r.get("likely_fake", 0)
+        ratio = r.get("fakeness_ratio", 0.0)
+        pct = f"{(ratio if isinstance(ratio, float) else float(str(ratio))) * 100:.1f}%"
+        campaigns = r.get("campaign_count", 0)
+        rows.append(f"| {repo} | {total} | {likely} | {pct} | {campaigns} |")
+
+    return f"{header}\n" + "\n".join(rows)
+
+
+def _inject_block(content: str, start: str, end: str, block: str) -> str:
+    if start not in content:
+        _log.warning("README marker '%s' not found; skipping block", start)
+        return content
+    s = content.index(start)
+    e = content.index(end) + len(end)
+    return content[:s] + f"{start}\n{block}\n{end}" + content[e:]
+
+
+def update_readme(
+    suspects_path: Path,
+    repos_path: Path | None = None,
+    readme_path: Path = Path(README_PATH),
+) -> None:
     if not readme_path.exists():
         _log.warning("README not found at %s", readme_path)
         return
 
-    records = load_all(suspects_path)
-    table = _build_table(records)
-    block = f"{README_START_MARKER}\n{table}\n{README_END_MARKER}"
-
     content = readme_path.read_text(encoding="utf-8")
-    if README_START_MARKER not in content:
-        _log.warning("README marker not found; skipping dashboard update")
-        return
 
-    start = content.index(README_START_MARKER)
-    end = content.index(README_END_MARKER) + len(README_END_MARKER)
-    updated = content[:start] + block + content[end:]
-    readme_path.write_text(updated, encoding="utf-8")
+    # Daily summary block
+    suspect_records = load_all(suspects_path)
+    daily_table = _build_daily_table(suspect_records)
+    content = _inject_block(content, README_START_MARKER, README_END_MARKER, daily_table)
+
+    # Per-repo block
+    if repos_path is not None and repos_path.exists():
+        repo_records = load_all(repos_path)
+        if repo_records:
+            # Derive scan_date from the most recent repo record
+            scan_date = str(max(r.get("scan_date", "") for r in repo_records))
+            repo_table = _build_repo_table(repo_records, scan_date)
+            content = _inject_block(content, _REPO_START_MARKER, _REPO_END_MARKER, repo_table)
+
+    readme_path.write_text(content, encoding="utf-8")
     _log.info("README dashboard updated")

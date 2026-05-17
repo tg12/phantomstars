@@ -1,7 +1,8 @@
 """Shared test fixtures."""
+
 from __future__ import annotations
 
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 
 import pytest
 
@@ -21,7 +22,7 @@ def _make_profile(
 ) -> UserProfile:
     from datetime import timedelta
 
-    created_at = datetime.now(timezone.utc) - timedelta(days=age_days)
+    created_at = datetime.now(UTC) - timedelta(days=age_days)
     return UserProfile(
         login=login,
         node_id="MDQ6VXNlcjE=",

@@ -1,13 +1,14 @@
 """Tests for campaign detection."""
+
 from __future__ import annotations
 
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 
 from phantomstars.campaigns import detect_campaigns
 from phantomstars.models import EngagementEvent, SuspicionScore
 
 SCAN_DATE = "2026-05-17"
-_T0 = datetime(2026, 5, 17, 10, 0, 0, tzinfo=timezone.utc)
+_T0 = datetime(2026, 5, 17, 10, 0, 0, tzinfo=UTC)
 
 
 def _score(login: str, composite: float = 0.80) -> SuspicionScore:
@@ -35,8 +36,8 @@ def _ev(login: str, repo: str, minutes_offset: int = 0) -> EngagementEvent:
 
 def test_campaign_detected_within_window() -> None:
     logins = ["bot1", "bot2", "bot3", "bot4"]
-    scores = {l: _score(l) for l in logins}
-    events = [_ev(l, "owner/repo", i * 10) for i, l in enumerate(logins)]
+    scores = {login: _score(login) for login in logins}
+    events = [_ev(login, "owner/repo", i * 10) for i, login in enumerate(logins)]
     result = detect_campaigns(events, scores)
     assert len(result) == 4
     assert len(set(result.values())) == 1  # all in same campaign
@@ -44,8 +45,8 @@ def test_campaign_detected_within_window() -> None:
 
 def test_no_campaign_below_min_size() -> None:
     logins = ["bot1", "bot2", "bot3"]  # below MIN_CAMPAIGN_SIZE=4
-    scores = {l: _score(l) for l in logins}
-    events = [_ev(l, "owner/repo", i * 5) for i, l in enumerate(logins)]
+    scores = {login: _score(login) for login in logins}
+    events = [_ev(login, "owner/repo", i * 5) for i, login in enumerate(logins)]
     result = detect_campaigns(events, scores)
     assert result == {}
 
@@ -66,14 +67,14 @@ def test_clean_accounts_excluded_from_campaign() -> None:
         "bot4": _score("bot4", 0.80),
         "legit": _score("legit", 0.10),  # clean
     }
-    events = [_ev(l, "owner/repo", i * 5) for i, l in enumerate(scores)]
+    events = [_ev(login, "owner/repo", i * 5) for i, login in enumerate(scores)]
     result = detect_campaigns(events, scores)
     assert "legit" not in result
 
 
 def test_separate_repos_can_link_accounts() -> None:
     logins = ["b1", "b2", "b3", "b4"]
-    scores = {l: _score(l) for l in logins}
+    scores = {login: _score(login) for login in logins}
     # b1+b2 on repo-a, b2+b3+b4 on repo-b — union-find should link all
     events = [
         _ev("b1", "x/repo-a", 0),

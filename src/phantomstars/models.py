@@ -1,8 +1,9 @@
 """Immutable data models."""
+
 from __future__ import annotations
 
 from dataclasses import dataclass
-from datetime import datetime, timezone
+from datetime import UTC, datetime
 from typing import Literal
 
 Classification = Literal["likely_fake", "suspicious", "clean"]
@@ -24,7 +25,7 @@ class UserProfile:
 
     @property
     def account_age_days(self) -> int:
-        return (datetime.now(timezone.utc) - self.created_at).days
+        return (datetime.now(UTC) - self.created_at).days
 
     @property
     def all_repos_are_forks(self) -> bool:
@@ -56,6 +57,7 @@ class SuspicionScore:
     classification: Classification
     campaign_id: str | None
     scan_date: str
+    target_repos: tuple[str, ...] = ()  # repos this account engaged with during the scan
 
 
 @dataclass(frozen=True, slots=True)

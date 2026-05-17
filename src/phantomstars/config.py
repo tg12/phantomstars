@@ -1,4 +1,5 @@
 """Top-level constants. No argparse, no env var parsing."""
+
 from __future__ import annotations
 
 GITHUB_API_BASE: str = "https://api.github.com"
@@ -6,15 +7,20 @@ GITHUB_GRAPHQL_URL: str = "https://api.github.com/graphql"
 GITHUB_TRENDING_URL: str = "https://github.com/trending"
 
 # Scan scope
-LOOKBACK_HOURS: int = 24
-MIN_STARS_NEW_REPO: int = 5       # search API filter for new repos
-MAX_NEW_REPOS: int = 100          # circuit breaker for search results
-MAX_EVENTS_PER_REPO: int = 300    # Events API hard cap
+LOOKBACK_HOURS: int = 24  # events window — how far back to pull stars/forks
+REPO_DISCOVERY_DAYS: int = 7  # repo search window — catch multi-day campaigns
+MIN_STARS_NEW_REPO: int = 50  # star floor for new-repo discovery (raised: reduces noise)
+MAX_NEW_REPOS: int = 200  # circuit breaker for search results
+MAX_EVENTS_PER_REPO: int = 300  # Events API hard cap
 
 # Scoring weights (must sum to 1.0)
-WEIGHT_ACCOUNT_AGE: float = 0.40
-WEIGHT_PROFILE: float = 0.35
+WEIGHT_ACCOUNT_AGE: float = 0.35
+WEIGHT_PROFILE: float = 0.30
 WEIGHT_REPO_PATTERN: float = 0.25
+WEIGHT_ACTIVITY: float = 0.10
+
+# Activity scoring
+ACTIVITY_MIN_AGE_DAYS: int = 14  # accounts younger than this skip activity scoring
 
 # Classification thresholds
 SCORE_LIKELY_FAKE: float = 0.75
@@ -36,6 +42,7 @@ RATE_LIMIT_PAUSE_THRESHOLD: int = 250  # remaining requests before pausing
 # Storage
 DATA_DIR: str = "data"
 SUSPECTS_FILE: str = "data/suspects.jsonl"
+REPOS_FILE: str = "data/repos.jsonl"
 
 # README injection markers
 README_START_MARKER: str = "<!-- STATS:START -->"

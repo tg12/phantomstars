@@ -1,4 +1,5 @@
 """JSONL append-only storage. No binary formats, no migrations."""
+
 from __future__ import annotations
 
 import dataclasses
@@ -6,7 +7,7 @@ import json
 import logging
 from pathlib import Path
 
-from phantomstars.models import SuspicionScore
+from phantomstars.models import RepoReport, SuspicionScore
 
 _log = logging.getLogger(__name__)
 
@@ -25,19 +26,33 @@ def load_allowlist(path: Path | None = None) -> set[str]:
     return logins
 
 
+def _score_to_dict(score: SuspicionScore) -> dict[str, object]:
+    d = dataclasses.asdict(score)
+    # asdict converts tuple -> list, which is valid JSON; keep as list for consumers
+    return d
+
+
 def append_suspects(suspects: list[SuspicionScore], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
-    with path.open("a", encoding="ascii") as fh:
+    with path.open("a", encoding="utf-8") as fh:
         for score in suspects:
-            fh.write(json.dumps(dataclasses.asdict(score)) + "\n")
+            fh.write(json.dumps(_score_to_dict(score)) + "\n")
     _log.info("Appended %d suspect records to %s", len(suspects), path)
+
+
+def append_reports(reports: list[RepoReport], path: Path) -> None:
+    path.parent.mkdir(parents=True, exist_ok=True)
+    with path.open("a", encoding="utf-8") as fh:
+        for report in reports:
+            fh.write(json.dumps(dataclasses.asdict(report)) + "\n")
+    _log.info("Appended %d repo reports to %s", len(reports), path)
 
 
 def load_all(path: Path) -> list[dict]:  # type: ignore[type-arg]
     if not path.exists():
         return []
     records = []
-    with path.open(encoding="ascii") as fh:
+    with path.open(encoding="utf-8") as fh:
         for lineno, line in enumerate(fh, 1):
             line = line.strip()
             if not line:

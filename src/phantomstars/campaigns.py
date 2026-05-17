@@ -1,4 +1,5 @@
 """Campaign detection via timestamp-clustering and union-find. No external dependencies."""
+
 from __future__ import annotations
 
 from collections import defaultdict
@@ -42,9 +43,7 @@ def detect_campaigns(
     A campaign is a connected component of >= MIN_CAMPAIGN_SIZE suspicious
     accounts that engaged with the same repo within CAMPAIGN_WINDOW_HOURS.
     """
-    suspects: set[str] = {
-        login for login, s in scores.items() if s.composite >= SCORE_SUSPICIOUS
-    }
+    suspects: set[str] = {login for login, s in scores.items() if s.composite >= SCORE_SUSPICIOUS}
 
     # Bucket events by repo, narrowing occurred_at to non-None
     repo_events: dict[str, list[_TimedEvent]] = defaultdict(list)

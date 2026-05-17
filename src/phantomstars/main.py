@@ -1,30 +1,90 @@
 """Entry point. Reads GH_TOKEN from environment at the system boundary."""
+
 from __future__ import annotations
 
 import dataclasses
 import logging
 import os
-from datetime import datetime, timezone
+from collections import defaultdict
+from datetime import UTC, datetime
 from pathlib import Path
 
 from phantomstars.campaigns import detect_campaigns
-from phantomstars.config import SUSPECTS_FILE
+from phantomstars.config import REPOS_FILE, SUSPECTS_FILE
 from phantomstars.exceptions import TrendingParseError
 from phantomstars.github_client import GitHubClient
 from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
-from phantomstars.models import EngagementEvent, SuspicionScore
+from phantomstars.models import Classification, EngagementEvent, RepoReport, SuspicionScore
 from phantomstars.reporter import update_readme
-from phantomstars.storage import append_suspects, load_allowlist
+from phantomstars.storage import append_reports, append_suspects, load_allowlist
 
 _log = logging.getLogger(__name__)
+
+
+def _classify_repo(fakeness_ratio: float) -> Classification:
+    if fakeness_ratio >= 0.40:
+        return "likely_fake"
+    if fakeness_ratio >= 0.20:
+        return "suspicious"
+    return "clean"
+
+
+def _build_repo_reports(
+    final_scores: list[SuspicionScore],
+    flat_events: list[EngagementEvent],
+    scan_date: str,
+) -> list[RepoReport]:
+    # Count all unique engagers per repo (denominator for fakeness ratio)
+    repo_all_users: dict[str, set[str]] = defaultdict(set)
+    for ev in flat_events:
+        repo_all_users[ev.repo_full_name].add(ev.user_login)
+
+    # Aggregate suspect counts per repo
+    repo_likely: dict[str, int] = defaultdict(int)
+    repo_suspicious: dict[str, int] = defaultdict(int)
+    repo_campaigns: dict[str, set[str]] = defaultdict(set)
+
+    for score in final_scores:
+        if score.classification == "clean":
+            continue
+        for repo in score.target_repos:
+            if score.classification == "likely_fake":
+                repo_likely[repo] += 1
+            else:
+                repo_suspicious[repo] += 1
+            if score.campaign_id:
+                repo_campaigns[repo].add(score.campaign_id)
+
+    reports: list[RepoReport] = []
+    targeted = set(repo_likely) | set(repo_suspicious)
+    for repo in targeted:
+        total_engagers = len(repo_all_users.get(repo, set()))
+        likely = repo_likely[repo]
+        suspicious = repo_suspicious[repo]
+        fakeness_ratio = round(likely / total_engagers, 3) if total_engagers else 0.0
+        reports.append(
+            RepoReport(
+                full_name=repo,
+                total_scanned=total_engagers,
+                likely_fake=likely,
+                suspicious=suspicious,
+                fakeness_ratio=fakeness_ratio,
+                classification=_classify_repo(fakeness_ratio),
+                campaign_count=len(repo_campaigns[repo]),
+                scan_date=scan_date,
+            )
+        )
+
+    return sorted(reports, key=lambda r: r.likely_fake, reverse=True)
 
 
 def main() -> None:
     setup_logging()
     gh_token: str = os.environ["GH_TOKEN"]
-    scan_date = datetime.now(timezone.utc).date().isoformat()
+    scan_date = datetime.now(UTC).date().isoformat()
     suspects_path = Path(SUSPECTS_FILE)
+    repos_path = Path(REPOS_FILE)
     client = GitHubClient(token=gh_token)
 
     # 1. Collect repos to scan from both sources
@@ -35,11 +95,11 @@ def main() -> None:
         repo_set.update(trending)
         _log.info("Trending: %d repos", len(trending))
     except TrendingParseError as exc:
-        _log.error("Trending scrape failed: %s — falling back to search only", exc)
+        _log.error("Trending scrape failed: %s -- falling back to search only", exc)
 
     new_repos = client.get_new_repos()
     repo_set.update(new_repos)
-    _log.info("New repos (24h): %d repos", len(new_repos))
+    _log.info("New repos (recent): %d repos", len(new_repos))
     _log.info("Total repos to scan: %d", len(repo_set))
 
     # 2. Collect engagement events across all repos
@@ -56,30 +116,40 @@ def main() -> None:
     _log.info("Profiles fetched: %d", len(profiles))
 
     # 4. Score every user
-    scores: dict[str, SuspicionScore] = {}
-    for login, profile in profiles.items():
-        scores[login] = score_user(profile, scan_date)
+    scores: dict[str, SuspicionScore] = {
+        login: score_user(profile, scan_date) for login, profile in profiles.items()
+    }
 
     # 5. Detect campaigns
     campaign_map = detect_campaigns(flat_events, scores)
-    _log.info("Campaign members: %d across %d campaigns", len(campaign_map), len(set(campaign_map.values())))
+    _log.info(
+        "Campaign members: %d across %d campaigns",
+        len(campaign_map),
+        len(set(campaign_map.values())),
+    )
 
-    # 6. Rebuild scores with campaign IDs (SuspicionScore is frozen, create new)
-    final_scores: list[SuspicionScore] = []
-    for login, score in scores.items():
-        if login in campaign_map:
-            record = dataclasses.replace(score, campaign_id=campaign_map[login])
-        else:
-            record = score
-        final_scores.append(record)
+    # 6. Build login -> repos mapping from events
+    login_repos: dict[str, list[str]] = defaultdict(list)
+    for ev in flat_events:
+        if ev.repo_full_name not in login_repos[ev.user_login]:
+            login_repos[ev.user_login].append(ev.repo_full_name)
 
-    # 7. Persist suspects only — skip allowlisted accounts
+    # 7. Rebuild scores with campaign IDs and target_repos (SuspicionScore is frozen)
+    final_scores: list[SuspicionScore] = [
+        dataclasses.replace(
+            score,
+            campaign_id=campaign_map.get(login),
+            target_repos=tuple(sorted(login_repos.get(login, []))),
+        )
+        for login, score in scores.items()
+    ]
+
+    # 8. Persist suspects only -- skip allowlisted accounts
     allowlist = load_allowlist()
     if allowlist:
         _log.info("Allowlist contains %d entries", len(allowlist))
     suspects = [
-        s for s in final_scores
-        if s.classification != "clean" and s.login.lower() not in allowlist
+        s for s in final_scores if s.classification != "clean" and s.login.lower() not in allowlist
     ]
     _log.info(
         "Suspects: %d likely_fake, %d suspicious",
@@ -88,8 +158,17 @@ def main() -> None:
     )
     append_suspects(suspects, suspects_path)
 
-    # 8. Update README dashboard
-    update_readme(suspects_path)
+    # 9. Produce per-repo intelligence
+    repo_reports = _build_repo_reports(final_scores, flat_events, scan_date)
+    _log.info(
+        "Repo reports: %d targeted repos (%d likely_fake classification)",
+        len(repo_reports),
+        sum(1 for r in repo_reports if r.classification == "likely_fake"),
+    )
+    append_reports(repo_reports, repos_path)
+
+    # 10. Update README dashboard
+    update_readme(suspects_path, repos_path)
     _log.info("Scan complete for %s", scan_date)
 
 

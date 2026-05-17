@@ -53,16 +53,25 @@ No servers. No databases. No infrastructure bill.
 
 ---
 
+## Today's most-targeted repos
+
+<!-- REPO_STATS:START -->
+| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |
+|------|----------|-------------|------------|-----------|
+<!-- REPO_STATS:END -->
+
+---
+
 ## Scoring model
 
 Each user receives a composite suspicion score (0.0 = clean → 1.0 = fake) from four weighted signals:
 
 | Signal | Weight | What is measured |
 |--------|--------|-----------------|
-| Account age | 35% | < 7 days → 0.90; < 30 days → 0.55; > 90 days → 0.00 |
+| Account age | 35% | < 2 days → 1.00; < 7 days → 0.90; < 30 days → 0.55; < 90 days → 0.20; older → 0.00 |
 | Profile completeness | 30% | Missing bio, location, zero followers, bot-pattern username |
-| Repository pattern | 25% | All repos are forks, zero original repos, zero contributions |
-| Activity history | 10% | Zero contributions despite account age > 14 days |
+| Repository pattern | 25% | All repos are forks, zero original repos |
+| Activity history | 10% | Ghost accounts: old (>14 days) with zero repos + zero social graph |
 
 **Thresholds:**
 
@@ -82,8 +91,9 @@ Individual scores have false positives. Campaigns almost never do. A new develop
 
 ## Data format
 
-All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) — one JSON record per line, append-only.
+All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [`data/repos.jsonl`](data/repos.jsonl) — one JSON record per line, append-only.
 
+**suspects.jsonl** — one record per flagged account per scan:
 ```json
 {
   "login": "user98432",
@@ -94,6 +104,21 @@ All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) — o
   "composite": 0.842,
   "classification": "likely_fake",
   "campaign_id": "c-user98432",
+  "scan_date": "2026-05-17",
+  "target_repos": ["owner/repo-a", "owner/repo-b"]
+}
+```
+
+**repos.jsonl** — one record per targeted repo per scan:
+```json
+{
+  "full_name": "owner/suspicious-repo",
+  "total_scanned": 87,
+  "likely_fake": 62,
+  "suspicious": 18,
+  "fakeness_ratio": 0.713,
+  "classification": "likely_fake",
+  "campaign_count": 3,
   "scan_date": "2026-05-17"
 }
 ```
@@ -104,14 +129,14 @@ Query examples:
 # All likely_fake accounts
 grep '"likely_fake"' data/suspects.jsonl | jq -r .login
 
+# Which repos were targeted today
+jq 'select(.scan_date == "2026-05-17") | [.full_name, .fakeness_ratio] | @tsv' -r data/repos.jsonl | sort -t$'\t' -k2 -rn
+
 # Campaign members grouped by campaign
 jq 'select(.campaign_id != null) | [.campaign_id, .login] | @tsv' -r data/suspects.jsonl | sort
 
-# Daily summary
-jq -r .classification data/suspects.jsonl | sort | uniq -c | sort -rn
-
-# Accounts first seen today
-jq 'select(.scan_date == "2026-05-17" and .classification == "likely_fake")' data/suspects.jsonl
+# Repos a specific account targeted
+jq 'select(.login == "user98432") | .target_repos[]' data/suspects.jsonl
 ```
 
 ---

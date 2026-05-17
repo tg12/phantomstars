@@ -1,8 +1,10 @@
 """Tests for the scoring engine."""
+
 from __future__ import annotations
 
 import pytest
-from phantomstars.heuristics import score_user
+
+from phantomstars.heuristics import _score_activity, score_user
 from phantomstars.models import UserProfile
 
 SCAN_DATE = "2026-05-17"
@@ -28,6 +30,11 @@ def test_scan_date_preserved(clean_profile: UserProfile) -> None:
 def test_campaign_id_is_none_by_default(bot_profile: UserProfile) -> None:
     result = score_user(bot_profile, SCAN_DATE)
     assert result.campaign_id is None
+
+
+def test_target_repos_empty_by_default(bot_profile: UserProfile) -> None:
+    result = score_user(bot_profile, SCAN_DATE)
+    assert result.target_repos == ()
 
 
 def test_composite_is_weighted_sum(make_profile) -> None:  # type: ignore[no-untyped-def]
@@ -69,3 +76,60 @@ def test_bot_patterns_detected(make_profile, login: str) -> None:  # type: ignor
     profile = make_profile(login=login)
     result = score_user(profile, SCAN_DATE)
     assert result.profile_score > 0.0
+
+
+# --- activity_score tests ---
+
+
+def test_activity_score_zero_for_new_accounts(make_profile) -> None:  # type: ignore[no-untyped-def]
+    # Accounts < 14 days old never get penalised for inactivity
+    profile = make_profile(age_days=10, total_repo_count=0, followers=0, following=0)
+    from phantomstars.heuristics import _score_activity
+
+    assert _score_activity(profile) == 0.0
+
+
+def test_activity_score_high_for_ghost_account(make_profile) -> None:  # type: ignore[no-untyped-def]
+    # Old account, nothing: no repos, no followers, no following
+    profile = make_profile(
+        age_days=120, total_repo_count=0, followers=0, following=0, bio=None, location=None
+    )
+    assert _score_activity(profile) == 0.80
+
+
+def test_activity_score_moderate_for_old_no_repos(make_profile) -> None:  # type: ignore[no-untyped-def]
+    # Old account with social graph but no repos
+    profile = make_profile(age_days=60, total_repo_count=0, followers=5, following=10)
+    assert _score_activity(profile) == 0.60
+
+
+def test_activity_score_moderate_for_all_forks_no_social(make_profile) -> None:  # type: ignore[no-untyped-def]
+    profile = make_profile(
+        age_days=45, total_repo_count=3, fork_repo_count=3, followers=0, following=0
+    )
+    assert _score_activity(profile) == 0.50
+
+
+def test_activity_score_zero_for_active_account(make_profile) -> None:  # type: ignore[no-untyped-def]
+    profile = make_profile(age_days=200, total_repo_count=8, fork_repo_count=2, followers=20)
+    assert _score_activity(profile) == 0.0
+
+
+def test_ghost_account_pushes_score_above_threshold(make_profile) -> None:  # type: ignore[no-untyped-def]
+    # An account that's old, empty, but otherwise moderate profile should get flagged
+    profile = make_profile(
+        login="dormant-account",
+        age_days=180,
+        total_repo_count=0,
+        fork_repo_count=0,
+        followers=0,
+        following=0,
+        bio=None,
+        location=None,
+        company=None,
+    )
+    result = score_user(profile, SCAN_DATE)
+    # activity=0.80, profile=0.80 (no bio/loc/followers/following), age=0.0, repo=0.90
+    # composite = 0.0*0.35 + 0.80*0.30 + 0.90*0.25 + 0.80*0.10 = 0.0 + 0.24 + 0.225 + 0.08 = 0.545
+    assert result.classification == "suspicious"
+    assert result.activity_score == 0.80

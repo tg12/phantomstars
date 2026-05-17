@@ -1,15 +1,16 @@
 """GitHub REST and GraphQL client with rate-limit awareness and tenacity retries."""
+
 from __future__ import annotations
 
 import json
 import logging
 import time
-from datetime import datetime, timedelta, timezone
+from datetime import UTC, datetime, timedelta
 from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
-from tenacity import retry, stop_after_attempt, wait_exponential, retry_if_exception_type
+from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
 
 from phantomstars.config import (
     GITHUB_API_BASE,
@@ -21,9 +22,10 @@ from phantomstars.config import (
     MAX_NEW_REPOS,
     MIN_STARS_NEW_REPO,
     RATE_LIMIT_PAUSE_THRESHOLD,
+    REPO_DISCOVERY_DAYS,
 )
 from phantomstars.exceptions import RateLimitError, TrendingParseError
-from phantomstars.models import EngagementEvent, UserProfile
+from phantomstars.models import EngagementEvent, EventKind, UserProfile
 
 _log = logging.getLogger(__name__)
 
@@ -91,8 +93,12 @@ class GitHubClient:
     # ------------------------------------------------------------------
 
     def get_new_repos(self) -> list[str]:
-        """Return repos created in the last LOOKBACK_HOURS with >= MIN_STARS_NEW_REPO stars."""
-        cutoff = datetime.now(timezone.utc) - timedelta(hours=LOOKBACK_HOURS)
+        """Return repos created in the last REPO_DISCOVERY_DAYS with >= MIN_STARS_NEW_REPO stars.
+
+        Uses a longer window than the events scan so multi-day campaigns on newer repos
+        are caught even when the bulk of their fake engagement predates today's 24h window.
+        """
+        cutoff = datetime.now(UTC) - timedelta(days=REPO_DISCOVERY_DAYS)
         date_str = cutoff.strftime("%Y-%m-%dT%H:%M:%SZ")
         query = f"created:>{date_str} stars:>={MIN_STARS_NEW_REPO}"
         repos: list[str] = []
@@ -126,7 +132,7 @@ class GitHubClient:
 
     def get_recent_engagement(self, repo_full_name: str) -> list[EngagementEvent]:
         """Return star and fork events from the last LOOKBACK_HOURS via Events API."""
-        cutoff = datetime.now(timezone.utc) - timedelta(hours=LOOKBACK_HOURS)
+        cutoff = datetime.now(UTC) - timedelta(hours=LOOKBACK_HOURS)
         events: list[EngagementEvent] = []
         url = f"{GITHUB_API_BASE}/repos/{repo_full_name}/events"
 
@@ -164,7 +170,7 @@ class GitHubClient:
                 if not login:
                     continue
 
-                event_kind = "star" if kind == "WatchEvent" else "fork"
+                event_kind: EventKind = "star" if kind == "WatchEvent" else "fork"
                 events.append(
                     EngagementEvent(
                         user_login=login,
@@ -208,12 +214,12 @@ class GitHubClient:
 
     def _graphql_user_batch(self, logins: list[str]) -> dict[str, Any]:
         aliases = "\n".join(
-            f'  u{i}: user(login: {json.dumps(login)}) {{ ...F }}'
-            for i, login in enumerate(logins)
+            f"  u{i}: user(login: {json.dumps(login)}) {{ ...F }}" for i, login in enumerate(logins)
         )
         query = f"{_GRAPHQL_FRAGMENT}\nquery {{\n{aliases}\n}}"
         resp = self._graphql_post({"query": query})
-        return resp.get("data", {})
+        result: dict[str, Any] = resp.get("data") or {}
+        return result
 
     @retry(
         retry=retry_if_exception_type((requests.ConnectionError, requests.HTTPError)),
@@ -226,7 +232,8 @@ class GitHubClient:
         if resp.status_code == 403:
             _log.warning("GraphQL 403 — backing off before retry")
             resp.raise_for_status()
-        data: dict[str, Any] = resp.json()
+        raw = resp.json()
+        data: dict[str, Any] = raw if isinstance(raw, dict) else {}
         if "errors" in data:
             _log.warning("GraphQL partial errors: %d error(s)", len(data["errors"]))
         return data
@@ -264,6 +271,8 @@ def _parse_trending_html(html: str) -> list[str]:
         if isinstance(href, str) and href.count("/") == 2:
             repos.append(href.lstrip("/"))
     if not repos:
-        raise TrendingParseError("No repos found in trending HTML — page structure may have changed")
+        raise TrendingParseError(
+            "No repos found in trending HTML — page structure may have changed"
+        )
     _log.info("Parsed %d trending repos", len(repos))
     return repos
