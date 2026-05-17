@@ -9,8 +9,10 @@
 <h1 align="center">phantomstars</h1>
 <p align="center"><strong>Automated detection and tracking of fake engagement on GitHub</strong></p>
 <p align="center">
-  Runs every day. Scores every suspicious user. Detects coordinated bot campaigns.<br>
-  Tracks fake accounts from the moment they appear on trending.
+  A <a href="https://labs.jamessawyer.co.uk/">JS Labs</a> project &mdash;
+  part of the <a href="https://labs.jamessawyer.co.uk/ai-slop-intelligence-dashboards/">AI Slop Intelligence</a> initiative.<br>
+  Runs every day. Scores every suspicious account. Detects coordinated bot campaigns.<br>
+  Files issues directly on compromised repos so maintainers can act.
 </p>
 
 ---
@@ -25,21 +27,34 @@
 
 ---
 
-## What it does
+## Why this exists
 
-GitHub has a fake engagement problem. Bot farms star and fork repos to inflate popularity metrics, game the trending page, and manufacture credibility for malicious or low-quality projects. These campaigns are coordinated — dozens of accounts created on the same day, all starring the same repos within minutes of each other, with zero contribution history and empty profiles.
+GitHub stars are a trust signal. They are how developers decide what to evaluate, what to depend on, and what to recommend. That signal is being systematically corrupted.
+
+During the AI boom of 2024--2026, an industry of bot farms emerged to manufacture credibility for low-quality, often malicious repositories. A project with 800 stars in 48 hours reads as legitimate to a developer scanning search results. That is the point. The goal of fake engagement is not the stars themselves -- it is the social proof those stars produce, and the downstream decisions that social proof influences.
+
+The pattern is identifiable. Accounts created the same week, no bio, no followers, no original repositories, starring the same 15 repos within a 2-hour window. Not one campaign -- dozens running simultaneously, every day, across thousands of accounts. The data shows repos where 185 out of 185 engagers are bots. A 100% fakeness ratio. Entire trending placements built on nothing.
+
+**phantomstars** was built because this problem is tractable. The signal-to-noise ratio in GitHub's public API is, for now, still high enough that coordinated campaigns leave clear fingerprints. This project reads those fingerprints, publishes the raw data, and notifies affected repository maintainers directly.
+
+This is part of the broader [AI Slop Intelligence](https://labs.jamessawyer.co.uk/ai-slop-intelligence-dashboards/) work at [JS Labs](https://labs.jamessawyer.co.uk/) -- ongoing research into the mechanics and measurable effects of low-quality AI-generated content flooding developer ecosystems. Fake engagement is not a peripheral issue. It is the distribution mechanism that gets slop in front of real users.
+
+---
+
+## What it does
 
 **phantomstars** runs a daily GitHub Actions job that:
 
 1. Scrapes the [GitHub Trending](https://github.com/trending) page for repos gaining stars today
 2. Queries the GitHub Search API for repos created in the last **7 days** with sudden star activity (the wider window catches multi-day campaigns missed by 24h-only scans)
-3. Pulls recent engagement events (stars, forks) via the Events API — last 24 hours per repo
+3. Pulls recent engagement events (stars, forks) via the Events API -- last 24 hours per repo
 4. Fetches the full profile of every engaging account via GraphQL: **account creation date**, follower/following counts, bio, repo history
 5. Scores every account against a composite heuristics model: account age, profile completeness, repository patterns, and activity history
-6. Detects **coordinated campaigns** — clusters of suspicious accounts that engaged within a 3-hour window — using timestamp clustering and union-find
+6. Detects **coordinated campaigns** -- clusters of suspicious accounts that engaged within a 3-hour window -- using timestamp clustering and union-find
 7. Appends all suspects to an append-only JSONL ledger committed back to this repo
 8. Publishes a per-repo intelligence feed showing which repos are being targeted and at what fakeness ratio
-9. Writes a formatted scan report to the GitHub Actions job summary
+9. **Files GitHub issues directly on targeted repos** so maintainers see the campaign data in their own issue tracker
+10. Writes a formatted scan report to the GitHub Actions job summary
 
 No servers. No databases. No infrastructure bill.
 
@@ -47,35 +62,31 @@ No servers. No databases. No infrastructure bill.
 
 ## Frequently asked questions
 
-### Does this notify the targeted repo?
+### Does it notify the targeted repo?
 
-**No.** phantomstars performs read-only analysis of public GitHub data using the official GitHub API. It does not open issues, create comments, send notifications, or interact with any external repository in any way. The data is probabilistic — individual accounts have false positive rates. Automated external notification would convert probabilistic suspicion into public accusations, which is inappropriate given the confidence levels involved.
+**Yes.** When a repo's fakeness ratio exceeds 40% or a coordinated campaign is detected, phantomstars opens an issue directly on that repository. The issue contains the full suspect table, campaign membership, composite scores, and account creation dates -- everything a maintainer needs to investigate and report to GitHub.
 
-The output is a passive intelligence feed: committed JSONL data and a README dashboard that anyone can query.
+If issues are disabled on a targeted repo, the notification is skipped silently and recorded in the scan log.
 
 ### Can I report a false positive?
 
-Yes. If your account appears in `data/suspects.jsonl` and you believe the classification is incorrect, [open a false positive issue](../../issues/new?template=false_positive.yml) using the provided template. Reports are reviewed manually before any allowlist addition. The allowlist is stored in `data/allowlist.txt` — accounts listed there are excluded from all future scans and from the suspects ledger.
+Yes. If your account appears in `data/suspects.jsonl` and you believe the classification is incorrect, [open a false positive issue](../../issues/new?template=false_positive.yml) using the provided template. Reports are reviewed manually before any allowlist addition. The allowlist is stored in `data/allowlist.txt` -- accounts listed there are excluded from all future scans and from the suspects ledger.
 
 ### What is the campaign ID?
 
 A campaign ID (e.g. `c-a3f9b2e1`) is a **deterministic 8-character hex fingerprint** derived from the SHA-256 hash of the sorted set of member logins in that campaign. The same group of accounts will produce the same campaign ID across independent scan runs, enabling longitudinal tracking. It is not a repo name, a username, or any external identifier.
 
-**Stability constraint:** the ID is stable as long as the campaign's member set is unchanged. If bots are added to or suspended from the set between scans, the ID will change because the membership changed. This is expected — it reflects the real-world drift of bot farm composition.
+**Stability:** the ID is stable as long as the campaign's member set is unchanged. If bots are added or suspended between scans, the ID changes because the membership changed. This is expected -- it reflects real-world drift in bot farm composition.
 
 ### Does it check account creation dates?
 
-Yes. Every account's creation date is fetched from the GitHub GraphQL API (`createdAt` field) and stored in each suspect record as `account_created_at`. It is also the primary input to the account age score — the strongest single signal for fake accounts. Accounts created within 2 days of engaging score 1.0 on age alone.
+Yes. Every account's creation date is fetched from the GitHub GraphQL API (`createdAt` field) and stored in each suspect record as `account_created_at`. It is also the primary input to the account age score -- the strongest single signal for fake accounts. Accounts created within 2 days of engaging score 1.0 on age alone.
 
-### Why aren't issues created on targeted repos?
+### How confident is it?
 
-Three reasons:
+Individual scores carry meaningful false positive rates. A new developer with a sparse profile legitimately scores 0.75+. The tool accounts for this by requiring campaign-level evidence before filing issues -- a single suspicious account is not enough. A coordinated cluster of 40+ accounts, all created the same week, all scoring 0.75+, all engaging within 90 minutes, is a different matter. That is where confidence becomes actionable.
 
-1. **False positive rate.** At the individual account level, the false positive rate is non-trivial. A new developer with a sparse profile legitimately scores 0.75+. Filing issues on repos based on individual scores would generate significant noise.
-2. **Campaign is the high-confidence signal.** A coordinated campaign of 40+ accounts is near-zero false positive. But even then, the appropriate action is for repo maintainers to investigate and report to GitHub — not for a third-party tool to file issues on their behalf.
-3. **Scale and ToS.** Automated issue creation at the scale this tool operates (hundreds of repos daily) could violate GitHub's policies on automated interaction and would constitute spam from the targeted repo's perspective.
-
-The output of this tool is the intelligence feed. What you do with it is your decision.
+The data is always probabilistic. The issue bodies say so explicitly. The goal is to give maintainers the signal and the raw evidence to make their own judgement.
 
 ---
 
@@ -129,34 +140,34 @@ Each account receives a composite suspicion score (0.0 = clean, 1.0 = likely fak
 
 | Signal | Weight | Measurement |
 |--------|--------|-------------|
-| Account age | 35% | `< 2 days` → 1.00 · `< 7 days` → 0.90 · `< 30 days` → 0.55 · `< 90 days` → 0.20 · older → 0.00 |
+| Account age | 35% | `< 2 days` → 1.00 &middot; `< 7 days` → 0.90 &middot; `< 30 days` → 0.55 &middot; `< 90 days` → 0.20 &middot; older → 0.00 |
 | Profile completeness | 30% | Points for: no bio (+0.25), no location (+0.15), no company (+0.10), zero followers (+0.30), zero following (+0.10), bot-pattern username (+0.20) |
-| Repository pattern | 25% | Zero repos → 0.90 · all repos are forks → 0.80 · >85% fork ratio → 0.55 |
+| Repository pattern | 25% | Zero repos → 0.90 &middot; all repos are forks → 0.80 &middot; >85% fork ratio → 0.55 |
 | Activity history | 10% | Accounts >14 days old with zero repos + zero social graph → 0.80 (ghost accounts). Zero repos only → 0.60. All-forks + no social graph → 0.50 |
 
 **Classification thresholds:**
 
 | Score | Classification |
 |-------|---------------|
-| ≥ 0.75 | `likely_fake` |
-| ≥ 0.45 | `suspicious` |
+| &ge; 0.75 | `likely_fake` |
+| &ge; 0.45 | `suspicious` |
 | < 0.45 | `clean` (not stored) |
 
 ### Campaign detection
 
-A **campaign** is a group of ≥ 4 suspicious accounts that all engaged with the same repo within a 3-hour window. The algorithm uses union-find to build connected components — accounts that co-engaged within the window are merged, and any component above the minimum size is flagged as a coordinated campaign.
+A **campaign** is a group of &ge; 4 suspicious accounts that all engaged with the same repo within a 3-hour window. The algorithm uses union-find to build connected components -- accounts that co-engaged within the window are merged, and any component above the minimum size is flagged as a coordinated campaign.
 
-Campaign IDs are stable SHA-256 fingerprints of the sorted member set. The same campaign detected on consecutive days will have the same ID as long as its membership is unchanged.
+Campaign IDs are stable SHA-256 fingerprints of the sorted member set. The same campaign detected on consecutive days will have the same ID as long as membership is unchanged.
 
-**Why campaigns matter:** Individual scores have meaningful false positive rates. A new developer with a sparse profile can score 0.80 alone. Forty accounts all scoring 0.75+, created within the same week, all starring the same repo within 90 minutes, is an operation. The campaign signal is where confidence becomes actionable.
+**Why campaigns are the real signal:** Individual scores have meaningful false positive rates. A new developer with a sparse profile can score 0.80 alone. Forty accounts all scoring 0.75+, created within the same week, all starring the same repo within 90 minutes, is not a coincidence. The campaign signal is where the data becomes actionable -- it is the difference between a suspicious data point and evidence of a coordinated operation.
 
 ---
 
 ## Data format
 
-All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [`data/repos.jsonl`](data/repos.jsonl) — one JSON record per line, append-only. The GitHub Actions job summary (visible in the Actions UI after each run) provides a formatted per-scan report.
+All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [`data/repos.jsonl`](data/repos.jsonl) -- one JSON record per line, append-only. The GitHub Actions job summary (visible in the Actions UI after each run) provides a formatted per-scan report.
 
-**suspects.jsonl** — one record per flagged account per scan:
+**suspects.jsonl** -- one record per flagged account per scan:
 ```json
 {
   "login": "user98432",
@@ -173,7 +184,7 @@ All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [
 }
 ```
 
-**repos.jsonl** — one record per targeted repo per scan:
+**repos.jsonl** -- one record per targeted repo per scan:
 ```json
 {
   "full_name": "owner/suspicious-repo",
@@ -220,18 +231,18 @@ Your fork owns the data. Results are committed back to `data/suspects.jsonl` and
 ### 2. Add a GitHub PAT secret
 
 Create a **classic** Personal Access Token with scopes:
-- `public_repo` — read public repo events and stargazers
-- `read:user` — fetch user profiles via GraphQL
+- `public_repo` -- read public repo events and stargazers, create issues on public repos
+- `read:user` -- fetch user profiles via GraphQL
 
-**Settings → Secrets and variables → Actions → New repository secret** → name it `GH_TOKEN`.
+**Settings &rarr; Secrets and variables &rarr; Actions &rarr; New repository secret** &rarr; name it `GH_TOKEN`.
 
-> The default `GITHUB_TOKEN` has restricted rate limits and cannot call the user GraphQL endpoint at full capacity. Use a PAT.
+> The default `GITHUB_TOKEN` has restricted rate limits and cannot call the user GraphQL endpoint at full capacity. A PAT is required.
 
 ### 3. Enable Actions
 
-**Actions → Enable GitHub Actions** on your fork. The workflow runs at **07:00 UTC daily** (after GitHub resets the trending page). Manual trigger available via **Actions → Daily Phantom Stars Scan → Run workflow**.
+**Actions &rarr; Enable GitHub Actions** on your fork. The workflow runs at **07:00 UTC daily** (after GitHub resets the trending page). Manual trigger available via **Actions &rarr; Daily Phantom Stars Scan &rarr; Run workflow**.
 
-After each run, the formatted scan report is visible in **Actions → [run] → Summary**.
+After each run, the formatted scan report is visible in **Actions &rarr; [run] &rarr; Summary**.
 
 ### 4. Run locally
 
@@ -253,13 +264,14 @@ phantomstars/
 │   ├── workflows/daily-scan.yml       # Cron: 07:00 UTC, free on public repos
 │   └── ISSUE_TEMPLATE/false_positive.yml
 ├── src/phantomstars/
-│   ├── config.py                      # All constants — no argparse, no env parsing
+│   ├── config.py                      # All constants -- no argparse, no env parsing
 │   ├── models.py                      # Frozen dataclasses
 │   ├── github_client.py               # REST + GraphQL, tenacity retries, rate-limit aware
 │   ├── heuristics.py                  # Per-user composite scoring engine
 │   ├── campaigns.py                   # Timestamp clustering + union-find
 │   ├── storage.py                     # JSONL append + query helpers
 │   ├── reporter.py                    # README dashboard injector
+│   ├── notifier.py                    # GitHub Issues notifier (files on targeted repos)
 │   └── main.py                        # Orchestration entry point
 ├── tests/
 │   ├── conftest.py
@@ -278,10 +290,11 @@ phantomstars/
 
 - **Events API cap:** maximum 300 recent events per repo. Repos with thousands of stars in a day have partial coverage.
 - **Search index lag:** GitHub's search index is eventually consistent. Repos created seconds before the scan boundary may be missed.
-- **Heuristic drift:** Bot operators adapt. Score weights may require periodic tuning — adjust constants in `config.py`.
+- **Heuristic drift:** Bot operators adapt. Score weights may require periodic tuning -- adjust constants in `config.py`.
 - **Individual false positives:** A new developer with a sparse profile scores 0.75+ in isolation. Campaign membership is the high-confidence signal.
 - **Campaign ID drift:** If a bot farm's membership changes between scans (bots suspended, new bots added), the campaign ID changes. This reflects actual campaign evolution, not a bug.
 - **Rate limits:** 5,000 API requests/hour on an authenticated PAT. Well within limits for standard trending page sizes.
+- **Issues disabled:** Some targeted repos disable issues. Notifications for those repos are skipped silently.
 
 ---
 
@@ -313,18 +326,20 @@ All four must pass before a PR.
 
 ## Disclaimer
 
-This tool performs read-only analysis of public GitHub data using the official GitHub API. It does not interact with, report to, or modify any GitHub accounts or repositories. Findings are probabilistic indicators — not accusations. False positives exist.
+This tool performs read-only analysis of public GitHub data using the official GitHub API. Where issues are filed on targeted repositories, they contain probabilistic findings and are clearly labelled as automated. Findings are indicators -- not accusations. False positives exist and are expected.
 
-Built with AI as a coding partner.
+Built with AI as a coding partner, in response to an ecosystem problem created in part by AI.
 
 ---
 
 ## License
 
-Apache 2.0 — see [LICENSE](LICENSE)
+Apache 2.0 -- see [LICENSE](LICENSE)
+
+---
 
 ## Author
 
-Built by **tg12** · [GitHub](https://github.com/tg12)
+Built by **tg12** &middot; [GitHub](https://github.com/tg12)
 
-A **JS Labs** project.
+A **[JS Labs](https://labs.jamessawyer.co.uk/)** project &middot; [AI Slop Intelligence Dashboards](https://labs.jamessawyer.co.uk/ai-slop-intelligence-dashboards/)
