@@ -84,7 +84,7 @@ The output of this tool is the intelligence feed. What you do with it is your de
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-17 | 3560 | 798 | 2630 | 53 | 798 |
+| 2026-05-17 | 5859 | 818 | 4227 | 68 | 818 |
 <!-- STATS:END -->
 
 ---
