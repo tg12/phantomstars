@@ -109,7 +109,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-18 | 1977 | 493 | 1484 | 33 | 180 |
+| 2026-05-18 | 1988 | 493 | 1495 | 34 | 180 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
 
