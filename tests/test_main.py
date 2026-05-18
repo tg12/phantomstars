@@ -2,12 +2,15 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import pytest
 
 from phantomstars.config import LIFETIME_ANALYSIS_MODE, RECENT_ANALYSIS_MODE
 from phantomstars.main import (
     _build_repo_reports,
     _collect_repo_events,
+    _load_prior_likely_fake_history,
     _parse_analysis_mode,
     _parse_target_repo,
 )
@@ -78,6 +81,8 @@ def test_build_repo_reports_includes_clean_target_when_explicitly_scanned() -> N
     assert reports[0].classification == "clean"
     assert reports[0].analysis_mode == RECENT_ANALYSIS_MODE
     assert reports[0].fakeness_ratio == 0.0
+    assert reports[0].known_likely_fake == 0
+    assert reports[0].repeat_offenders == 0
 
 
 def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
@@ -94,6 +99,10 @@ def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
         scan_date=SCAN_DATE,
         analysis_mode=RECENT_ANALYSIS_MODE,
         scanned_repos={"owner/repo"},
+        historical_likely_fake_dates={
+            "bot-1": {"2026-05-16", "2026-05-17"},
+            "user-3": {"2026-05-17"},
+        },
     )
 
     assert len(reports) == 1
@@ -101,6 +110,32 @@ def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
     assert reports[0].suspicious == 1
     assert reports[0].campaign_count == 1
     assert reports[0].fakeness_ratio == 0.333
+    assert reports[0].known_likely_fake == 2
+    assert reports[0].known_likely_fake_ratio == 0.667
+    assert reports[0].repeat_offenders == 1
+
+
+def test_load_prior_likely_fake_history_filters_non_likely_fake(tmp_path: Path) -> None:
+    ledger = tmp_path / "suspects.jsonl"
+    ledger.write_text(
+        "\n".join(
+            [
+                '{"login":"bot-1","classification":"likely_fake","scan_date":"2026-05-16"}',
+                '{"login":"bot-1","classification":"likely_fake","scan_date":"2026-05-17"}',
+                '{"login":"user-2","classification":"suspicious","scan_date":"2026-05-17"}',
+                '{"login":"bot-3","classification":"likely_fake","scan_date":"2026-05-18"}',
+            ]
+        )
+        + "\n",
+        encoding="utf-8",
+    )
+
+    history = _load_prior_likely_fake_history(ledger)
+
+    assert history == {
+        "bot-1": {"2026-05-16", "2026-05-17"},
+        "bot-3": {"2026-05-18"},
+    }
 
 
 def test_parse_target_repo_reads_owner_repo(monkeypatch: pytest.MonkeyPatch) -> None:

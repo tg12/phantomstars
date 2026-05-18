@@ -84,6 +84,8 @@ targeting this repository.
 | Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
+| Previously seen likely fake | {report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%) |
+| Repeat offenders | {report.repeat_offenders} |
 | Campaigns detected | {report.campaign_count} |
 | Analysis mode | `{report.analysis_mode}` |
 | Repo classification | `{report.classification}` |
@@ -118,6 +120,8 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
 | Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
+| Previously seen likely fake | {report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%) |
+| Repeat offenders | {report.repeat_offenders} |
 | Campaigns | {report.campaign_count} |
 
 {_suspect_table(suspects)}

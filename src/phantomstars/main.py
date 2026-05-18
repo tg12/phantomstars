@@ -32,7 +32,7 @@ from phantomstars.models import (
 )
 from phantomstars.notifier import notify_all
 from phantomstars.reporter import update_readme
-from phantomstars.storage import append_reports, append_suspects, load_allowlist
+from phantomstars.storage import append_reports, append_suspects, load_all, load_allowlist
 
 _log = logging.getLogger(__name__)
 
@@ -51,6 +51,7 @@ def _build_repo_reports(
     scan_date: str,
     analysis_mode: AnalysisMode,
     scanned_repos: set[str] | None = None,
+    historical_likely_fake_dates: dict[str, set[str]] | None = None,
 ) -> list[RepoReport]:
     repo_all_users: dict[str, set[str]] = defaultdict(set)
     for ev in flat_events:
@@ -73,11 +74,18 @@ def _build_repo_reports(
 
     reports: list[RepoReport] = []
     targeted = scanned_repos if scanned_repos is not None else set(repo_likely) | set(repo_suspicious)
+    prior_history = historical_likely_fake_dates or {}
     for repo in targeted:
-        total_engagers = len(repo_all_users.get(repo, set()))
+        repo_users = repo_all_users.get(repo, set())
+        total_engagers = len(repo_users)
         likely = repo_likely[repo]
         suspicious = repo_suspicious[repo]
         fakeness_ratio = round(likely / total_engagers, 3) if total_engagers else 0.0
+        known_likely_fake = sum(1 for login in repo_users if login in prior_history)
+        repeat_offenders = sum(1 for login in repo_users if len(prior_history.get(login, set())) >= 2)
+        known_likely_fake_ratio = (
+            round(known_likely_fake / total_engagers, 3) if total_engagers else 0.0
+        )
         reports.append(
             RepoReport(
                 full_name=repo,
@@ -85,6 +93,9 @@ def _build_repo_reports(
                 likely_fake=likely,
                 suspicious=suspicious,
                 fakeness_ratio=fakeness_ratio,
+                known_likely_fake=known_likely_fake,
+                known_likely_fake_ratio=known_likely_fake_ratio,
+                repeat_offenders=repeat_offenders,
                 classification=_classify_repo(fakeness_ratio),
                 campaign_count=len(repo_campaigns[repo]),
                 analysis_mode=analysis_mode,
@@ -93,6 +104,19 @@ def _build_repo_reports(
         )
 
     return sorted(reports, key=lambda r: r.likely_fake, reverse=True)
+
+
+def _load_prior_likely_fake_history(path: Path) -> dict[str, set[str]]:
+    """Return login -> prior scan dates for accounts already labeled likely_fake."""
+    history: dict[str, set[str]] = defaultdict(set)
+    for record in load_all(path):
+        if record.get("classification") != "likely_fake":
+            continue
+        login = str(record.get("login", "")).strip()
+        scan_date = str(record.get("scan_date", "")).strip()
+        if login and scan_date:
+            history[login].add(scan_date)
+    return dict(history)
 
 
 def _parse_target_repo() -> str | None:
@@ -176,15 +200,17 @@ def _write_step_summary(
         lines += [
             "### Most-targeted repos",
             "",
-            "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |",
-            "|------|----------|-------------|------------|-----------|",
+            "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |",
+            "|------|----------|-------------|--------------|------------|-----------|",
         ]
         for r in repo_reports[:15]:
             pct = f"{r.fakeness_ratio * 100:.1f}%"
+            known_pct = f"{r.known_likely_fake_ratio * 100:.1f}%"
             flag = " :warning:" if r.classification == "likely_fake" else ""
             lines.append(
                 f"| [{r.full_name}](https://github.com/{r.full_name}){flag}"
-                f" | {r.total_scanned} | {r.likely_fake} | {pct} | {r.campaign_count} |"
+                f" | {r.total_scanned} | {r.likely_fake} | {known_pct}"
+                f" | {pct} | {r.campaign_count} |"
             )
         lines.append("")
 
@@ -224,6 +250,8 @@ def main() -> None:
     client = GitHubClient(token=gh_token)
     target_repo = _parse_target_repo()
     analysis_mode = _parse_analysis_mode() if target_repo is not None else RECENT_ANALYSIS_MODE
+    prior_likely_fake_history = _load_prior_likely_fake_history(suspects_path)
+    _log.info("Prior likely_fake accounts in ledger: %d", len(prior_likely_fake_history))
 
     # 1. Collect repos to scan from both sources, or force one target repo.
     repo_set: set[str] = set()
@@ -319,6 +347,7 @@ def main() -> None:
         scan_date,
         analysis_mode,
         scanned_repos=repo_set if target_repo is not None else None,
+        historical_likely_fake_dates=prior_likely_fake_history,
     )
     _log.info(
         "Repo reports: %d targeted repos (%d likely_fake classification)",

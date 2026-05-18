@@ -23,8 +23,8 @@ _DAILY_HEADER = (
 )
 
 _REPO_TABLE_HEADER = (
-    "| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |\n"
-    "|------|----------|-------------|------------|-----------|"
+    "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |\n"
+    "|------|----------|-------------|--------------|------------|-----------|"
 )
 
 Record = dict[str, object]
@@ -74,10 +74,14 @@ def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
         repo = r.get("full_name", "unknown")
         total = r.get("total_scanned", 0)
         likely = r.get("likely_fake", 0)
+        known_ratio = r.get("known_likely_fake_ratio", 0.0)
         ratio = r.get("fakeness_ratio", 0.0)
+        known_pct = (
+            f"{(known_ratio if isinstance(known_ratio, float) else float(str(known_ratio))) * 100:.1f}%"
+        )
         pct = f"{(ratio if isinstance(ratio, float) else float(str(ratio))) * 100:.1f}%"
         campaigns = r.get("campaign_count", 0)
-        rows.append(f"| {repo} | {total} | {likely} | {pct} | {campaigns} |")
+        rows.append(f"| {repo} | {total} | {likely} | {known_pct} | {pct} | {campaigns} |")
 
     return f"{_REPO_TABLE_HEADER}\n" + "\n".join(rows)
 

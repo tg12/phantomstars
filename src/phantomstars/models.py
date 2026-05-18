@@ -73,6 +73,9 @@ class RepoReport:
     likely_fake: int
     suspicious: int
     fakeness_ratio: float
+    known_likely_fake: int
+    known_likely_fake_ratio: float
+    repeat_offenders: int
     classification: Classification
     campaign_count: int
     analysis_mode: AnalysisMode

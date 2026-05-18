@@ -118,33 +118,33 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 ## Today's most-targeted repos
 
 <!-- REPO_STATS:START -->
-| Repo | Engagers | Likely Fake | Fakeness % | Campaigns |
-|------|----------|-------------|------------|-----------|
-| pro-tech-killers/coinbase-trading-bot | 188 | 150 | 79.8% | 1 |
-| Dangerous-hole/Pumpfun_AI_Trading_Bot | 186 | 148 | 79.6% | 1 |
-| dex-original/okx-agent-trade-kit | 178 | 135 | 75.8% | 1 |
-| pro-tech-killers/binance-trading-bot | 177 | 134 | 75.7% | 1 |
-| 6Hourt9/push-video-wallpaper-engine | 129 | 129 | 100.0% | 1 |
-| Edmoch/Octo-Strike-Reimagined | 129 | 129 | 100.0% | 1 |
-| FACTURACION2025/Wild-West-Steam-Deck-Optimized | 129 | 129 | 100.0% | 1 |
-| Raf-alt-png/Pragmata-FrameTweaks | 128 | 128 | 100.0% | 1 |
-| SHARATH13VS/youtube-viewer-optimus | 128 | 128 | 100.0% | 1 |
-| boubacarsidibe7644-del/google-drive-cortex | 128 | 128 | 100.0% | 1 |
-| Kkkkkkao/Yuzu-Ryujinx-Emulation-Framework | 128 | 128 | 100.0% | 1 |
-| NNM24EE533/Mii-Link-Tomodachi-Archives | 128 | 128 | 100.0% | 1 |
-| codeokens/windark-injection-framework | 127 | 127 | 100.0% | 1 |
-| Xian395/Hardware-Identity-Morph | 127 | 127 | 100.0% | 1 |
-| angelosdimakos1/faceit-match-tracker | 127 | 127 | 100.0% | 1 |
-| Alexandru4123/office-2026-pro-suite-tools | 127 | 127 | 100.0% | 1 |
-| abhirammandula-boop/nooklink-pc-emulator-toolkit | 127 | 127 | 100.0% | 1 |
-| Ravico50/youtube-prism-enhancer | 127 | 127 | 100.0% | 1 |
-| kietdzkk/kms-activation-toolkit | 126 | 126 | 100.0% | 1 |
-| ahmadalalibz2006-stack/calibr-zoom | 126 | 126 | 100.0% | 1 |
-| ilyassacha/Aura-Sight-V1-2026 | 126 | 126 | 100.0% | 1 |
-| sbhamsaraj-28/cleaner-toolkit-optimizer | 126 | 126 | 100.0% | 1 |
-| nottrox-sketch/Pokopia-Desktop-Edition | 126 | 126 | 100.0% | 1 |
-| mramangune-prog/leonardo-generative-workflow-engine | 126 | 126 | 100.0% | 1 |
-| dhruvil107/atm11-progression-guide-data | 126 | 126 | 100.0% | 1 |
+| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |
+|------|----------|-------------|--------------|------------|-----------|
+| pro-tech-killers/coinbase-trading-bot | 188 | 150 | 0.0% | 79.8% | 1 |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 186 | 148 | 0.0% | 79.6% | 1 |
+| dex-original/okx-agent-trade-kit | 178 | 135 | 0.0% | 75.8% | 1 |
+| pro-tech-killers/binance-trading-bot | 177 | 134 | 0.0% | 75.7% | 1 |
+| 6Hourt9/push-video-wallpaper-engine | 129 | 129 | 0.0% | 100.0% | 1 |
+| Edmoch/Octo-Strike-Reimagined | 129 | 129 | 0.0% | 100.0% | 1 |
+| FACTURACION2025/Wild-West-Steam-Deck-Optimized | 129 | 129 | 0.0% | 100.0% | 1 |
+| Raf-alt-png/Pragmata-FrameTweaks | 128 | 128 | 0.0% | 100.0% | 1 |
+| SHARATH13VS/youtube-viewer-optimus | 128 | 128 | 0.0% | 100.0% | 1 |
+| boubacarsidibe7644-del/google-drive-cortex | 128 | 128 | 0.0% | 100.0% | 1 |
+| Kkkkkkao/Yuzu-Ryujinx-Emulation-Framework | 128 | 128 | 0.0% | 100.0% | 1 |
+| NNM24EE533/Mii-Link-Tomodachi-Archives | 128 | 128 | 0.0% | 100.0% | 1 |
+| codeokens/windark-injection-framework | 127 | 127 | 0.0% | 100.0% | 1 |
+| Xian395/Hardware-Identity-Morph | 127 | 127 | 0.0% | 100.0% | 1 |
+| angelosdimakos1/faceit-match-tracker | 127 | 127 | 0.0% | 100.0% | 1 |
+| Alexandru4123/office-2026-pro-suite-tools | 127 | 127 | 0.0% | 100.0% | 1 |
+| abhirammandula-boop/nooklink-pc-emulator-toolkit | 127 | 127 | 0.0% | 100.0% | 1 |
+| Ravico50/youtube-prism-enhancer | 127 | 127 | 0.0% | 100.0% | 1 |
+| kietdzkk/kms-activation-toolkit | 126 | 126 | 0.0% | 100.0% | 1 |
+| ahmadalalibz2006-stack/calibr-zoom | 126 | 126 | 0.0% | 100.0% | 1 |
+| ilyassacha/Aura-Sight-V1-2026 | 126 | 126 | 0.0% | 100.0% | 1 |
+| sbhamsaraj-28/cleaner-toolkit-optimizer | 126 | 126 | 0.0% | 100.0% | 1 |
+| nottrox-sketch/Pokopia-Desktop-Edition | 126 | 126 | 0.0% | 100.0% | 1 |
+| mramangune-prog/leonardo-generative-workflow-engine | 126 | 126 | 0.0% | 100.0% | 1 |
+| dhruvil107/atm11-progression-guide-data | 126 | 126 | 0.0% | 100.0% | 1 |
 <!-- REPO_STATS:END -->
 
 ---
@@ -206,6 +206,9 @@ All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [
   "total_scanned": 87,
   "likely_fake": 62,
   "suspicious": 18,
+  "known_likely_fake": 27,
+  "known_likely_fake_ratio": 0.310,
+  "repeat_offenders": 11,
   "fakeness_ratio": 0.713,
   "classification": "likely_fake",
   "campaign_count": 3,
@@ -223,7 +226,10 @@ jq 'select(.scan_date == "2026-05-17" and .classification == "likely_fake") | .l
 jq 'select(.account_created_at >= "2026-05-14") | [.login, .account_created_at, .classification] | @tsv' -r data/suspects.jsonl
 
 # Which repos were targeted today, sorted by fakeness ratio
-jq 'select(.scan_date == "2026-05-17") | [.full_name, .fakeness_ratio, .likely_fake] | @tsv' -r data/repos.jsonl | sort -t$'\t' -k2 -rn
+jq 'select(.scan_date == "2026-05-17") | [.full_name, .fakeness_ratio, .likely_fake] | @tsv' -r data/repos.jsonl | sort -t$'\''\t'\'' -k2 -rn
+
+# Repos with the highest recycled-bot share from previously seen likely_fake accounts
+jq 'select(.scan_date == "2026-05-17") | [.full_name, .known_likely_fake_ratio, .repeat_offenders] | @tsv' -r data/repos.jsonl | sort -t$'\''\t'\'' -k2 -rn
 
 # All members of a specific campaign
 jq 'select(.campaign_id == "c-a3f9b2e1") | [.login, .account_created_at, .composite] | @tsv' -r data/suspects.jsonl
