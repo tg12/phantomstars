@@ -1,5 +1,9 @@
 name: Daily Phantom Stars Scan
 
+concurrency:
+  group: phantomstars-scan-${{ github.ref }}
+  cancel-in-progress: false
+
 on:
   schedule:
     # GitHub Actions cron is UTC-only. Trigger at both 06:00 and 07:00 UTC,
@@ -24,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
@@ -68,5 +74,7 @@ jobs:
           git config user.email "phantomstars[bot]@users.noreply.github.com"
           git add data/ README.md
           git diff --staged --quiet || (
-            git commit -m "scan: $(date -u +%Y-%m-%d)" && git push
+            git commit -m "scan: $(date -u +%Y-%m-%d)"
+            git pull --rebase origin main
+            git push origin main
           )
