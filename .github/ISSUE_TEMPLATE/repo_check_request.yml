@@ -10,8 +10,8 @@ body:
         Use this form to request a one-off repository review.
 
         `recent` means the normal phantomstars method: recent star/fork engagement only.
-        `lifetime` means a deeper offline investigation request. It is not part of the daily scan,
-        is higher-cost, and may not be accepted for every repo.
+        `lifetime` means a deeper one-off historical scan across lifetime stars and forks.
+        It is not part of the daily scan and has higher API/runtime cost.
   - type: input
     id: target_repo
     attributes:

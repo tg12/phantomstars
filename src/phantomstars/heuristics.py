@@ -19,7 +19,7 @@ from phantomstars.config import (
     WEIGHT_PROFILE,
     WEIGHT_REPO_PATTERN,
 )
-from phantomstars.models import Classification, SuspicionScore, UserProfile
+from phantomstars.models import AnalysisMode, Classification, SuspicionScore, UserProfile
 
 _BOT_USERNAME_PATTERNS: list[re.Pattern[str]] = [
     re.compile(r"^[a-z]+-[a-z]+-\d{4,}$"),
@@ -100,7 +100,11 @@ def _classify(composite: float) -> Classification:
     return "clean"
 
 
-def score_user(profile: UserProfile, scan_date: str) -> SuspicionScore:
+def score_user(
+    profile: UserProfile,
+    scan_date: str,
+    analysis_mode: AnalysisMode,
+) -> SuspicionScore:
     age_s = _score_account_age(profile.account_age_days)
     prof_s = _score_profile(profile)
     repo_s = _score_repo_pattern(profile)
@@ -119,6 +123,7 @@ def score_user(profile: UserProfile, scan_date: str) -> SuspicionScore:
         activity_score=round(act_s, 3),
         composite=round(composite, 3),
         classification=_classify(composite),
+        analysis_mode=analysis_mode,
         campaign_id=None,
         scan_date=scan_date,
         account_created_at=profile.created_at.date().isoformat(),

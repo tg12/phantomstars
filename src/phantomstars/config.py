@@ -9,12 +9,17 @@ GITHUB_API_BASE: str = "https://api.github.com"
 GITHUB_GRAPHQL_URL: str = "https://api.github.com/graphql"
 GITHUB_TRENDING_URL: str = "https://github.com/trending"
 
+RECENT_ANALYSIS_MODE: str = "recent"
+LIFETIME_ANALYSIS_MODE: str = "lifetime"
+
 # Scan scope
 LOOKBACK_HOURS: int = 24  # events window — how far back to pull stars/forks
 REPO_DISCOVERY_DAYS: int = 7  # repo search window — catch multi-day campaigns
 MIN_STARS_NEW_REPO: int = 50  # star floor for new-repo discovery (raised: reduces noise)
 MAX_NEW_REPOS: int = 200  # circuit breaker for search results
 MAX_EVENTS_PER_REPO: int = 300  # Events API hard cap
+MAX_LIFETIME_STARGAZERS: int = 100000
+MAX_LIFETIME_FORKS: int = 20000
 
 # Scoring weights (must sum to 1.0)
 WEIGHT_ACCOUNT_AGE: float = 0.35
@@ -40,6 +45,7 @@ CAMPAIGN_WINDOW_HOURS: int = 3
 
 # GitHub API
 GRAPHQL_BATCH_SIZE: int = 30
+LIFETIME_GRAPHQL_BATCH_SIZE: int = 50
 RATE_LIMIT_PAUSE_THRESHOLD: int = 250  # remaining requests before pausing
 
 # Storage

@@ -10,7 +10,12 @@ from collections import Counter
 
 import requests
 
-from phantomstars.config import MAX_ISSUES_PER_SCAN, MIN_FAKENESS_FOR_ISSUE
+from phantomstars.config import (
+    LIFETIME_ANALYSIS_MODE,
+    LOOKBACK_HOURS,
+    MAX_ISSUES_PER_SCAN,
+    MIN_FAKENESS_FOR_ISSUE,
+)
 from phantomstars.github_client import GitHubClient
 from phantomstars.models import RepoReport, SuspicionScore
 
@@ -19,6 +24,12 @@ _log = logging.getLogger(__name__)
 _SUSPECT_TABLE_LIMIT = 30
 _ISSUE_TITLE = "[phantomstars] Fake engagement detected on this repository"
 _PHANTOMSTARS_REPO = "tg12/phantomstars"
+
+
+def _scan_window_label(report: RepoReport) -> str:
+    if report.analysis_mode == LIFETIME_ANALYSIS_MODE:
+        return "lifetime star/fork history"
+    return f"{LOOKBACK_HOURS} h window"
 
 
 def _suspect_table(suspects: list[SuspicionScore]) -> str:
@@ -57,6 +68,7 @@ def _campaign_table(suspects: list[SuspicionScore]) -> str:
 
 def _issue_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     pct = f"{report.fakeness_ratio * 100:.1f}%"
+    scan_window = _scan_window_label(report)
     return f"""\
 ## Fake Engagement Alert for `{report.full_name}`
 
@@ -69,10 +81,11 @@ targeting this repository.
 
 | Metric | Value |
 |--------|-------|
-| Engagers scanned (24 h window) | {report.total_scanned} |
+| Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
 | Campaigns detected | {report.campaign_count} |
+| Analysis mode | `{report.analysis_mode}` |
 | Repo classification | `{report.classification}` |
 
 ### Campaigns
@@ -96,12 +109,13 @@ targeting this repository.
 
 def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     pct = f"{report.fakeness_ratio * 100:.1f}%"
+    scan_window = _scan_window_label(report)
     return f"""\
 ### Scan update: {report.scan_date}
 
 | Metric | Value |
 |--------|-------|
-| Engagers scanned (24 h) | {report.total_scanned} |
+| Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
 | Campaigns | {report.campaign_count} |

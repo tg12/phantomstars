@@ -5,6 +5,7 @@ from __future__ import annotations
 from datetime import UTC, datetime, timedelta
 
 from phantomstars.campaigns import detect_campaigns
+from phantomstars.config import RECENT_ANALYSIS_MODE
 from phantomstars.models import EngagementEvent, SuspicionScore
 
 SCAN_DATE = "2026-05-17"
@@ -20,6 +21,7 @@ def _score(login: str, composite: float = 0.80) -> SuspicionScore:
         activity_score=0.7,
         composite=composite,
         classification="likely_fake",
+        analysis_mode=RECENT_ANALYSIS_MODE,
         campaign_id=None,
         scan_date=SCAN_DATE,
         account_created_at="2026-05-10",

@@ -35,7 +35,7 @@ permissions:
 jobs:
   scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 180
 
     steps:
       - name: Checkout
@@ -85,8 +85,8 @@ jobs:
           esac
           if [ "${{ inputs.request_depth }}" = "lifetime-request" ]; then
             echo "Lifetime request recorded for ${{ inputs.target_repo }}."
-            echo "This workflow executes the recent targeted scan only."
-            echo "A full lifetime audit remains a separate operator-run batch job."
+            echo "Executing lifetime targeted scan for ${{ inputs.target_repo }}."
+            echo "This path is for one-off requests only and is not used by the daily scheduled scan."
           fi
 
       - name: Run scan
@@ -94,6 +94,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
           PHANTOMSTARS_TARGET_REPO: ${{ inputs.target_repo }}
+          PHANTOMSTARS_REQUEST_DEPTH: ${{ inputs.request_depth }}
         run: python -m phantomstars.main
 
       - name: Commit results

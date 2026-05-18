@@ -73,14 +73,14 @@ If issues are disabled on a targeted repo, the notification is skipped silently 
 Yes.
 
 - For a normal one-off check, submit a repo in `owner/repo` form and run a targeted scan.
-- For a lifetime audit request, treat it as a separate operator-reviewed batch job, not part of the daily scan.
+- For a lifetime audit request, use the one-off lifetime mode. It is separate from the daily scan.
 
 Why the split:
 
 - The normal scan model is designed for recent public engagement and low operator cost.
 - A lifetime audit can involve tens of thousands of stars and thousands of forks on larger repos.
-- That is feasible for one-off offline investigation, but it is too expensive and too slow for the default daily path.
-- Lifetime requests therefore need guardrails and manual review before execution.
+- That is feasible for one-off investigation, but it is too expensive and too slow for the default daily path.
+- Lifetime requests therefore run only in explicit one-off mode with guardrails.
 
 ### Can I report a false positive?
 
@@ -109,7 +109,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-18 | 1988 | 493 | 1495 | 34 | 180 |
+| 2026-05-18 | 7568 | 531 | 7035 | 107 | 218 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
 
@@ -297,8 +297,14 @@ Users can request a one-off repo check in two ways:
 Current behavior:
 
 - `recent`: runs the targeted recent-engagement scan immediately.
-- `lifetime-request`: records operator intent in the workflow input, but still runs only the recent targeted scan automatically.
-- A true lifetime audit remains a separate offline batch investigation because of API cost, runtime, and noise.
+- `lifetime-request`: runs a targeted lifetime scan across historical stars and forks for that repo only.
+- The daily scheduled scan remains unchanged and continues to use the recent-engagement method.
+
+Guardrails for lifetime mode:
+
+- only available for explicit one-off targeted requests
+- capped by configured repository-size limits before the scan starts
+- slower and more API-intensive than the daily scan
 
 ---
 

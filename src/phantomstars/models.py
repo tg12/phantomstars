@@ -9,6 +9,7 @@ from dataclasses import dataclass
 from datetime import UTC, datetime
 from typing import Literal
 
+AnalysisMode = Literal["recent", "lifetime"]
 Classification = Literal["likely_fake", "suspicious", "clean"]
 EventKind = Literal["star", "fork"]
 
@@ -58,6 +59,7 @@ class SuspicionScore:
     activity_score: float
     composite: float
     classification: Classification
+    analysis_mode: AnalysisMode
     campaign_id: str | None
     scan_date: str
     account_created_at: str  # ISO date YYYY-MM-DD sourced from GitHub createdAt field
@@ -73,4 +75,5 @@ class RepoReport:
     fakeness_ratio: float
     classification: Classification
     campaign_count: int
+    analysis_mode: AnalysisMode
     scan_date: str

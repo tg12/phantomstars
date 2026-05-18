@@ -26,14 +26,17 @@ from phantomstars.config import (
     GITHUB_GRAPHQL_URL,
     GITHUB_TRENDING_URL,
     GRAPHQL_BATCH_SIZE,
+    LIFETIME_GRAPHQL_BATCH_SIZE,
     LOOKBACK_HOURS,
     MAX_EVENTS_PER_REPO,
+    MAX_LIFETIME_FORKS,
+    MAX_LIFETIME_STARGAZERS,
     MAX_NEW_REPOS,
     MIN_STARS_NEW_REPO,
     RATE_LIMIT_PAUSE_THRESHOLD,
     REPO_DISCOVERY_DAYS,
 )
-from phantomstars.exceptions import RateLimitError, TrendingParseError
+from phantomstars.exceptions import LifetimeScanLimitError, RateLimitError, TrendingParseError
 from phantomstars.models import EngagementEvent, EventKind, UserProfile
 
 _log = logging.getLogger(__name__)
@@ -50,6 +53,44 @@ fragment F on User {
   company
   allRepos: repositories(first: 1) { totalCount }
   forkRepos: repositories(isFork: true, first: 1) { totalCount }
+}
+"""
+
+_LIFETIME_STARGAZER_QUERY = """
+query($owner: String!, $name: String!, $cursor: String) {
+  repository(owner: $owner, name: $name) {
+    stargazers(first: 100, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        starredAt
+        node {
+          login
+        }
+      }
+    }
+  }
+}
+"""
+
+_LIFETIME_FORK_QUERY = """
+query($owner: String!, $name: String!, $cursor: String) {
+  repository(owner: $owner, name: $name) {
+    forks(first: 100, after: $cursor) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      nodes {
+        createdAt
+        owner {
+          login
+        }
+      }
+    }
+  }
 }
 """
 
@@ -202,16 +243,36 @@ class GitHubClient:
 
         return events
 
+    def get_lifetime_engagement(self, repo_full_name: str) -> list[EngagementEvent]:
+        """Return lifetime star and fork engagement for a targeted repo."""
+        repo = self._rest_get(f"{GITHUB_API_BASE}/repos/{repo_full_name}")
+        stargazers_count = int(repo.get("stargazers_count", 0))
+        forks_count = int(repo.get("forks_count", 0))
+        if stargazers_count > MAX_LIFETIME_STARGAZERS or forks_count > MAX_LIFETIME_FORKS:
+            raise LifetimeScanLimitError(
+                f"Lifetime audit for {repo_full_name} exceeds limits: "
+                f"{stargazers_count} stargazers, {forks_count} forks"
+            )
+
+        events: list[EngagementEvent] = []
+        events.extend(self._get_lifetime_stargazer_events(repo_full_name))
+        events.extend(self._get_lifetime_fork_events(repo_full_name))
+        return events
+
     # ------------------------------------------------------------------
     # Bulk user profile fetch via GraphQL
     # ------------------------------------------------------------------
 
-    def batch_fetch_profiles(self, logins: list[str]) -> dict[str, UserProfile]:
+    def batch_fetch_profiles(
+        self,
+        logins: list[str],
+        batch_size: int = GRAPHQL_BATCH_SIZE,
+    ) -> dict[str, UserProfile]:
         result: dict[str, UserProfile] = {}
         unique = list(dict.fromkeys(logins))  # deduplicate, preserve order
 
-        for i in range(0, len(unique), GRAPHQL_BATCH_SIZE):
-            batch = unique[i : i + GRAPHQL_BATCH_SIZE]
+        for i in range(0, len(unique), batch_size):
+            batch = unique[i : i + batch_size]
             data = self._graphql_user_batch(batch)
             for j, login in enumerate(batch):
                 node = data.get(f"u{j}")
@@ -222,8 +283,13 @@ class GitHubClient:
                     result[login] = _parse_user_node(node)
                 except (KeyError, ValueError) as exc:
                     _log.warning("Parse error for %s: %s", login, exc)
+            if (i + len(batch)) % 1000 == 0:
+                _log.info("Profile fetch progress: %d/%d", i + len(batch), len(unique))
 
         return result
+
+    def batch_fetch_profiles_for_lifetime(self, logins: list[str]) -> dict[str, UserProfile]:
+        return self.batch_fetch_profiles(logins, batch_size=LIFETIME_GRAPHQL_BATCH_SIZE)
 
     # ------------------------------------------------------------------
     # Internals
@@ -238,13 +304,58 @@ class GitHubClient:
         result: dict[str, Any] = resp.get("data") or {}
         return result
 
+    def _graphql_repository_connection(
+        self,
+        query: str,
+        repo_full_name: str,
+        connection_name: str,
+    ) -> list[dict[str, Any]]:
+        owner, name = repo_full_name.split("/", 1)
+        cursor: str | None = None
+        items: list[dict[str, Any]] = []
+        page = 1
+
+        while True:
+            resp = self._graphql_post(
+                {
+                    "query": query,
+                    "variables": {"owner": owner, "name": name, "cursor": cursor},
+                }
+            )
+            repository = (resp.get("data") or {}).get("repository") or {}
+            connection = repository.get(connection_name) or {}
+            page_info = connection.get("pageInfo") or {}
+            if connection_name == "stargazers":
+                batch = connection.get("edges") or []
+            else:
+                batch = connection.get("nodes") or []
+            if not isinstance(batch, list) or not batch:
+                break
+            items.extend(item for item in batch if isinstance(item, dict))
+            if page % 50 == 0:
+                _log.info(
+                    "Lifetime %s fetch progress for %s: %d records",
+                    connection_name,
+                    repo_full_name,
+                    len(items),
+                )
+            has_next = bool(page_info.get("hasNextPage"))
+            cursor = page_info.get("endCursor")
+            if not has_next or not isinstance(cursor, str) or not cursor:
+                break
+            page += 1
+
+        return items
+
     @retry(
-        retry=retry_if_exception_type((requests.ConnectionError, requests.HTTPError)),
+        retry=retry_if_exception_type(
+            (requests.ConnectionError, requests.HTTPError, requests.ReadTimeout)
+        ),
         wait=wait_exponential(multiplier=2, min=5, max=60),
         stop=stop_after_attempt(4),
     )
     def _graphql_post(self, payload: dict[str, Any]) -> dict[str, Any]:
-        resp = self._session.post(GITHUB_GRAPHQL_URL, json=payload, timeout=30)
+        resp = self._session.post(GITHUB_GRAPHQL_URL, json=payload, timeout=60)
         self._check_rate_limit(resp)
         if resp.status_code == 403:
             _log.warning("GraphQL 403 — backing off before retry")
@@ -260,8 +371,13 @@ class GitHubClient:
         wait=wait_exponential(multiplier=1, min=2, max=30),
         stop=stop_after_attempt(4),
     )
-    def _rest_get(self, url: str, params: dict[str, Any] | None = None) -> Any:
-        resp = self._session.get(url, params=params, timeout=20)
+    def _rest_get(
+        self,
+        url: str,
+        params: dict[str, Any] | None = None,
+        headers: dict[str, str] | None = None,
+    ) -> Any:
+        resp = self._session.get(url, params=params, headers=headers, timeout=20)
         self._check_rate_limit(resp)
         resp.raise_for_status()
         return resp.json()
@@ -336,6 +452,52 @@ class GitHubClient:
             time.sleep(wait_s)
         if resp.status_code == 403 and remaining == 0:
             raise RateLimitError(reset_at)
+
+    def _get_lifetime_stargazer_events(self, repo_full_name: str) -> list[EngagementEvent]:
+        events: list[EngagementEvent] = []
+        items = self._graphql_repository_connection(
+            _LIFETIME_STARGAZER_QUERY,
+            repo_full_name,
+            "stargazers",
+        )
+        for item in items:
+            starred_at = item.get("starredAt")
+            user = item.get("node", {})
+            login = str(user.get("login", "")).strip()
+            if not login or not starred_at:
+                continue
+            events.append(
+                EngagementEvent(
+                    user_login=login,
+                    repo_full_name=repo_full_name,
+                    kind="star",
+                    occurred_at=_parse_iso(str(starred_at)),
+                )
+            )
+        return events
+
+    def _get_lifetime_fork_events(self, repo_full_name: str) -> list[EngagementEvent]:
+        events: list[EngagementEvent] = []
+        items = self._graphql_repository_connection(
+            _LIFETIME_FORK_QUERY,
+            repo_full_name,
+            "forks",
+        )
+        for item in items:
+            owner = item.get("owner", {})
+            login = str(owner.get("login", "")).strip()
+            created_at = item.get("createdAt")
+            if not login or not created_at:
+                continue
+            events.append(
+                EngagementEvent(
+                    user_login=login,
+                    repo_full_name=repo_full_name,
+                    kind="fork",
+                    occurred_at=_parse_iso(str(created_at)),
+                )
+            )
+        return events
 
 
 def _parse_trending_html(html: str) -> list[str]:

@@ -20,3 +20,7 @@ class RateLimitError(PhantomStarsError):
 
 class TrendingParseError(PhantomStarsError):
     """Failed to extract repos from the trending page HTML."""
+
+
+class LifetimeScanLimitError(PhantomStarsError):
+    """Requested lifetime audit exceeds configured safety limits."""

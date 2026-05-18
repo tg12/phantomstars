@@ -13,12 +13,23 @@ from datetime import UTC, datetime
 from pathlib import Path
 
 from phantomstars.campaigns import detect_campaigns
-from phantomstars.config import REPOS_FILE, SUSPECTS_FILE
-from phantomstars.exceptions import TrendingParseError
+from phantomstars.config import (
+    LIFETIME_ANALYSIS_MODE,
+    RECENT_ANALYSIS_MODE,
+    REPOS_FILE,
+    SUSPECTS_FILE,
+)
+from phantomstars.exceptions import LifetimeScanLimitError, TrendingParseError
 from phantomstars.github_client import GitHubClient
 from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
-from phantomstars.models import Classification, EngagementEvent, RepoReport, SuspicionScore
+from phantomstars.models import (
+    AnalysisMode,
+    Classification,
+    EngagementEvent,
+    RepoReport,
+    SuspicionScore,
+)
 from phantomstars.notifier import notify_all
 from phantomstars.reporter import update_readme
 from phantomstars.storage import append_reports, append_suspects, load_allowlist
@@ -38,6 +49,7 @@ def _build_repo_reports(
     final_scores: list[SuspicionScore],
     flat_events: list[EngagementEvent],
     scan_date: str,
+    analysis_mode: AnalysisMode,
     scanned_repos: set[str] | None = None,
 ) -> list[RepoReport]:
     repo_all_users: dict[str, set[str]] = defaultdict(set)
@@ -75,6 +87,7 @@ def _build_repo_reports(
                 fakeness_ratio=fakeness_ratio,
                 classification=_classify_repo(fakeness_ratio),
                 campaign_count=len(repo_campaigns[repo]),
+                analysis_mode=analysis_mode,
                 scan_date=scan_date,
             )
         )
@@ -94,11 +107,26 @@ def _parse_target_repo() -> str | None:
     return raw
 
 
+def _parse_analysis_mode() -> AnalysisMode:
+    raw = os.environ.get("PHANTOMSTARS_REQUEST_DEPTH", "").strip().lower()
+    if raw in {"", RECENT_ANALYSIS_MODE, "recent-request"}:
+        return RECENT_ANALYSIS_MODE
+    if raw in {LIFETIME_ANALYSIS_MODE, "lifetime-request"}:
+        return LIFETIME_ANALYSIS_MODE
+    raise ValueError(
+        "PHANTOMSTARS_REQUEST_DEPTH must be 'recent' or 'lifetime' for targeted runs"
+    )
+
+
 def _collect_repo_events(
     client: GitHubClient,
     repo_full_name: str,
     targeted_mode: bool,
+    analysis_mode: AnalysisMode,
 ) -> list[EngagementEvent]:
+    if analysis_mode == LIFETIME_ANALYSIS_MODE:
+        return client.get_lifetime_engagement(repo_full_name)
+
     events = client.get_recent_engagement(repo_full_name)
     if not events and targeted_mode:
         for attempt in range(2, 4):
@@ -118,6 +146,7 @@ def _write_step_summary(
     repo_reports: list[RepoReport],
     campaign_map: dict[str, str],
     scan_date: str,
+    analysis_mode: AnalysisMode,
 ) -> None:
     """Write a formatted markdown report to $GITHUB_STEP_SUMMARY if running in Actions."""
     summary_path = os.environ.get("GITHUB_STEP_SUMMARY")
@@ -134,6 +163,7 @@ def _write_step_summary(
         "",
         "| Metric | Value |",
         "|--------|-------|",
+        f"| Analysis mode | `{analysis_mode}` |",
         f"| Likely fake accounts | **{likely_count}** |",
         f"| Suspicious accounts | {suspicious_count} |",
         f"| Campaigns detected | **{campaign_count}** |",
@@ -193,12 +223,13 @@ def main() -> None:
     repos_path = Path(REPOS_FILE)
     client = GitHubClient(token=gh_token)
     target_repo = _parse_target_repo()
+    analysis_mode = _parse_analysis_mode() if target_repo is not None else RECENT_ANALYSIS_MODE
 
     # 1. Collect repos to scan from both sources, or force one target repo.
     repo_set: set[str] = set()
     if target_repo is not None:
         repo_set.add(target_repo)
-        _log.info("Targeted repo mode enabled: %s", target_repo)
+        _log.info("Targeted repo mode enabled: %s (%s)", target_repo, analysis_mode)
     else:
         try:
             trending = client.get_trending_repos()
@@ -216,18 +247,31 @@ def main() -> None:
     flat_events: list[EngagementEvent] = []
     for repo in sorted(repo_set):
         _log.info("Scanning events: %s", repo)
-        flat_events.extend(_collect_repo_events(client, repo, targeted_mode=target_repo is not None))
+        try:
+            flat_events.extend(
+                _collect_repo_events(
+                    client,
+                    repo,
+                    targeted_mode=target_repo is not None,
+                    analysis_mode=analysis_mode,
+                )
+            )
+        except LifetimeScanLimitError:
+            raise
     _log.info("Total engagement events: %d", len(flat_events))
 
     # 3. Fetch user profiles for unique logins
     logins = list({ev.user_login for ev in flat_events})
     _log.info("Unique users to profile: %d", len(logins))
-    profiles = client.batch_fetch_profiles(logins)
+    if analysis_mode == LIFETIME_ANALYSIS_MODE:
+        profiles = client.batch_fetch_profiles_for_lifetime(logins)
+    else:
+        profiles = client.batch_fetch_profiles(logins)
     _log.info("Profiles fetched: %d", len(profiles))
 
     # 4. Score every user
     scores: dict[str, SuspicionScore] = {
-        login: score_user(profile, scan_date) for login, profile in profiles.items()
+        login: score_user(profile, scan_date, analysis_mode) for login, profile in profiles.items()
     }
 
     # 5. Detect campaigns
@@ -273,6 +317,7 @@ def main() -> None:
         final_scores,
         flat_events,
         scan_date,
+        analysis_mode,
         scanned_repos=repo_set if target_repo is not None else None,
     )
     _log.info(
@@ -291,7 +336,7 @@ def main() -> None:
     notify_all(client, repo_reports, suspects, ps_repo)
 
     # 12. Write GitHub Actions step summary
-    _write_step_summary(suspects, repo_reports, campaign_map, scan_date)
+    _write_step_summary(suspects, repo_reports, campaign_map, scan_date, analysis_mode)
 
     _log.info("Scan complete for %s", scan_date)
 
