@@ -38,6 +38,7 @@ def _build_repo_reports(
     final_scores: list[SuspicionScore],
     flat_events: list[EngagementEvent],
     scan_date: str,
+    scanned_repos: set[str] | None = None,
 ) -> list[RepoReport]:
     repo_all_users: dict[str, set[str]] = defaultdict(set)
     for ev in flat_events:
@@ -59,7 +60,7 @@ def _build_repo_reports(
                 repo_campaigns[repo].add(score.campaign_id)
 
     reports: list[RepoReport] = []
-    targeted = set(repo_likely) | set(repo_suspicious)
+    targeted = scanned_repos if scanned_repos is not None else set(repo_likely) | set(repo_suspicious)
     for repo in targeted:
         total_engagers = len(repo_all_users.get(repo, set()))
         likely = repo_likely[repo]
@@ -79,6 +80,37 @@ def _build_repo_reports(
         )
 
     return sorted(reports, key=lambda r: r.likely_fake, reverse=True)
+
+
+def _parse_target_repo() -> str | None:
+    raw = os.environ.get("PHANTOMSTARS_TARGET_REPO", "").strip()
+    if not raw:
+        return None
+    parts = raw.split("/")
+    if len(parts) != 2 or not all(parts):
+        raise ValueError(
+            "PHANTOMSTARS_TARGET_REPO must be set as 'owner/repo' when targeting one repo"
+        )
+    return raw
+
+
+def _collect_repo_events(
+    client: GitHubClient,
+    repo_full_name: str,
+    targeted_mode: bool,
+) -> list[EngagementEvent]:
+    events = client.get_recent_engagement(repo_full_name)
+    if not events and targeted_mode:
+        for attempt in range(2, 4):
+            _log.warning(
+                "No engagement events returned for %s; retrying targeted fetch (%d/3)",
+                repo_full_name,
+                attempt,
+            )
+            events = client.get_recent_engagement(repo_full_name)
+            if events:
+                break
+    return events
 
 
 def _write_step_summary(
@@ -160,27 +192,31 @@ def main() -> None:
     suspects_path = Path(SUSPECTS_FILE)
     repos_path = Path(REPOS_FILE)
     client = GitHubClient(token=gh_token)
+    target_repo = _parse_target_repo()
 
-    # 1. Collect repos to scan from both sources
+    # 1. Collect repos to scan from both sources, or force one target repo.
     repo_set: set[str] = set()
+    if target_repo is not None:
+        repo_set.add(target_repo)
+        _log.info("Targeted repo mode enabled: %s", target_repo)
+    else:
+        try:
+            trending = client.get_trending_repos()
+            repo_set.update(trending)
+            _log.info("Trending: %d repos", len(trending))
+        except TrendingParseError as exc:
+            _log.error("Trending scrape failed: %s -- falling back to search only", exc)
 
-    try:
-        trending = client.get_trending_repos()
-        repo_set.update(trending)
-        _log.info("Trending: %d repos", len(trending))
-    except TrendingParseError as exc:
-        _log.error("Trending scrape failed: %s -- falling back to search only", exc)
-
-    new_repos = client.get_new_repos()
-    repo_set.update(new_repos)
-    _log.info("New repos (recent): %d repos", len(new_repos))
-    _log.info("Total repos to scan: %d", len(repo_set))
+        new_repos = client.get_new_repos()
+        repo_set.update(new_repos)
+        _log.info("New repos (recent): %d repos", len(new_repos))
+        _log.info("Total repos to scan: %d", len(repo_set))
 
     # 2. Collect engagement events across all repos
     flat_events: list[EngagementEvent] = []
     for repo in sorted(repo_set):
         _log.info("Scanning events: %s", repo)
-        flat_events.extend(client.get_recent_engagement(repo))
+        flat_events.extend(_collect_repo_events(client, repo, targeted_mode=target_repo is not None))
     _log.info("Total engagement events: %d", len(flat_events))
 
     # 3. Fetch user profiles for unique logins
@@ -233,7 +269,12 @@ def main() -> None:
     append_suspects(suspects, suspects_path)
 
     # 9. Produce per-repo intelligence
-    repo_reports = _build_repo_reports(final_scores, flat_events, scan_date)
+    repo_reports = _build_repo_reports(
+        final_scores,
+        flat_events,
+        scan_date,
+        scanned_repos=repo_set if target_repo is not None else None,
+    )
     _log.info(
         "Repo reports: %d targeted repos (%d likely_fake classification)",
         len(repo_reports),

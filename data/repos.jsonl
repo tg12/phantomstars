@@ -649,3 +649,4 @@
 {"full_name": "LocoreMind/locoagent", "total_scanned": 14, "likely_fake": 0, "suspicious": 2, "fakeness_ratio": 0.0, "classification": "clean", "campaign_count": 0, "scan_date": "2026-05-18"}
 {"full_name": "vercel-labs/zero", "total_scanned": 272, "likely_fake": 0, "suspicious": 15, "fakeness_ratio": 0.0, "classification": "clean", "campaign_count": 1, "scan_date": "2026-05-18"}
 {"full_name": "nkzw-tech/codiff", "total_scanned": 136, "likely_fake": 0, "suspicious": 4, "fakeness_ratio": 0.0, "classification": "clean", "campaign_count": 0, "scan_date": "2026-05-18"}
+{"full_name": "code-yeongyu/oh-my-openagent", "total_scanned": 43, "likely_fake": 0, "suspicious": 2, "fakeness_ratio": 0.0, "classification": "clean", "campaign_count": 0, "scan_date": "2026-05-18"}

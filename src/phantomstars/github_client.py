@@ -13,7 +13,13 @@ from typing import Any
 
 import requests
 from bs4 import BeautifulSoup
-from tenacity import retry, retry_if_exception_type, stop_after_attempt, wait_exponential
+from tenacity import (
+    retry,
+    retry_if_exception,
+    retry_if_exception_type,
+    stop_after_attempt,
+    wait_exponential,
+)
 
 from phantomstars.config import (
     GITHUB_API_BASE,
@@ -67,6 +73,14 @@ def _parse_user_node(node: dict[str, Any]) -> UserProfile:
         total_repo_count=node["allRepos"]["totalCount"],
         fork_repo_count=node["forkRepos"]["totalCount"],
     )
+
+
+def _should_retry_rest_error(exc: BaseException) -> bool:
+    if isinstance(exc, requests.ConnectionError):
+        return True
+    if isinstance(exc, requests.HTTPError) and exc.response is not None:
+        return 500 <= exc.response.status_code < 600
+    return False
 
 
 class GitHubClient:
@@ -242,7 +256,7 @@ class GitHubClient:
         return data
 
     @retry(
-        retry=retry_if_exception_type(requests.ConnectionError),
+        retry=retry_if_exception(_should_retry_rest_error),
         wait=wait_exponential(multiplier=1, min=2, max=30),
         stop=stop_after_attempt(4),
     )

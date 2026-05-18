@@ -60,7 +60,7 @@ def _issue_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     return f"""\
 ## Fake Engagement Alert for `{report.full_name}`
 
-[phantomstars]({_PHANTOMSTARS_REPO}) has detected a likely fake star/fork campaign \
+[phantomstars](https://github.com/{_PHANTOMSTARS_REPO}) has detected a likely fake star/fork campaign \
 targeting this repository.
 
 **Scan date:** {report.scan_date}
@@ -89,8 +89,8 @@ targeting this repository.
 > Individual accounts should be treated as suspicious signals, not confirmed fake actors.
 >
 > Automated scan by [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
-> [View full dataset](https://github.com/{_PHANTOMSTARS_REPO}/blob/main/data/repos.jsonl) \
-\xb7 [Report a false positive](https://github.com/{_PHANTOMSTARS_REPO}/issues/new?template=false_positive.yml)
+> [View full dataset](https://github.com/{_PHANTOMSTARS_REPO}/blob/main/data/repos.jsonl) |
+> [Report a false positive](https://github.com/{_PHANTOMSTARS_REPO}/issues/new?template=false_positive.yml)
 """
 
 
