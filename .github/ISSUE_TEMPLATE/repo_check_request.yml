@@ -1,0 +1,47 @@
+name: Repo Check Request
+description: Request a one-off phantomstars review for a specific repository
+title: "[repo-check] owner/repo"
+labels:
+  - repo-check
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this form to request a one-off repository review.
+
+        `recent` means the normal phantomstars method: recent star/fork engagement only.
+        `lifetime` means a deeper offline investigation request. It is not part of the daily scan,
+        is higher-cost, and may not be accepted for every repo.
+  - type: input
+    id: target_repo
+    attributes:
+      label: Target repository
+      description: Repository to review in owner/repo form
+      placeholder: owner/repo
+    validations:
+      required: true
+  - type: dropdown
+    id: requested_depth
+    attributes:
+      label: Requested depth
+      description: Choose the scope of the one-off review
+      options:
+        - recent
+        - lifetime
+    validations:
+      required: true
+  - type: textarea
+    id: reason
+    attributes:
+      label: Why this repo should be reviewed
+      description: Provide context, suspicious patterns, or links
+      placeholder: Explain why this repo merits a one-off review.
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: Additional notes
+      description: Optional links, screenshots, or operator context
+    validations:
+      required: false

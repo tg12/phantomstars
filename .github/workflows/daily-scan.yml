@@ -15,6 +15,18 @@ on:
         description: "Enable debug logging"
         type: boolean
         default: false
+      target_repo:
+        description: "Optional one-off target repo in owner/repo form"
+        type: string
+        required: false
+      request_depth:
+        description: "One-off request depth"
+        type: choice
+        required: false
+        default: recent
+        options:
+          - recent
+          - lifetime-request
 
 permissions:
   contents: write
@@ -61,10 +73,27 @@ jobs:
         if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         run: pip install -e .
 
+      - name: Validate one-off request inputs
+        if: github.event_name == 'workflow_dispatch' && inputs.target_repo != ''
+        run: |
+          case "${{ inputs.target_repo }}" in
+            */*) ;;
+            *)
+              echo "target_repo must be in owner/repo form"
+              exit 1
+              ;;
+          esac
+          if [ "${{ inputs.request_depth }}" = "lifetime-request" ]; then
+            echo "Lifetime request recorded for ${{ inputs.target_repo }}."
+            echo "This workflow executes the recent targeted scan only."
+            echo "A full lifetime audit remains a separate operator-run batch job."
+          fi
+
       - name: Run scan
         if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          PHANTOMSTARS_TARGET_REPO: ${{ inputs.target_repo }}
         run: python -m phantomstars.main
 
       - name: Commit results

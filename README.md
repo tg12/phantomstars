@@ -68,6 +68,20 @@ No servers. No databases. No infrastructure bill.
 
 If issues are disabled on a targeted repo, the notification is skipped silently and recorded in the scan log.
 
+### Can I request a check for one specific repository?
+
+Yes.
+
+- For a normal one-off check, submit a repo in `owner/repo` form and run a targeted scan.
+- For a lifetime audit request, treat it as a separate operator-reviewed batch job, not part of the daily scan.
+
+Why the split:
+
+- The normal scan model is designed for recent public engagement and low operator cost.
+- A lifetime audit can involve tens of thousands of stars and thousands of forks on larger repos.
+- That is feasible for one-off offline investigation, but it is too expensive and too slow for the default daily path.
+- Lifetime requests therefore need guardrails and manual review before execution.
+
 ### Can I report a false positive?
 
 Yes. If your account appears in `data/suspects.jsonl` and you believe the classification is incorrect, [open a false positive issue](../../issues/new?template=false_positive.yml) using the provided template. Reports are reviewed manually before any allowlist addition. The allowlist is stored in `data/allowlist.txt`; accounts listed there are excluded from all future scans and from the suspects ledger.
@@ -270,6 +284,21 @@ To scan one repository instead of the normal discovery set:
 ```bash
 PHANTOMSTARS_TARGET_REPO=owner/repo GH_TOKEN=ghp_your_token python -m phantomstars.main
 ```
+
+### One-off requests
+
+Users can request a one-off repo check in two ways:
+
+1. Open the `Repo Check Request` issue template and provide the target repo plus requested depth.
+2. Use **Actions -> Daily Phantom Stars Scan -> Run workflow** and optionally set:
+   - `target_repo`: `owner/repo`
+   - `request_depth`: `recent` or `lifetime-request`
+
+Current behavior:
+
+- `recent`: runs the targeted recent-engagement scan immediately.
+- `lifetime-request`: records operator intent in the workflow input, but still runs only the recent targeted scan automatically.
+- A true lifetime audit remains a separate offline batch investigation because of API cost, runtime, and noise.
 
 ---
 
