@@ -109,7 +109,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-18 | 7568 | 531 | 7035 | 107 | 218 |
+| 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
 
@@ -120,6 +120,8 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Fakeness % | Campaigns |
 |------|----------|-------------|------------|-----------|
+| pro-tech-killers/coinbase-trading-bot | 188 | 150 | 79.8% | 1 |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 186 | 148 | 79.6% | 1 |
 | dex-original/okx-agent-trade-kit | 178 | 135 | 75.8% | 1 |
 | pro-tech-killers/binance-trading-bot | 177 | 134 | 75.7% | 1 |
 | 6Hourt9/push-video-wallpaper-engine | 129 | 129 | 100.0% | 1 |
@@ -143,8 +145,6 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 | nottrox-sketch/Pokopia-Desktop-Edition | 126 | 126 | 100.0% | 1 |
 | mramangune-prog/leonardo-generative-workflow-engine | 126 | 126 | 100.0% | 1 |
 | dhruvil107/atm11-progression-guide-data | 126 | 126 | 100.0% | 1 |
-| keshavthevar/DeepSeek-V4-Agent-Toolkit | 127 | 126 | 99.2% | 1 |
-| yskt/anime-dl-nyaa-helper | 125 | 125 | 100.0% | 1 |
 <!-- REPO_STATS:END -->
 
 ---
