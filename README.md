@@ -240,7 +240,11 @@ Create a **classic** Personal Access Token with scopes:
 
 ### 3. Enable Actions
 
-**Actions &rarr; Enable GitHub Actions** on your fork. The workflow runs at **07:00 UTC daily** (after GitHub resets the trending page). Manual trigger available via **Actions &rarr; Daily Phantom Stars Scan &rarr; Run workflow**.
+**Actions &rarr; Enable GitHub Actions** on your fork. The workflow runs at **07:00 UK time daily** using the `Europe/London` clock:
+- **06:00 UTC** during British Summer Time
+- **07:00 UTC** during Greenwich Mean Time
+
+No extra scheduling environment variable is required. GitHub Actions cron is UTC-only, so the workflow triggers at both UTC hours and only proceeds when the local London time is 07:00. Manual trigger available via **Actions &rarr; Daily Phantom Stars Scan &rarr; Run workflow**.
 
 After each run, the formatted scan report is visible in **Actions &rarr; [run] &rarr; Summary**.
 
@@ -254,6 +258,12 @@ pip install -e .
 GH_TOKEN=ghp_your_token python -m phantomstars.main
 ```
 
+For an ad hoc local run after setup:
+
+```bash
+GH_TOKEN=ghp_your_token python -m phantomstars.main
+```
+
 ---
 
 ## Project structure
@@ -261,7 +271,7 @@ GH_TOKEN=ghp_your_token python -m phantomstars.main
 ```
 phantomstars/
 ├── .github/
-│   ├── workflows/daily-scan.yml       # Cron: 07:00 UTC, free on public repos
+│   ├── workflows/daily-scan.yml       # Runs daily at 07:00 Europe/London
 │   └── ISSUE_TEMPLATE/false_positive.yml
 ├── src/phantomstars/
 │   ├── config.py                      # All constants, no argparse, no env parsing

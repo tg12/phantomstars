@@ -2,7 +2,9 @@ name: Daily Phantom Stars Scan
 
 on:
   schedule:
-    - cron: "0 7 * * *" # 07:00 UTC daily — after GitHub resets trending
+    # GitHub Actions cron is UTC-only. Trigger at both 06:00 and 07:00 UTC,
+    # then gate execution so the scan runs once at 07:00 Europe/London year-round.
+    - cron: "0 6,7 * * *"
   workflow_dispatch:
     inputs:
       debug:
@@ -25,7 +27,23 @@ jobs:
         env:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
+      - name: Check London run window
+        id: schedule_gate
+        run: |
+          current_hour=$(TZ=Europe/London date +%H)
+          echo "current_hour=${current_hour}" >> "${GITHUB_OUTPUT}"
+          if [ "${current_hour}" != "07" ]; then
+            echo "Skipping scheduled run outside 07:00 Europe/London."
+            exit 0
+          fi
+          echo "Proceeding with 07:00 Europe/London run."
+
+      - name: Stop early outside London run window
+        if: github.event_name == 'schedule' && steps.schedule_gate.outputs.current_hour != '07'
+        run: exit 0
+
       - name: Set up Python 3.13
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -34,14 +52,17 @@ jobs:
           FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
       - name: Install dependencies
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         run: pip install -e .
 
       - name: Run scan
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
         run: python -m phantomstars.main
 
       - name: Commit results
+        if: github.event_name != 'schedule' || steps.schedule_gate.outputs.current_hour == '07'
         run: |
           git config user.name "phantomstars[bot]"
           git config user.email "phantomstars[bot]@users.noreply.github.com"
