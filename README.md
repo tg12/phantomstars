@@ -111,7 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-19 | 3903 | 610 | 2969 | 54 | 427 |
+| 2026-05-19 | 5463 | 630 | 4121 | 67 | 442 |
 | 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
@@ -125,10 +125,13 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
 | DuskMosquito/Lossless-Scaling-Desktop-2026 | 299 | 155 | 0.0% | 51.8% | 1 | complete | -- |
 | DuskMosquito/Lossless-Scaling-Desktop-2026 | 295 | 146 | 52.5% | 49.5% | 1 | complete | github_search_recent |
+| DuskMosquito/Lossless-Scaling-Desktop-2026 | 292 | 144 | 53.1% | 49.3% | 1 | complete | github_search_recent |
 | Dangerous-hole/Pumpfun_AI_Trading_Bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
 | pro-tech-killers/coinbase-trading-bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
 | pro-tech-killers/coinbase-trading-bot | 84 | 64 | 72.6% | 76.2% | 1 | complete | github_search_recent |
+| pro-tech-killers/coinbase-trading-bot | 84 | 64 | 77.4% | 76.2% | 1 | complete | github_search_recent |
 | Dangerous-hole/Pumpfun_AI_Trading_Bot | 83 | 63 | 72.3% | 75.9% | 1 | complete | github_search_recent |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 82 | 62 | 76.8% | 75.6% | 1 | complete | github_search_recent |
 | haiddrrs/Steam-Tools | 298 | 53 | 20.8% | 17.8% | 1 | complete | -- |
 | AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 52 | 21.4% | 17.4% | 1 | complete | -- |
 | dex-original/okx-agent-trade-kit | 59 | 51 | 54.2% | 86.4% | 1 | complete | -- |
@@ -137,17 +140,14 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 | xw7872081123/wallpaper-engine-steam | 298 | 51 | 21.5% | 17.1% | 1 | complete | github_search_recent |
 | xw7872081123/wallpaper-engine-steam | 298 | 50 | 19.5% | 16.8% | 1 | complete | -- |
 | thongthaibm/Lossless-Scaling-LSFG | 297 | 50 | 19.5% | 16.8% | 1 | complete | -- |
+| haiddrrs/Steam-Tools | 297 | 49 | 24.9% | 16.5% | 1 | complete | github_search_recent |
 | haiddrrs/Steam-Tools | 299 | 49 | 23.4% | 16.4% | 1 | complete | github_search_recent |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 297 | 48 | 24.2% | 16.2% | 1 | complete | github_search_recent |
 | thongthaibm/Lossless-Scaling-LSFG | 298 | 48 | 22.5% | 16.1% | 1 | complete | github_search_recent |
 | AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 48 | 23.7% | 16.1% | 1 | complete | github_search_recent |
 | ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 299 | 48 | 22.7% | 16.1% | 1 | complete | github_search_recent |
+| thongthaibm/Lossless-Scaling-LSFG | 296 | 47 | 23.0% | 15.9% | 1 | complete | github_search_recent |
 | dex-original/okx-agent-trade-kit | 51 | 45 | 82.4% | 88.2% | 1 | complete | github_search_recent |
-| pro-tech-killers/binance-trading-bot | 52 | 45 | 80.8% | 86.5% | 1 | complete | github_search_recent |
-| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 297 | 41 | 19.5% | 13.8% | 1 | complete | -- |
-| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 296 | 39 | 19.9% | 13.2% | 1 | complete | github_search_recent |
-| cat9999aaa/thinshell | 169 | 38 | 0.0% | 22.5% | 1 | complete | -- |
-| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 34 | 29 | 55.9% | 85.3% | 1 | complete | -- |
-| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 32 | 24 | 68.8% | 75.0% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
