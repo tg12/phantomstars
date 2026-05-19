@@ -101,6 +101,7 @@ query($owner: String!, $name: String!, $cursor: String) {
 
 _SCAN_EVENT_TYPES: frozenset[str] = frozenset({"WatchEvent", "ForkEvent"})
 _GITHUB_REPO_URL_RE = re.compile(r"https://github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)")
+_REDDIT_USER_AGENT = "phantomstars/0.1 (https://github.com/tg12/phantomstars)"
 
 
 def _parse_iso(ts: str) -> datetime:
@@ -273,10 +274,24 @@ class GitHubClient:
         response = self._session.get(
             f"{REDDIT_BASE_URL}/r/{subreddit}/new/.json",
             params={"limit": REDDIT_POST_LIMIT},
-            headers={"Accept": "application/json"},
+            headers={
+                "Accept": "application/json",
+                "User-Agent": _REDDIT_USER_AGENT,
+            },
             timeout=20,
         )
-        response.raise_for_status()
+        try:
+            response.raise_for_status()
+        except requests.HTTPError as exc:
+            status = exc.response.status_code if exc.response is not None else 0
+            if status in (403, 429) or 500 <= status < 600:
+                _log.warning(
+                    "Skipping Reddit seed source r/%s due to HTTP %d",
+                    subreddit,
+                    status,
+                )
+                return []
+            raise
         payload = response.json()
         children = payload.get("data", {}).get("children", [])
         posts: list[dict[str, Any]] = []

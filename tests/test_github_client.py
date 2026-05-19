@@ -3,7 +3,9 @@
 from __future__ import annotations
 
 import logging
+from unittest.mock import MagicMock
 
+import requests
 from phantomstars.github_client import GitHubClient, _extract_repos_from_reddit_post
 
 
@@ -35,3 +37,17 @@ def test_extract_repos_from_reddit_post_deduplicates_owner_repo_links() -> None:
     )
 
     assert repos == ["example/project", "other/repo"]
+
+
+def test_fetch_reddit_new_posts_skips_blocked_subreddit(caplog) -> None:
+    client = GitHubClient(token="test-token")
+    response = MagicMock()
+    response.status_code = 403
+    response.raise_for_status.side_effect = requests.HTTPError(response=response)
+    client._session.get = MagicMock(return_value=response)  # type: ignore[method-assign]
+
+    with caplog.at_level(logging.WARNING):
+        posts = client._fetch_reddit_new_posts("osinttools")
+
+    assert posts == []
+    assert "Skipping Reddit seed source r/osinttools due to HTTP 403" in caplog.text
