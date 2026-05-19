@@ -277,7 +277,7 @@ class GitHubClient:
             for j, login in enumerate(batch):
                 node = data.get(f"u{j}")
                 if not node:
-                    _log.debug("No GraphQL data for %s", login)
+                    _log.warning("No GraphQL data for %s", login)
                     continue
                 try:
                     result[login] = _parse_user_node(node)
