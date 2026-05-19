@@ -111,7 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-19 | 2012 | 499 | 1513 | 31 | 324 |
+| 2026-05-19 | 3903 | 610 | 2969 | 54 | 427 |
 | 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
@@ -124,30 +124,30 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
 | DuskMosquito/Lossless-Scaling-Desktop-2026 | 299 | 155 | 0.0% | 51.8% | 1 | complete | -- |
+| DuskMosquito/Lossless-Scaling-Desktop-2026 | 295 | 146 | 52.5% | 49.5% | 1 | complete | github_search_recent |
 | Dangerous-hole/Pumpfun_AI_Trading_Bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
 | pro-tech-killers/coinbase-trading-bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
+| pro-tech-killers/coinbase-trading-bot | 84 | 64 | 72.6% | 76.2% | 1 | complete | github_search_recent |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 83 | 63 | 72.3% | 75.9% | 1 | complete | github_search_recent |
 | haiddrrs/Steam-Tools | 298 | 53 | 20.8% | 17.8% | 1 | complete | -- |
 | AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 52 | 21.4% | 17.4% | 1 | complete | -- |
 | dex-original/okx-agent-trade-kit | 59 | 51 | 54.2% | 86.4% | 1 | complete | -- |
 | pro-tech-killers/binance-trading-bot | 60 | 51 | 53.3% | 85.0% | 1 | complete | -- |
 | ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 298 | 51 | 20.8% | 17.1% | 1 | complete | -- |
+| xw7872081123/wallpaper-engine-steam | 298 | 51 | 21.5% | 17.1% | 1 | complete | github_search_recent |
 | xw7872081123/wallpaper-engine-steam | 298 | 50 | 19.5% | 16.8% | 1 | complete | -- |
 | thongthaibm/Lossless-Scaling-LSFG | 297 | 50 | 19.5% | 16.8% | 1 | complete | -- |
+| haiddrrs/Steam-Tools | 299 | 49 | 23.4% | 16.4% | 1 | complete | github_search_recent |
+| thongthaibm/Lossless-Scaling-LSFG | 298 | 48 | 22.5% | 16.1% | 1 | complete | github_search_recent |
+| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 48 | 23.7% | 16.1% | 1 | complete | github_search_recent |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 299 | 48 | 22.7% | 16.1% | 1 | complete | github_search_recent |
+| dex-original/okx-agent-trade-kit | 51 | 45 | 82.4% | 88.2% | 1 | complete | github_search_recent |
+| pro-tech-killers/binance-trading-bot | 52 | 45 | 80.8% | 86.5% | 1 | complete | github_search_recent |
 | labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 297 | 41 | 19.5% | 13.8% | 1 | complete | -- |
+| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 296 | 39 | 19.9% | 13.2% | 1 | complete | github_search_recent |
 | cat9999aaa/thinshell | 169 | 38 | 0.0% | 22.5% | 1 | complete | -- |
 | heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 34 | 29 | 55.9% | 85.3% | 1 | complete | -- |
-| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 152 | 23 | 13.8% | 15.1% | 1 | complete | -- |
-| BasZ4ll/Stable-Diffusion-WebUI | 148 | 19 | 14.2% | 12.8% | 1 | complete | -- |
-| pedrodg28/yuzu-emu | 151 | 19 | 15.2% | 12.6% | 1 | complete | -- |
-| zigabratun/Umbrella-HWID-Tool | 121 | 18 | 6.6% | 14.9% | 1 | complete | -- |
-| arnabchoudhury404/hydra-launcher | 143 | 18 | 14.0% | 12.6% | 1 | complete | -- |
-| python-telegramBot/ai-auto-trading | 21 | 17 | 38.1% | 81.0% | 1 | complete | -- |
-| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 146 | 17 | 13.7% | 11.6% | 1 | complete | -- |
-| DEV-OCR/polymarket-arbitrage-trading-bot | 22 | 16 | 40.9% | 72.7% | 1 | complete | -- |
-| POLYMARKET-TRADER-LAB/Polymarket-trading-bot | 24 | 16 | 37.5% | 66.7% | 1 | complete | -- |
-| cdanielc293/Jenny-Mod-All-Versions | 120 | 16 | 7.5% | 13.3% | 1 | complete | -- |
-| ZhuLinsen/daily_stock_analysis | 265 | 16 | 0.0% | 6.0% | 1 | complete | -- |
-| thinkpixelIab/polymarket-ai-trading | 19 | 15 | 36.8% | 78.9% | 1 | complete | -- |
+| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 32 | 24 | 68.8% | 75.0% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
