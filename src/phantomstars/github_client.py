@@ -411,25 +411,6 @@ class GitHubClient:
         if "errors" in data:
             _log.warning("GraphQL partial errors: %d error(s)", len(data["errors"]))
         return data
-
-
-def _extract_repos_from_reddit_post(post: dict[str, Any]) -> list[str]:
-    """Extract unique owner/repo references from a Reddit post body or URL."""
-    candidates: list[str] = []
-    for key in ("selftext", "url", "url_overridden_by_dest"):
-        value = post.get(key)
-        if isinstance(value, str):
-            candidates.append(value)
-
-    repos: set[str] = set()
-    for text in candidates:
-        for match in _GITHUB_REPO_URL_RE.finditer(text):
-            repo = match.group(1).rstrip("/").removesuffix(".git")
-            if repo.count("/") != 1:
-                continue
-            repos.add(repo)
-    return sorted(repos)
-
     @retry(
         retry=retry_if_exception(_should_retry_rest_error),
         wait=wait_exponential(multiplier=1, min=2, max=30),
@@ -587,3 +568,21 @@ def _parse_trending_html(html: str) -> list[str]:
         )
     _log.info("Parsed %d trending repos", len(repos))
     return repos
+
+
+def _extract_repos_from_reddit_post(post: dict[str, Any]) -> list[str]:
+    """Extract unique owner/repo references from a Reddit post body or URL."""
+    candidates: list[str] = []
+    for key in ("selftext", "url", "url_overridden_by_dest"):
+        value = post.get(key)
+        if isinstance(value, str):
+            candidates.append(value)
+
+    repos: set[str] = set()
+    for text in candidates:
+        for match in _GITHUB_REPO_URL_RE.finditer(text):
+            repo = match.group(1).rstrip("/").removesuffix(".git")
+            if repo.count("/") != 1:
+                continue
+            repos.add(repo)
+    return sorted(repos)
