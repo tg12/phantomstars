@@ -272,7 +272,7 @@ class GitHubClient:
     def _fetch_reddit_new_posts(self, subreddit: str) -> list[dict[str, Any]]:
         """Return the most recent subreddit posts using Reddit's public JSON feed."""
         response = self._session.get(
-            f"{REDDIT_BASE_URL}/r/{subreddit}/new/.json",
+            f"{REDDIT_BASE_URL}/r/{subreddit}/new.json",
             params={"limit": REDDIT_POST_LIMIT},
             headers={
                 "Accept": "application/json",
