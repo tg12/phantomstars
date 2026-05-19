@@ -19,7 +19,7 @@ from phantomstars.config import (
     REPOS_FILE,
     SUSPECTS_FILE,
 )
-from phantomstars.exceptions import LifetimeScanLimitError, TrendingParseError
+from phantomstars.exceptions import TrendingParseError
 from phantomstars.github_client import GitHubClient
 from phantomstars.heuristics import score_user
 from phantomstars.logging_config import setup_logging
@@ -73,7 +73,11 @@ def _build_repo_reports(
                 repo_campaigns[repo].add(score.campaign_id)
 
     reports: list[RepoReport] = []
-    targeted = scanned_repos if scanned_repos is not None else set(repo_likely) | set(repo_suspicious)
+    targeted = (
+        scanned_repos
+        if scanned_repos is not None
+        else set(repo_likely) | set(repo_suspicious)
+    )
     prior_history = historical_likely_fake_dates or {}
     for repo in targeted:
         repo_users = repo_all_users.get(repo, set())
@@ -82,7 +86,9 @@ def _build_repo_reports(
         suspicious = repo_suspicious[repo]
         fakeness_ratio = round(likely / total_engagers, 3) if total_engagers else 0.0
         known_likely_fake = sum(1 for login in repo_users if login in prior_history)
-        repeat_offenders = sum(1 for login in repo_users if len(prior_history.get(login, set())) >= 2)
+        repeat_offenders = sum(
+            1 for login in repo_users if len(prior_history.get(login, set())) >= 2
+        )
         known_likely_fake_ratio = (
             round(known_likely_fake / total_engagers, 3) if total_engagers else 0.0
         )
@@ -249,6 +255,7 @@ def _write_step_summary(
 
 
 def main() -> None:
+    """Run the full daily or targeted phantomstars scan pipeline."""
     setup_logging()
     gh_token = _read_github_token()
     scan_date = datetime.now(UTC).date().isoformat()
@@ -282,17 +289,14 @@ def main() -> None:
     flat_events: list[EngagementEvent] = []
     for repo in sorted(repo_set):
         _log.info("Scanning events: %s", repo)
-        try:
-            flat_events.extend(
-                _collect_repo_events(
-                    client,
-                    repo,
-                    targeted_mode=target_repo is not None,
-                    analysis_mode=analysis_mode,
-                )
+        flat_events.extend(
+            _collect_repo_events(
+                client,
+                repo,
+                targeted_mode=target_repo is not None,
+                analysis_mode=analysis_mode,
             )
-        except LifetimeScanLimitError:
-            raise
+        )
     _log.info("Total engagement events: %d", len(flat_events))
 
     # 3. Fetch user profiles for unique logins
@@ -367,9 +371,7 @@ def main() -> None:
     update_readme(suspects_path, repos_path)
 
     # 11. Create/update GitHub Issues for targeted repos
-    # GITHUB_REPOSITORY is set by Actions; falls back to the canonical repo for local runs.
-    ps_repo = os.environ.get("GITHUB_REPOSITORY", "tg12/phantomstars")
-    notify_all(client, repo_reports, suspects, ps_repo)
+    notify_all(client, repo_reports, suspects)
 
     # 12. Write GitHub Actions step summary
     _write_step_summary(suspects, repo_reports, campaign_map, scan_date, analysis_mode)

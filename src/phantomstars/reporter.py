@@ -30,6 +30,12 @@ _REPO_TABLE_HEADER = (
 Record = dict[str, object]
 
 
+def _format_percent(value: object) -> str:
+    """Return a normalized percentage string for float-like dashboard values."""
+    numeric = value if isinstance(value, float) else float(str(value))
+    return f"{numeric * 100:.1f}%"
+
+
 def _build_daily_table(records: list[Record]) -> str:
     by_date: dict[str, list[Record]] = defaultdict(list)
     for r in records:
@@ -79,12 +85,8 @@ def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
         repo = r.get("full_name", "unknown")
         total = r.get("total_scanned", 0)
         likely = r.get("likely_fake", 0)
-        known_ratio = r.get("known_likely_fake_ratio", 0.0)
-        ratio = r.get("fakeness_ratio", 0.0)
-        known_pct = (
-            f"{(known_ratio if isinstance(known_ratio, float) else float(str(known_ratio))) * 100:.1f}%"
-        )
-        pct = f"{(ratio if isinstance(ratio, float) else float(str(ratio))) * 100:.1f}%"
+        known_pct = _format_percent(r.get("known_likely_fake_ratio", 0.0))
+        pct = _format_percent(r.get("fakeness_ratio", 0.0))
         campaigns = r.get("campaign_count", 0)
         rows.append(f"| {repo} | {total} | {likely} | {known_pct} | {pct} | {campaigns} |")
 
@@ -105,6 +107,7 @@ def update_readme(
     repos_path: Path | None = None,
     readme_path: Path = Path(README_PATH),
 ) -> None:
+    """Refresh README dashboard blocks from the append-only data ledgers."""
     if not readme_path.exists():
         _log.warning("README not found at %s", readme_path)
         return

@@ -105,6 +105,7 @@ def score_user(
     scan_date: str,
     analysis_mode: AnalysisMode,
 ) -> SuspicionScore:
+    """Score one user profile and return the persisted scan record."""
     age_s = _score_account_age(profile.account_age_days)
     prof_s = _score_profile(profile)
     repo_s = _score_repo_pattern(profile)

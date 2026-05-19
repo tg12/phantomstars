@@ -16,15 +16,20 @@ from phantomstars.models import EngagementEvent, SuspicionScore
 
 @dataclass(frozen=True, slots=True)
 class _TimedEvent:
+    """Reduced event record used during campaign-window comparisons."""
+
     user_login: str
     occurred_at: datetime
 
 
 class _UnionFind:
+    """Minimal union-find structure for campaign connected components."""
+
     def __init__(self) -> None:
         self._parent: dict[str, str] = {}
 
     def find(self, x: str) -> str:
+        """Return the canonical representative for x."""
         if x not in self._parent:
             self._parent[x] = x
         while self._parent[x] != x:
@@ -33,6 +38,7 @@ class _UnionFind:
         return x
 
     def union(self, x: str, y: str) -> None:
+        """Merge the sets containing x and y."""
         rx, ry = self.find(x), self.find(y)
         if rx != ry:
             self._parent[rx] = ry

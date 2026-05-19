@@ -20,6 +20,7 @@ ALLOWLIST_FILE: str = "data/allowlist.txt"
 
 
 def load_allowlist(path: Path | None = None) -> set[str]:
+    """Load the case-insensitive account allowlist from disk."""
     target = path or Path(ALLOWLIST_FILE)
     if not target.exists():
         return set()
@@ -32,6 +33,7 @@ def load_allowlist(path: Path | None = None) -> set[str]:
 
 
 def append_suspects(suspects: list[SuspicionScore], path: Path) -> None:
+    """Append suspect records to the JSONL ledger."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
         for score in suspects:
@@ -40,6 +42,7 @@ def append_suspects(suspects: list[SuspicionScore], path: Path) -> None:
 
 
 def append_reports(reports: list[RepoReport], path: Path) -> None:
+    """Append per-repo reports to the JSONL ledger."""
     path.parent.mkdir(parents=True, exist_ok=True)
     with path.open("a", encoding="utf-8") as fh:
         for report in reports:
@@ -48,6 +51,7 @@ def append_reports(reports: list[RepoReport], path: Path) -> None:
 
 
 def iter_records(path: Path) -> Iterator[dict[str, Any]]:
+    """Yield JSON object records from a JSONL file, skipping corrupt lines."""
     if not path.exists():
         return
     with path.open(encoding="utf-8") as fh:
@@ -67,4 +71,5 @@ def iter_records(path: Path) -> Iterator[dict[str, Any]]:
 
 
 def load_all(path: Path) -> list[dict[str, Any]]:
+    """Return all parsed JSON object records from a JSONL file."""
     return list(iter_records(path))

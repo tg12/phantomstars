@@ -125,6 +125,8 @@ def _should_retry_rest_error(exc: BaseException) -> bool:
 
 
 class GitHubClient:
+    """GitHub API client for discovery, profiling, and issue operations."""
+
     def __init__(self, token: str) -> None:
         self._session = requests.Session()
         self._session.headers.update(
@@ -268,6 +270,7 @@ class GitHubClient:
         logins: list[str],
         batch_size: int = GRAPHQL_BATCH_SIZE,
     ) -> dict[str, UserProfile]:
+        """Fetch user profiles in GraphQL batches and return login-keyed results."""
         result: dict[str, UserProfile] = {}
         unique = list(dict.fromkeys(logins))  # deduplicate, preserve order
 
@@ -289,6 +292,7 @@ class GitHubClient:
         return result
 
     def batch_fetch_profiles_for_lifetime(self, logins: list[str]) -> dict[str, UserProfile]:
+        """Fetch targeted-run profiles using the larger lifetime batch size."""
         return self.batch_fetch_profiles(logins, batch_size=LIFETIME_GRAPHQL_BATCH_SIZE)
 
     # ------------------------------------------------------------------
@@ -408,18 +412,25 @@ class GitHubClient:
                 else:
                     _log.warning("Could not create label '%s': %s", label.get("name"), exc)
 
-    def find_open_issue(self, owner_repo: str, title_fragment: str) -> int | None:
+    def find_open_issue(
+        self,
+        owner_repo: str,
+        title_fragment: str,
+        labels: str | None = "fake-engagement",
+    ) -> int | None:
         """Return the issue number of an open fake-engagement issue whose title contains
         title_fragment, or None if no such issue exists."""
         for page in range(1, 5):
+            params: dict[str, Any] = {
+                "state": "open",
+                "per_page": 100,
+                "page": page,
+            }
+            if labels:
+                params["labels"] = labels
             items = self._rest_get(
                 f"{GITHUB_API_BASE}/repos/{owner_repo}/issues",
-                params={
-                    "state": "open",
-                    "labels": "fake-engagement",
-                    "per_page": 100,
-                    "page": page,
-                },
+                params=params,
             )
             if not isinstance(items, list) or not items:
                 break

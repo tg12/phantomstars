@@ -16,6 +16,7 @@ from phantomstars.config import (
     MAX_ISSUES_PER_SCAN,
     MIN_FAKENESS_FOR_ISSUE,
 )
+from phantomstars.exceptions import RateLimitError
 from phantomstars.github_client import GitHubClient
 from phantomstars.models import RepoReport, SuspicionScore
 
@@ -69,6 +70,9 @@ def _campaign_table(suspects: list[SuspicionScore]) -> str:
 def _issue_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     pct = f"{report.fakeness_ratio * 100:.1f}%"
     scan_window = _scan_window_label(report)
+    known_fake = (
+        f"{report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%)"
+    )
     return f"""\
 ## Fake Engagement Alert for `{report.full_name}`
 
@@ -84,7 +88,7 @@ targeting this repository.
 | Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
-| Previously seen likely fake | {report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%) |
+| Previously seen likely fake | {known_fake} |
 | Repeat offenders | {report.repeat_offenders} |
 | Campaigns detected | {report.campaign_count} |
 | Analysis mode | `{report.analysis_mode}` |
@@ -103,8 +107,9 @@ targeting this repository.
 > **All findings are probabilistic indicators, not accusations. False positives exist.**
 > Individual accounts should be treated as suspicious signals, not confirmed fake actors.
 >
-> Automated scan by [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
-> [View full dataset](https://github.com/{_PHANTOMSTARS_REPO}/blob/main/data/repos.jsonl) |
+> Automated scan by
+> [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
+> [View full dataset](https://github.com/{_PHANTOMSTARS_REPO}/blob/main/data/repos.jsonl)
 > [Report a false positive](https://github.com/{_PHANTOMSTARS_REPO}/issues/new?template=false_positive.yml)
 """
 
@@ -112,6 +117,9 @@ targeting this repository.
 def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
     pct = f"{report.fakeness_ratio * 100:.1f}%"
     scan_window = _scan_window_label(report)
+    known_fake = (
+        f"{report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%)"
+    )
     return f"""\
 ### Scan update: {report.scan_date}
 
@@ -120,7 +128,7 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
 | Engagers scanned ({scan_window}) | {report.total_scanned} |
 | Likely fake | **{report.likely_fake}** ({pct}) |
 | Suspicious | {report.suspicious} |
-| Previously seen likely fake | {report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%) |
+| Previously seen likely fake | {known_fake} |
 | Repeat offenders | {report.repeat_offenders} |
 | Campaigns | {report.campaign_count} |
 
@@ -130,26 +138,12 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
 
 def _find_existing_issue(client: GitHubClient, target_repo: str) -> int | None:
     """Search the target repo for an existing open phantomstars issue by title."""
-    for page in range(1, 5):
-        try:
-            items = client._rest_get(
-                f"https://api.github.com/repos/{target_repo}/issues",
-                params={
-                    "state": "open",
-                    "per_page": 100,
-                    "page": page,
-                },
-            )
-        except requests.HTTPError as exc:
-            if exc.response is not None and exc.response.status_code in (404, 410):
-                return None
-            raise
-        if not isinstance(items, list) or not items:
-            break
-        for item in items:
-            if _ISSUE_TITLE in str(item.get("title", "")):
-                return int(item["number"])
-    return None
+    try:
+        return client.find_open_issue(target_repo, _ISSUE_TITLE, labels=None)
+    except requests.HTTPError as exc:
+        if exc.response is not None and exc.response.status_code in (404, 410):
+            return None
+        raise
 
 
 def notify_repo(
@@ -180,7 +174,6 @@ def notify_all(
     client: GitHubClient,
     repo_reports: list[RepoReport],
     all_suspects: list[SuspicionScore],
-    ps_repo: str,
     min_fakeness: float = MIN_FAKENESS_FOR_ISSUE,
     max_issues_per_scan: int = MAX_ISSUES_PER_SCAN,
 ) -> None:
@@ -208,5 +201,5 @@ def notify_all(
         ]
         try:
             notify_repo(client, report, repo_suspects)
-        except Exception as exc:
+        except (RateLimitError, requests.ConnectionError, requests.HTTPError) as exc:
             _log.error("Issue notification failed for %s: %s", report.full_name, exc)
