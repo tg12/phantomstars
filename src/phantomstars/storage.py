@@ -8,7 +8,9 @@ from __future__ import annotations
 import dataclasses
 import json
 import logging
+from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 from phantomstars.models import RepoReport, SuspicionScore
 
@@ -45,17 +47,24 @@ def append_reports(reports: list[RepoReport], path: Path) -> None:
     _log.info("Appended %d repo reports to %s", len(reports), path)
 
 
-def load_all(path: Path) -> list[dict]:  # type: ignore[type-arg]
+def iter_records(path: Path) -> Iterator[dict[str, Any]]:
     if not path.exists():
-        return []
-    records = []
+        return
     with path.open(encoding="utf-8") as fh:
         for lineno, line in enumerate(fh, 1):
             line = line.strip()
             if not line:
                 continue
             try:
-                records.append(json.loads(line))
+                raw = json.loads(line)
             except json.JSONDecodeError as exc:
                 _log.warning("Corrupt JSONL at line %d: %s", lineno, exc)
-    return records
+                continue
+            if isinstance(raw, dict):
+                yield raw
+            else:
+                _log.warning("Unexpected non-object JSONL at line %d", lineno)
+
+
+def load_all(path: Path) -> list[dict[str, Any]]:
+    return list(iter_records(path))

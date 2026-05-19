@@ -36,21 +36,26 @@ def _build_daily_table(records: list[Record]) -> str:
         date = str(r.get("scan_date", "unknown"))
         by_date[date].append(r)
 
-    seen_logins: set[str] = set()
+    all_dates = sorted(by_date.keys())
+    visible_dates = set(all_dates[-30:])
+    seen_likely_fake_logins: set[str] = set()
     rows = []
-    for date in sorted(by_date.keys())[-30:]:
+    for date in all_dates:
         day = by_date[date]
         likely_fake_logins = {
             str(r["login"]) for r in day if r.get("classification") == "likely_fake"
         }
-        new_fakes = len(likely_fake_logins - seen_logins)
-        seen_logins.update(str(r["login"]) for r in day)
+        new_fakes = len(likely_fake_logins - seen_likely_fake_logins)
+        seen_likely_fake_logins.update(likely_fake_logins)
 
         scanned = len(day)
         likely = len(likely_fake_logins)
         suspicious = sum(1 for r in day if r.get("classification") == "suspicious")
         campaigns = len({r.get("campaign_id") for r in day if r.get("campaign_id")})
-        rows.append(f"| {date} | {scanned} | {likely} | {suspicious} | {campaigns} | {new_fakes} |")
+        if date in visible_dates:
+            rows.append(
+                f"| {date} | {scanned} | {likely} | {suspicious} | {campaigns} | {new_fakes} |"
+            )
 
     rows.reverse()
     if not rows:

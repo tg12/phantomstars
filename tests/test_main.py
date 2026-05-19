@@ -13,6 +13,7 @@ from phantomstars.main import (
     _load_prior_likely_fake_history,
     _parse_analysis_mode,
     _parse_target_repo,
+    _read_github_token,
 )
 from phantomstars.models import EngagementEvent, SuspicionScore
 
@@ -191,3 +192,14 @@ def test_parse_analysis_mode_defaults_to_recent(monkeypatch: pytest.MonkeyPatch)
 def test_parse_analysis_mode_reads_lifetime_request(monkeypatch: pytest.MonkeyPatch) -> None:
     monkeypatch.setenv("PHANTOMSTARS_REQUEST_DEPTH", "lifetime-request")
     assert _parse_analysis_mode() == LIFETIME_ANALYSIS_MODE
+
+
+def test_read_github_token_reads_trimmed_value(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("GH_TOKEN", "  token-value  ")
+    assert _read_github_token() == "token-value"
+
+
+def test_read_github_token_requires_value(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.delenv("GH_TOKEN", raising=False)
+    with pytest.raises(RuntimeError, match="GH_TOKEN is required"):
+        _read_github_token()

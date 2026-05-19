@@ -32,7 +32,7 @@ from phantomstars.models import (
 )
 from phantomstars.notifier import notify_all
 from phantomstars.reporter import update_readme
-from phantomstars.storage import append_reports, append_suspects, load_all, load_allowlist
+from phantomstars.storage import append_reports, append_suspects, iter_records, load_allowlist
 
 _log = logging.getLogger(__name__)
 
@@ -109,7 +109,7 @@ def _build_repo_reports(
 def _load_prior_likely_fake_history(path: Path) -> dict[str, set[str]]:
     """Return login -> prior scan dates for accounts already labeled likely_fake."""
     history: dict[str, set[str]] = defaultdict(set)
-    for record in load_all(path):
+    for record in iter_records(path):
         if record.get("classification") != "likely_fake":
             continue
         login = str(record.get("login", "")).strip()
@@ -117,6 +117,13 @@ def _load_prior_likely_fake_history(path: Path) -> dict[str, set[str]]:
         if login and scan_date:
             history[login].add(scan_date)
     return dict(history)
+
+
+def _read_github_token() -> str:
+    token = os.environ.get("GH_TOKEN", "").strip()
+    if not token:
+        raise RuntimeError("GH_TOKEN is required. Set it in the environment before running.")
+    return token
 
 
 def _parse_target_repo() -> str | None:
@@ -243,7 +250,7 @@ def _write_step_summary(
 
 def main() -> None:
     setup_logging()
-    gh_token: str = os.environ["GH_TOKEN"]
+    gh_token = _read_github_token()
     scan_date = datetime.now(UTC).date().isoformat()
     suspects_path = Path(SUSPECTS_FILE)
     repos_path = Path(REPOS_FILE)
