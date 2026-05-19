@@ -109,6 +109,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-19 | 2012 | 499 | 1513 | 31 | 323 |
 | 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
@@ -120,31 +121,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |
 |------|----------|-------------|--------------|------------|-----------|
-| pro-tech-killers/coinbase-trading-bot | 188 | 150 | 0.0% | 79.8% | 1 |
-| Dangerous-hole/Pumpfun_AI_Trading_Bot | 186 | 148 | 0.0% | 79.6% | 1 |
-| dex-original/okx-agent-trade-kit | 178 | 135 | 0.0% | 75.8% | 1 |
-| pro-tech-killers/binance-trading-bot | 177 | 134 | 0.0% | 75.7% | 1 |
-| 6Hourt9/push-video-wallpaper-engine | 129 | 129 | 0.0% | 100.0% | 1 |
-| Edmoch/Octo-Strike-Reimagined | 129 | 129 | 0.0% | 100.0% | 1 |
-| FACTURACION2025/Wild-West-Steam-Deck-Optimized | 129 | 129 | 0.0% | 100.0% | 1 |
-| Raf-alt-png/Pragmata-FrameTweaks | 128 | 128 | 0.0% | 100.0% | 1 |
-| SHARATH13VS/youtube-viewer-optimus | 128 | 128 | 0.0% | 100.0% | 1 |
-| boubacarsidibe7644-del/google-drive-cortex | 128 | 128 | 0.0% | 100.0% | 1 |
-| Kkkkkkao/Yuzu-Ryujinx-Emulation-Framework | 128 | 128 | 0.0% | 100.0% | 1 |
-| NNM24EE533/Mii-Link-Tomodachi-Archives | 128 | 128 | 0.0% | 100.0% | 1 |
-| codeokens/windark-injection-framework | 127 | 127 | 0.0% | 100.0% | 1 |
-| Xian395/Hardware-Identity-Morph | 127 | 127 | 0.0% | 100.0% | 1 |
-| angelosdimakos1/faceit-match-tracker | 127 | 127 | 0.0% | 100.0% | 1 |
-| Alexandru4123/office-2026-pro-suite-tools | 127 | 127 | 0.0% | 100.0% | 1 |
-| abhirammandula-boop/nooklink-pc-emulator-toolkit | 127 | 127 | 0.0% | 100.0% | 1 |
-| Ravico50/youtube-prism-enhancer | 127 | 127 | 0.0% | 100.0% | 1 |
-| kietdzkk/kms-activation-toolkit | 126 | 126 | 0.0% | 100.0% | 1 |
-| ahmadalalibz2006-stack/calibr-zoom | 126 | 126 | 0.0% | 100.0% | 1 |
-| ilyassacha/Aura-Sight-V1-2026 | 126 | 126 | 0.0% | 100.0% | 1 |
-| sbhamsaraj-28/cleaner-toolkit-optimizer | 126 | 126 | 0.0% | 100.0% | 1 |
-| nottrox-sketch/Pokopia-Desktop-Edition | 126 | 126 | 0.0% | 100.0% | 1 |
-| mramangune-prog/leonardo-generative-workflow-engine | 126 | 126 | 0.0% | 100.0% | 1 |
-| dhruvil107/atm11-progression-guide-data | 126 | 126 | 0.0% | 100.0% | 1 |
+| DuskMosquito/Lossless-Scaling-Desktop-2026 | 299 | 155 | 0.0% | 51.8% | 1 |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 143 | 111 | 65.0% | 77.6% | 1 |
+| pro-tech-killers/coinbase-trading-bot | 143 | 111 | 65.0% | 77.6% | 1 |
+| haiddrrs/Steam-Tools | 298 | 53 | 20.8% | 17.8% | 1 |
+| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 52 | 21.4% | 17.4% | 1 |
+| dex-original/okx-agent-trade-kit | 59 | 51 | 54.2% | 86.4% | 1 |
+| pro-tech-killers/binance-trading-bot | 60 | 51 | 53.3% | 85.0% | 1 |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 298 | 51 | 20.8% | 17.1% | 1 |
+| xw7872081123/wallpaper-engine-steam | 298 | 50 | 19.5% | 16.8% | 1 |
+| thongthaibm/Lossless-Scaling-LSFG | 297 | 50 | 19.5% | 16.8% | 1 |
+| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 297 | 41 | 19.5% | 13.8% | 1 |
+| cat9999aaa/thinshell | 169 | 38 | 0.0% | 22.5% | 1 |
+| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 34 | 29 | 55.9% | 85.3% | 1 |
+| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 152 | 23 | 13.8% | 15.1% | 1 |
+| BasZ4ll/Stable-Diffusion-WebUI | 148 | 19 | 14.2% | 12.8% | 1 |
+| pedrodg28/yuzu-emu | 151 | 19 | 15.2% | 12.6% | 1 |
+| zigabratun/Umbrella-HWID-Tool | 121 | 18 | 6.6% | 14.9% | 1 |
+| arnabchoudhury404/hydra-launcher | 143 | 18 | 14.0% | 12.6% | 1 |
+| python-telegramBot/ai-auto-trading | 21 | 17 | 38.1% | 81.0% | 1 |
+| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 146 | 17 | 13.7% | 11.6% | 1 |
+| DEV-OCR/polymarket-arbitrage-trading-bot | 22 | 16 | 40.9% | 72.7% | 1 |
+| POLYMARKET-TRADER-LAB/Polymarket-trading-bot | 24 | 16 | 37.5% | 66.7% | 1 |
+| cdanielc293/Jenny-Mod-All-Versions | 120 | 16 | 7.5% | 13.3% | 1 |
+| ZhuLinsen/daily_stock_analysis | 265 | 16 | 0.0% | 6.0% | 1 |
+| thinkpixelIab/polymarket-ai-trading | 19 | 15 | 36.8% | 78.9% | 1 |
 <!-- REPO_STATS:END -->
 
 ---
