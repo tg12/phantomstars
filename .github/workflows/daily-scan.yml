@@ -130,18 +130,18 @@ jobs:
             git fetch origin main
             git reset --hard origin/main
             TMP_DIR="${tmp_dir}" python - <<'PY'
-import os
-from pathlib import Path
-from phantomstars.state_sync import sync_generated_state
+            import os
+            from pathlib import Path
+            from phantomstars.state_sync import sync_generated_state
 
-tmp_dir = Path(os.environ["TMP_DIR"])
-sync_generated_state(
-    scan_suspects_path=tmp_dir / "suspects.jsonl",
-    scan_repos_path=tmp_dir / "repos.jsonl",
-    workspace_suspects_path=Path("data/suspects.jsonl"),
-    workspace_repos_path=Path("data/repos.jsonl"),
-    readme_path=Path("README.md"),
-)
+            tmp_dir = Path(os.environ["TMP_DIR"])
+            sync_generated_state(
+                scan_suspects_path=tmp_dir / "suspects.jsonl",
+                scan_repos_path=tmp_dir / "repos.jsonl",
+                workspace_suspects_path=Path("data/suspects.jsonl"),
+                workspace_repos_path=Path("data/repos.jsonl"),
+                readme_path=Path("README.md"),
+            )
 PY
             git add data/ README.md
             if git diff --staged --quiet; then
