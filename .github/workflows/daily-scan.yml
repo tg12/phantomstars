@@ -129,20 +129,7 @@ jobs:
           for attempt in 1 2 3; do
             git fetch origin main
             git reset --hard origin/main
-            TMP_DIR="${tmp_dir}" python - <<'PY'
-            import os
-            from pathlib import Path
-            from phantomstars.state_sync import sync_generated_state
-
-            tmp_dir = Path(os.environ["TMP_DIR"])
-            sync_generated_state(
-                scan_suspects_path=tmp_dir / "suspects.jsonl",
-                scan_repos_path=tmp_dir / "repos.jsonl",
-                workspace_suspects_path=Path("data/suspects.jsonl"),
-                workspace_repos_path=Path("data/repos.jsonl"),
-                readme_path=Path("README.md"),
-            )
-PY
+            TMP_DIR="${tmp_dir}" python -c "import os; from pathlib import Path; from phantomstars.state_sync import sync_generated_state_from_scan_directory; sync_generated_state_from_scan_directory(Path(os.environ['TMP_DIR']))"
             git add data/ README.md
             if git diff --staged --quiet; then
               echo "No state changes to commit after merge."

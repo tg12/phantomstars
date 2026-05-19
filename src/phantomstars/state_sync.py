@@ -55,3 +55,14 @@ def sync_generated_state(
     _write_lines(workspace_suspects_path, merged_suspects)
     _write_lines(workspace_repos_path, merged_repos)
     update_readme(workspace_suspects_path, workspace_repos_path, readme_path)
+
+
+def sync_generated_state_from_scan_directory(scan_directory: Path) -> None:
+    """Merge scan artifacts from scan_directory into the default workspace paths."""
+    sync_generated_state(
+        scan_suspects_path=scan_directory / "suspects.jsonl",
+        scan_repos_path=scan_directory / "repos.jsonl",
+        workspace_suspects_path=Path("data/suspects.jsonl"),
+        workspace_repos_path=Path("data/repos.jsonl"),
+        readme_path=Path("README.md"),
+    )
