@@ -15,6 +15,7 @@ from pathlib import Path
 from phantomstars.campaigns import detect_campaigns
 from phantomstars.config import (
     LIFETIME_ANALYSIS_MODE,
+    MAX_EVENTS_PER_REPO,
     RECENT_ANALYSIS_MODE,
     REPOS_FILE,
     SUSPECTS_FILE,
@@ -46,22 +47,25 @@ def _classify_repo(fakeness_ratio: float) -> Classification:
 
 
 def _build_repo_reports(
-    final_scores: list[SuspicionScore],
-    flat_events: list[EngagementEvent],
+    visible_scores: list[SuspicionScore],
+    visible_events: list[EngagementEvent],
     scan_date: str,
     analysis_mode: AnalysisMode,
     scanned_repos: set[str] | None = None,
     historical_likely_fake_dates: dict[str, set[str]] | None = None,
+    repo_discovery_sources: dict[str, set[str]] | None = None,
+    repo_sample_completeness: dict[str, bool] | None = None,
+    allowlisted_by_repo: dict[str, set[str]] | None = None,
 ) -> list[RepoReport]:
     repo_all_users: dict[str, set[str]] = defaultdict(set)
-    for ev in flat_events:
+    for ev in visible_events:
         repo_all_users[ev.repo_full_name].add(ev.user_login)
 
     repo_likely: dict[str, int] = defaultdict(int)
     repo_suspicious: dict[str, int] = defaultdict(int)
     repo_campaigns: dict[str, set[str]] = defaultdict(set)
 
-    for score in final_scores:
+    for score in visible_scores:
         if score.classification == "clean":
             continue
         for repo in score.target_repos:
@@ -79,6 +83,9 @@ def _build_repo_reports(
         else set(repo_likely) | set(repo_suspicious)
     )
     prior_history = historical_likely_fake_dates or {}
+    discovery_sources = repo_discovery_sources or {}
+    sample_completeness = repo_sample_completeness or {}
+    allowlisted = allowlisted_by_repo or {}
     for repo in targeted:
         repo_users = repo_all_users.get(repo, set())
         total_engagers = len(repo_users)
@@ -102,10 +109,13 @@ def _build_repo_reports(
                 known_likely_fake=known_likely_fake,
                 known_likely_fake_ratio=known_likely_fake_ratio,
                 repeat_offenders=repeat_offenders,
+                allowlisted_excluded=len(allowlisted.get(repo, set())),
                 classification=_classify_repo(fakeness_ratio),
                 campaign_count=len(repo_campaigns[repo]),
                 analysis_mode=analysis_mode,
                 scan_date=scan_date,
+                discovery_sources=tuple(sorted(discovery_sources.get(repo, set()))),
+                event_sample_complete=sample_completeness.get(repo, True),
             )
         )
 
@@ -178,6 +188,28 @@ def _collect_repo_events(
     return events
 
 
+def _recent_event_sample_complete(events: list[EngagementEvent], analysis_mode: AnalysisMode) -> bool:
+    """Return False when a recent scan likely hit the Events API cap."""
+    if analysis_mode == LIFETIME_ANALYSIS_MODE:
+        return True
+    return len(events) < MAX_EVENTS_PER_REPO
+
+
+def _filter_allowlisted_events(
+    events: list[EngagementEvent],
+    allowlist: set[str],
+) -> tuple[list[EngagementEvent], dict[str, set[str]]]:
+    """Drop allowlisted accounts from event-derived repo metrics and track exclusions."""
+    filtered: list[EngagementEvent] = []
+    excluded_by_repo: dict[str, set[str]] = defaultdict(set)
+    for event in events:
+        if event.user_login.lower() in allowlist:
+            excluded_by_repo[event.repo_full_name].add(event.user_login.lower())
+            continue
+        filtered.append(event)
+    return filtered, dict(excluded_by_repo)
+
+
 def _write_step_summary(
     suspects: list[SuspicionScore],
     repo_reports: list[RepoReport],
@@ -213,17 +245,18 @@ def _write_step_summary(
         lines += [
             "### Most-targeted repos",
             "",
-            "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |",
-            "|------|----------|-------------|--------------|------------|-----------|",
+            "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage |",
+            "|------|----------|-------------|--------------|------------|-----------|----------|",
         ]
         for r in repo_reports[:15]:
             pct = f"{r.fakeness_ratio * 100:.1f}%"
             known_pct = f"{r.known_likely_fake_ratio * 100:.1f}%"
             flag = " :warning:" if r.classification == "likely_fake" else ""
+            coverage = "complete" if r.event_sample_complete else "capped-300-events"
             lines.append(
                 f"| [{r.full_name}](https://github.com/{r.full_name}){flag}"
                 f" | {r.total_scanned} | {r.likely_fake} | {known_pct}"
-                f" | {pct} | {r.campaign_count} |"
+                f" | {pct} | {r.campaign_count} | {coverage} |"
             )
         lines.append("")
 
@@ -246,8 +279,8 @@ def _write_step_summary(
     lines += [
         "---",
         "*phantomstars performs read-only analysis of public GitHub data.*"
-        " *All findings are probabilistic. This tool does not interact with"
-        " or notify any external repository.*",
+        " *All findings are probabilistic. This workflow may create or update"
+        " issues on targeted repositories when detection thresholds are met.*",
     ]
 
     Path(summary_path).write_text("\n".join(lines) + "\n", encoding="utf-8")
@@ -269,34 +302,46 @@ def main() -> None:
 
     # 1. Collect repos to scan from both sources, or force one target repo.
     repo_set: set[str] = set()
+    repo_discovery_sources: dict[str, set[str]] = defaultdict(set)
     if target_repo is not None:
         repo_set.add(target_repo)
+        repo_discovery_sources[target_repo].add("targeted")
         _log.info("Targeted repo mode enabled: %s (%s)", target_repo, analysis_mode)
     else:
         try:
             trending = client.get_trending_repos()
             repo_set.update(trending)
+            for repo in trending:
+                repo_discovery_sources[repo].add("github_trending")
             _log.info("Trending: %d repos", len(trending))
         except TrendingParseError as exc:
             _log.error("Trending scrape failed: %s -- falling back to search only", exc)
 
         new_repos = client.get_new_repos()
         repo_set.update(new_repos)
+        for repo in new_repos:
+            repo_discovery_sources[repo].add("github_search_recent")
         _log.info("New repos (recent): %d repos", len(new_repos))
+        reddit_repos = client.get_reddit_seed_repos()
+        for repo, sources in reddit_repos.items():
+            repo_set.add(repo)
+            repo_discovery_sources[repo].update(sources)
+        _log.info("Reddit-seeded repos: %d repos", len(reddit_repos))
         _log.info("Total repos to scan: %d", len(repo_set))
 
     # 2. Collect engagement events across all repos
     flat_events: list[EngagementEvent] = []
+    repo_sample_completeness: dict[str, bool] = {}
     for repo in sorted(repo_set):
         _log.info("Scanning events: %s", repo)
-        flat_events.extend(
-            _collect_repo_events(
-                client,
-                repo,
-                targeted_mode=target_repo is not None,
-                analysis_mode=analysis_mode,
-            )
+        events = _collect_repo_events(
+            client,
+            repo,
+            targeted_mode=target_repo is not None,
+            analysis_mode=analysis_mode,
         )
+        flat_events.extend(events)
+        repo_sample_completeness[repo] = _recent_event_sample_complete(events, analysis_mode)
     _log.info("Total engagement events: %d", len(flat_events))
 
     # 3. Fetch user profiles for unique logins
@@ -341,8 +386,12 @@ def main() -> None:
     allowlist = load_allowlist()
     if allowlist:
         _log.info("Allowlist contains %d entries", len(allowlist))
+    filtered_events, allowlisted_by_repo = _filter_allowlisted_events(flat_events, allowlist)
+    visible_scores = [
+        s for s in final_scores if s.login.lower() not in allowlist
+    ]
     suspects = [
-        s for s in final_scores if s.classification != "clean" and s.login.lower() not in allowlist
+        s for s in visible_scores if s.classification != "clean"
     ]
     _log.info(
         "Suspects: %d likely_fake, %d suspicious",
@@ -353,12 +402,15 @@ def main() -> None:
 
     # 9. Produce per-repo intelligence
     repo_reports = _build_repo_reports(
-        final_scores,
-        flat_events,
+        visible_scores,
+        filtered_events,
         scan_date,
         analysis_mode,
         scanned_repos=repo_set if target_repo is not None else None,
         historical_likely_fake_dates=prior_likely_fake_history,
+        repo_discovery_sources=dict(repo_discovery_sources),
+        repo_sample_completeness=repo_sample_completeness,
+        allowlisted_by_repo=allowlisted_by_repo,
     )
     _log.info(
         "Repo reports: %d targeted repos (%d likely_fake classification)",

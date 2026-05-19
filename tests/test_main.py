@@ -10,9 +10,11 @@ from phantomstars.config import LIFETIME_ANALYSIS_MODE, RECENT_ANALYSIS_MODE
 from phantomstars.main import (
     _build_repo_reports,
     _collect_repo_events,
+    _filter_allowlisted_events,
     _load_prior_likely_fake_history,
     _parse_analysis_mode,
     _parse_target_repo,
+    _recent_event_sample_complete,
     _read_github_token,
 )
 from phantomstars.models import EngagementEvent, SuspicionScore
@@ -70,11 +72,13 @@ class RetryClient:
 
 def test_build_repo_reports_includes_clean_target_when_explicitly_scanned() -> None:
     reports = _build_repo_reports(
-        final_scores=[],
-        flat_events=[_event("real-user", "owner/repo")],
+        visible_scores=[],
+        visible_events=[_event("real-user", "owner/repo")],
         scan_date=SCAN_DATE,
         analysis_mode=RECENT_ANALYSIS_MODE,
         scanned_repos={"owner/repo"},
+        repo_discovery_sources={"owner/repo": {"github_trending"}},
+        repo_sample_completeness={"owner/repo": True},
     )
 
     assert len(reports) == 1
@@ -84,15 +88,18 @@ def test_build_repo_reports_includes_clean_target_when_explicitly_scanned() -> N
     assert reports[0].fakeness_ratio == 0.0
     assert reports[0].known_likely_fake == 0
     assert reports[0].repeat_offenders == 0
+    assert reports[0].allowlisted_excluded == 0
+    assert reports[0].discovery_sources == ("github_trending",)
+    assert reports[0].event_sample_complete is True
 
 
 def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
     reports = _build_repo_reports(
-        final_scores=[
+        visible_scores=[
             _score("bot-1", "owner/repo", campaign_id="c-1"),
             _score("user-2", "owner/repo", classification="suspicious"),
         ],
-        flat_events=[
+        visible_events=[
             _event("bot-1", "owner/repo"),
             _event("user-2", "owner/repo"),
             _event("user-3", "owner/repo"),
@@ -104,6 +111,9 @@ def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
             "bot-1": {"2026-05-16", "2026-05-17"},
             "user-3": {"2026-05-17"},
         },
+        repo_discovery_sources={"owner/repo": {"github_search_recent", "reddit_osinttools"}},
+        repo_sample_completeness={"owner/repo": False},
+        allowlisted_by_repo={"owner/repo": {"allowlisted-user"}},
     )
 
     assert len(reports) == 1
@@ -114,6 +124,30 @@ def test_build_repo_reports_uses_flagged_accounts_for_ratios() -> None:
     assert reports[0].known_likely_fake == 2
     assert reports[0].known_likely_fake_ratio == 0.667
     assert reports[0].repeat_offenders == 1
+    assert reports[0].allowlisted_excluded == 1
+    assert reports[0].discovery_sources == ("github_search_recent", "reddit_osinttools")
+    assert reports[0].event_sample_complete is False
+
+
+def test_filter_allowlisted_events_removes_users_from_repo_metrics() -> None:
+    filtered, excluded = _filter_allowlisted_events(
+        [
+            _event("allowlisted-user", "owner/repo"),
+            _event("visible-user", "owner/repo"),
+            _event("allowlisted-user", "owner/repo"),
+        ],
+        {"allowlisted-user"},
+    )
+
+    assert [event.user_login for event in filtered] == ["visible-user"]
+    assert excluded == {"owner/repo": {"allowlisted-user"}}
+
+
+def test_recent_event_sample_complete_marks_capped_recent_windows() -> None:
+    capped = [_event(f"user-{index}", "owner/repo") for index in range(300)]
+
+    assert _recent_event_sample_complete(capped, RECENT_ANALYSIS_MODE) is False
+    assert _recent_event_sample_complete(capped, LIFETIME_ANALYSIS_MODE) is True
 
 
 def test_load_prior_likely_fake_history_filters_non_likely_fake(tmp_path: Path) -> None:

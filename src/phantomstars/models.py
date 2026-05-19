@@ -87,7 +87,10 @@ class RepoReport:
     known_likely_fake: int
     known_likely_fake_ratio: float
     repeat_offenders: int
+    allowlisted_excluded: int
     classification: Classification
     campaign_count: int
     analysis_mode: AnalysisMode
     scan_date: str
+    discovery_sources: tuple[str, ...]
+    event_sample_complete: bool

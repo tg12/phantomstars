@@ -7,6 +7,7 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
 from datetime import UTC, datetime, timedelta
 from typing import Any
@@ -34,6 +35,10 @@ from phantomstars.config import (
     MAX_NEW_REPOS,
     MIN_STARS_NEW_REPO,
     RATE_LIMIT_PAUSE_THRESHOLD,
+    REDDIT_BASE_URL,
+    REDDIT_DISCOVERY_DAYS,
+    REDDIT_POST_LIMIT,
+    REDDIT_SEED_SUBREDDITS,
     REPO_DISCOVERY_DAYS,
 )
 from phantomstars.exceptions import LifetimeScanLimitError, RateLimitError, TrendingParseError
@@ -95,6 +100,7 @@ query($owner: String!, $name: String!, $cursor: String) {
 """
 
 _SCAN_EVENT_TYPES: frozenset[str] = frozenset({"WatchEvent", "ForkEvent"})
+_GITHUB_REPO_URL_RE = re.compile(r"https://github\.com/([A-Za-z0-9_.-]+/[A-Za-z0-9_.-]+)")
 
 
 def _parse_iso(ts: str) -> datetime:
@@ -186,6 +192,23 @@ class GitHubClient:
 
         return repos[:MAX_NEW_REPOS]
 
+    def get_reddit_seed_repos(self) -> dict[str, set[str]]:
+        """Return repo seeds from recent Reddit posts keyed by discovery source."""
+        cutoff = datetime.now(UTC) - timedelta(days=REDDIT_DISCOVERY_DAYS)
+        repo_sources: dict[str, set[str]] = {}
+        for subreddit in REDDIT_SEED_SUBREDDITS:
+            source_label = f"reddit_{subreddit}"
+            posts = self._fetch_reddit_new_posts(subreddit)
+            for post in posts:
+                created_utc = post.get("created_utc")
+                if not isinstance(created_utc, (int, float)):
+                    continue
+                if datetime.fromtimestamp(created_utc, tz=UTC) < cutoff:
+                    continue
+                for repo in _extract_repos_from_reddit_post(post):
+                    repo_sources.setdefault(repo, set()).add(source_label)
+        return repo_sources
+
     # ------------------------------------------------------------------
     # Engagement events
     # ------------------------------------------------------------------
@@ -244,6 +267,25 @@ class GitHubClient:
                 break
 
         return events
+
+    def _fetch_reddit_new_posts(self, subreddit: str) -> list[dict[str, Any]]:
+        """Return the most recent subreddit posts using Reddit's public JSON feed."""
+        response = self._session.get(
+            f"{REDDIT_BASE_URL}/r/{subreddit}/new/.json",
+            params={"limit": REDDIT_POST_LIMIT},
+            headers={"Accept": "application/json"},
+            timeout=20,
+        )
+        response.raise_for_status()
+        payload = response.json()
+        children = payload.get("data", {}).get("children", [])
+        posts: list[dict[str, Any]] = []
+        for child in children:
+            if isinstance(child, dict):
+                data = child.get("data")
+                if isinstance(data, dict):
+                    posts.append(data)
+        return posts
 
     def get_lifetime_engagement(self, repo_full_name: str) -> list[EngagementEvent]:
         """Return lifetime star and fork engagement for a targeted repo."""
@@ -369,6 +411,24 @@ class GitHubClient:
         if "errors" in data:
             _log.warning("GraphQL partial errors: %d error(s)", len(data["errors"]))
         return data
+
+
+def _extract_repos_from_reddit_post(post: dict[str, Any]) -> list[str]:
+    """Extract unique owner/repo references from a Reddit post body or URL."""
+    candidates: list[str] = []
+    for key in ("selftext", "url", "url_overridden_by_dest"):
+        value = post.get(key)
+        if isinstance(value, str):
+            candidates.append(value)
+
+    repos: set[str] = set()
+    for text in candidates:
+        for match in _GITHUB_REPO_URL_RE.finditer(text):
+            repo = match.group(1).rstrip("/").removesuffix(".git")
+            if repo.count("/") != 1:
+                continue
+            repos.add(repo)
+    return sorted(repos)
 
     @retry(
         retry=retry_if_exception(_should_retry_rest_error),

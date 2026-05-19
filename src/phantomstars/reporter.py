@@ -23,8 +23,8 @@ _DAILY_HEADER = (
 )
 
 _REPO_TABLE_HEADER = (
-    "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |\n"
-    "|------|----------|-------------|--------------|------------|-----------|"
+    "| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |\n"
+    "|------|----------|-------------|--------------|------------|-----------|----------|---------|"
 )
 
 Record = dict[str, object]
@@ -72,7 +72,7 @@ def _build_daily_table(records: list[Record]) -> str:
 def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
     today = [r for r in repo_records if r.get("scan_date") == scan_date]
     if not today:
-        return f"{_REPO_TABLE_HEADER}\n| *No data for {scan_date}* | — | — | — | — |"
+        return f"{_REPO_TABLE_HEADER}\n| *No data for {scan_date}* | — | — | — | — | — | — | — |"
 
     today_sorted = sorted(
         today,
@@ -88,7 +88,12 @@ def _build_repo_table(repo_records: list[Record], scan_date: str) -> str:
         known_pct = _format_percent(r.get("known_likely_fake_ratio", 0.0))
         pct = _format_percent(r.get("fakeness_ratio", 0.0))
         campaigns = r.get("campaign_count", 0)
-        rows.append(f"| {repo} | {total} | {likely} | {known_pct} | {pct} | {campaigns} |")
+        coverage = "complete" if r.get("event_sample_complete", True) else "capped"
+        sources = ", ".join(r.get("discovery_sources", ())) or "--"
+        rows.append(
+            f"| {repo} | {total} | {likely} | {known_pct} | {pct} | {campaigns} |"
+            f" {coverage} | {sources} |"
+        )
 
     return f"{_REPO_TABLE_HEADER}\n" + "\n".join(rows)
 

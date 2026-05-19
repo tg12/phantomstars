@@ -8,6 +8,7 @@ from __future__ import annotations
 GITHUB_API_BASE: str = "https://api.github.com"
 GITHUB_GRAPHQL_URL: str = "https://api.github.com/graphql"
 GITHUB_TRENDING_URL: str = "https://github.com/trending"
+REDDIT_BASE_URL: str = "https://www.reddit.com"
 
 RECENT_ANALYSIS_MODE: str = "recent"
 LIFETIME_ANALYSIS_MODE: str = "lifetime"
@@ -20,6 +21,9 @@ MAX_NEW_REPOS: int = 200  # circuit breaker for search results
 MAX_EVENTS_PER_REPO: int = 300  # Events API hard cap
 MAX_LIFETIME_STARGAZERS: int = 100000
 MAX_LIFETIME_FORKS: int = 20000
+REDDIT_DISCOVERY_DAYS: int = 2
+REDDIT_POST_LIMIT: int = 100
+REDDIT_SEED_SUBREDDITS: tuple[str, ...] = ("osinttools", "coolgithubprojects")
 
 # Scoring weights (must sum to 1.0)
 WEIGHT_ACCOUNT_AGE: float = 0.35

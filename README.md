@@ -47,14 +47,16 @@ This is part of the broader [AI Slop Intelligence](https://labs.jamessawyer.co.u
 
 1. Scrapes the [GitHub Trending](https://github.com/trending) page for repos gaining stars today
 2. Queries the GitHub Search API for repos created in the last **7 days** with sudden star activity (the wider window catches multi-day campaigns missed by 24h-only scans)
-3. Pulls recent engagement events (stars, forks) via the Events API (last 24 hours per repo)
-4. Fetches the full profile of every engaging account via GraphQL: **account creation date**, follower/following counts, bio, repo history
-5. Scores every account against a composite heuristics model: account age, profile completeness, repository patterns, and activity history
-6. Detects **coordinated campaigns** using timestamp clustering and union-find: clusters of suspicious accounts that engaged within a 3-hour window
-7. Appends all suspects to an append-only JSONL ledger committed back to this repo
-8. Publishes a per-repo intelligence feed showing which repos are being targeted and at what fakeness ratio
-9. **Files GitHub issues directly on targeted repos** so maintainers see the campaign data in their own issue tracker
-10. Writes a formatted scan report to the GitHub Actions job summary
+3. Seeds additional candidate repos from recent Reddit posts in `r/osinttools` and `r/coolgithubprojects` by extracting GitHub repo links from the last **2 days**
+4. Pulls recent engagement events (stars, forks) via the Events API (last 24 hours per repo)
+5. Fetches the full profile of every engaging account via GraphQL: **account creation date**, follower/following counts, bio, repo history
+6. Scores every account against a composite heuristics model: account age, profile completeness, repository patterns, and activity history
+7. Detects **coordinated campaigns** using timestamp clustering and union-find: clusters of suspicious accounts that engaged within a 3-hour window
+8. Applies the false-positive allowlist before ledger writes, repo-level ratios, dashboards, and notifications so every visible metric uses the same population
+9. Appends all suspects to an append-only JSONL ledger committed back to this repo
+10. Publishes a per-repo intelligence feed showing which repos are being targeted, which discovery sources found them, and whether the Events API window was complete or capped
+11. **Files GitHub issues directly on targeted repos** so maintainers see the campaign data in their own issue tracker
+12. Writes a formatted scan report to the GitHub Actions job summary
 
 No servers. No databases. No infrastructure bill.
 
@@ -109,7 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
-| 2026-05-19 | 2012 | 499 | 1513 | 31 | 323 |
+| 2026-05-19 | 2012 | 499 | 1513 | 31 | 324 |
 | 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
 | 2026-05-17 | 8015 | 831 | 5709 | 82 | 831 |
 <!-- STATS:END -->
@@ -119,33 +121,33 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 ## Today's most-targeted repos
 
 <!-- REPO_STATS:START -->
-| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns |
-|------|----------|-------------|--------------|------------|-----------|
-| DuskMosquito/Lossless-Scaling-Desktop-2026 | 299 | 155 | 0.0% | 51.8% | 1 |
-| Dangerous-hole/Pumpfun_AI_Trading_Bot | 143 | 111 | 65.0% | 77.6% | 1 |
-| pro-tech-killers/coinbase-trading-bot | 143 | 111 | 65.0% | 77.6% | 1 |
-| haiddrrs/Steam-Tools | 298 | 53 | 20.8% | 17.8% | 1 |
-| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 52 | 21.4% | 17.4% | 1 |
-| dex-original/okx-agent-trade-kit | 59 | 51 | 54.2% | 86.4% | 1 |
-| pro-tech-killers/binance-trading-bot | 60 | 51 | 53.3% | 85.0% | 1 |
-| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 298 | 51 | 20.8% | 17.1% | 1 |
-| xw7872081123/wallpaper-engine-steam | 298 | 50 | 19.5% | 16.8% | 1 |
-| thongthaibm/Lossless-Scaling-LSFG | 297 | 50 | 19.5% | 16.8% | 1 |
-| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 297 | 41 | 19.5% | 13.8% | 1 |
-| cat9999aaa/thinshell | 169 | 38 | 0.0% | 22.5% | 1 |
-| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 34 | 29 | 55.9% | 85.3% | 1 |
-| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 152 | 23 | 13.8% | 15.1% | 1 |
-| BasZ4ll/Stable-Diffusion-WebUI | 148 | 19 | 14.2% | 12.8% | 1 |
-| pedrodg28/yuzu-emu | 151 | 19 | 15.2% | 12.6% | 1 |
-| zigabratun/Umbrella-HWID-Tool | 121 | 18 | 6.6% | 14.9% | 1 |
-| arnabchoudhury404/hydra-launcher | 143 | 18 | 14.0% | 12.6% | 1 |
-| python-telegramBot/ai-auto-trading | 21 | 17 | 38.1% | 81.0% | 1 |
-| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 146 | 17 | 13.7% | 11.6% | 1 |
-| DEV-OCR/polymarket-arbitrage-trading-bot | 22 | 16 | 40.9% | 72.7% | 1 |
-| POLYMARKET-TRADER-LAB/Polymarket-trading-bot | 24 | 16 | 37.5% | 66.7% | 1 |
-| cdanielc293/Jenny-Mod-All-Versions | 120 | 16 | 7.5% | 13.3% | 1 |
-| ZhuLinsen/daily_stock_analysis | 265 | 16 | 0.0% | 6.0% | 1 |
-| thinkpixelIab/polymarket-ai-trading | 19 | 15 | 36.8% | 78.9% | 1 |
+| Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
+|------|----------|-------------|--------------|------------|-----------|----------|---------|
+| DuskMosquito/Lossless-Scaling-Desktop-2026 | 299 | 155 | 0.0% | 51.8% | 1 | complete | -- |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
+| pro-tech-killers/coinbase-trading-bot | 143 | 111 | 65.0% | 77.6% | 1 | complete | -- |
+| haiddrrs/Steam-Tools | 298 | 53 | 20.8% | 17.8% | 1 | complete | -- |
+| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 299 | 52 | 21.4% | 17.4% | 1 | complete | -- |
+| dex-original/okx-agent-trade-kit | 59 | 51 | 54.2% | 86.4% | 1 | complete | -- |
+| pro-tech-killers/binance-trading-bot | 60 | 51 | 53.3% | 85.0% | 1 | complete | -- |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 298 | 51 | 20.8% | 17.1% | 1 | complete | -- |
+| xw7872081123/wallpaper-engine-steam | 298 | 50 | 19.5% | 16.8% | 1 | complete | -- |
+| thongthaibm/Lossless-Scaling-LSFG | 297 | 50 | 19.5% | 16.8% | 1 | complete | -- |
+| labelprosecutorwatt/FL-Studio-2026-Full-Cracked-Edition | 297 | 41 | 19.5% | 13.8% | 1 | complete | -- |
+| cat9999aaa/thinshell | 169 | 38 | 0.0% | 22.5% | 1 | complete | -- |
+| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 34 | 29 | 55.9% | 85.3% | 1 | complete | -- |
+| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 152 | 23 | 13.8% | 15.1% | 1 | complete | -- |
+| BasZ4ll/Stable-Diffusion-WebUI | 148 | 19 | 14.2% | 12.8% | 1 | complete | -- |
+| pedrodg28/yuzu-emu | 151 | 19 | 15.2% | 12.6% | 1 | complete | -- |
+| zigabratun/Umbrella-HWID-Tool | 121 | 18 | 6.6% | 14.9% | 1 | complete | -- |
+| arnabchoudhury404/hydra-launcher | 143 | 18 | 14.0% | 12.6% | 1 | complete | -- |
+| python-telegramBot/ai-auto-trading | 21 | 17 | 38.1% | 81.0% | 1 | complete | -- |
+| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 146 | 17 | 13.7% | 11.6% | 1 | complete | -- |
+| DEV-OCR/polymarket-arbitrage-trading-bot | 22 | 16 | 40.9% | 72.7% | 1 | complete | -- |
+| POLYMARKET-TRADER-LAB/Polymarket-trading-bot | 24 | 16 | 37.5% | 66.7% | 1 | complete | -- |
+| cdanielc293/Jenny-Mod-All-Versions | 120 | 16 | 7.5% | 13.3% | 1 | complete | -- |
+| ZhuLinsen/daily_stock_analysis | 265 | 16 | 0.0% | 6.0% | 1 | complete | -- |
+| thinkpixelIab/polymarket-ai-trading | 19 | 15 | 36.8% | 78.9% | 1 | complete | -- |
 <!-- REPO_STATS:END -->
 
 ---
@@ -210,9 +212,12 @@ All findings are committed to [`data/suspects.jsonl`](data/suspects.jsonl) and [
   "known_likely_fake": 27,
   "known_likely_fake_ratio": 0.310,
   "repeat_offenders": 11,
+  "allowlisted_excluded": 3,
   "fakeness_ratio": 0.713,
   "classification": "likely_fake",
   "campaign_count": 3,
+  "discovery_sources": ["github_search_recent", "reddit_osinttools"],
+  "event_sample_complete": false,
   "scan_date": "2026-05-17"
 }
 ```
@@ -348,6 +353,7 @@ phantomstars/
 ## Limitations and known failure modes
 
 - **Events API cap:** maximum 300 recent events per repo. Repos with thousands of stars in a day have partial coverage.
+- **Coverage flag:** repos that hit the 300-event cap are marked as `capped` in reports and dashboards; ratios on those repos are conservative samples, not full-day counts.
 - **Search index lag:** GitHub's search index is eventually consistent. Repos created seconds before the scan boundary may be missed.
 - **Heuristic drift:** Bot operators adapt. Score weights may require periodic tuning; adjust constants in `config.py`.
 - **Individual false positives:** A new developer with a sparse profile scores 0.75+ in isolation. Campaign membership is the high-confidence signal.
@@ -363,7 +369,7 @@ If your account appears in `data/suspects.jsonl` and you believe it is incorrect
 
 1. Find your entry: `jq 'select(.login == "YOUR_LOGIN")' data/suspects.jsonl`
 2. [Open a false positive issue](../../issues/new?template=false_positive.yml) with your login, classification, scan date, and explanation
-3. Reports are reviewed manually. Verified false positives are added to `data/allowlist.txt` and excluded from all future scans.
+3. Reports are reviewed manually. Verified false positives are added to `data/allowlist.txt` and excluded from all future scans, repo ratios, and issue notifications.
 
 Note: opening an issue does not modify or remove any existing data. The suspects ledger is append-only. The allowlist only affects future scans.
 

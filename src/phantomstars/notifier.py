@@ -33,6 +33,14 @@ def _scan_window_label(report: RepoReport) -> str:
     return f"{LOOKBACK_HOURS} h window"
 
 
+def _coverage_label(report: RepoReport) -> str:
+    if report.analysis_mode == LIFETIME_ANALYSIS_MODE:
+        return "complete"
+    if report.event_sample_complete:
+        return "complete"
+    return "capped by the recent-events API limit (300 events)"
+
+
 def _suspect_table(suspects: list[SuspicionScore]) -> str:
     top = sorted(suspects, key=lambda s: s.composite, reverse=True)[:_SUSPECT_TABLE_LIMIT]
     header = (
@@ -90,8 +98,11 @@ targeting this repository.
 | Suspicious | {report.suspicious} |
 | Previously seen likely fake | {known_fake} |
 | Repeat offenders | {report.repeat_offenders} |
+| Allowlisted accounts excluded | {report.allowlisted_excluded} |
 | Campaigns detected | {report.campaign_count} |
 | Analysis mode | `{report.analysis_mode}` |
+| Discovery sources | {", ".join(report.discovery_sources) or "--"} |
+| Event coverage | {_coverage_label(report)} |
 | Repo classification | `{report.classification}` |
 
 ### Campaigns
@@ -106,6 +117,7 @@ targeting this repository.
 
 > **All findings are probabilistic indicators, not accusations. False positives exist.**
 > Individual accounts should be treated as suspicious signals, not confirmed fake actors.
+> Repo-level counts in this report exclude accounts present on the current false-positive allowlist.
 >
 > Automated scan by
 > [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
@@ -130,7 +142,10 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
 | Suspicious | {report.suspicious} |
 | Previously seen likely fake | {known_fake} |
 | Repeat offenders | {report.repeat_offenders} |
+| Allowlisted accounts excluded | {report.allowlisted_excluded} |
 | Campaigns | {report.campaign_count} |
+| Discovery sources | {", ".join(report.discovery_sources) or "--"} |
+| Event coverage | {_coverage_label(report)} |
 
 {_suspect_table(suspects)}
 """
