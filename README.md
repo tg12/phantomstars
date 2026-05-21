@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-21 | 1981 | 348 | 1633 | 25 | 277 |
 | 2026-05-20 | 1613 | 268 | 1345 | 23 | 163 |
 | 2026-05-19 | 5463 | 630 | 4121 | 67 | 442 |
 | 2026-05-18 | 8838 | 670 | 7950 | 128 | 340 |
@@ -124,31 +125,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| bishopscode/Yoshi-and-the-Mysterious-Book-PC | 300 | 55 | 22.7% | 18.3% | 1 | capped | github_search_recent |
-| SalhaNabil/CloakBrowser | 300 | 55 | 23.0% | 18.3% | 1 | capped | github_search_recent |
-| littlefrogyq/UE4SS-Subnautica-2 | 297 | 52 | 20.2% | 17.5% | 1 | complete | github_search_recent |
-| nhutdang198/AI-Final-fantasy-6-remake | 300 | 51 | 22.0% | 17.0% | 1 | capped | github_search_recent |
-| Glazenovatag/hyperliquid-whale-order-tracking | 296 | 50 | 18.6% | 16.9% | 1 | complete | github_search_recent |
-| pro-tech-killers/coinbase-trading-bot | 46 | 35 | 56.5% | 76.1% | 1 | complete | github_search_recent |
-| Dangerous-hole/Pumpfun_AI_Trading_Bot | 45 | 34 | 55.6% | 75.6% | 1 | complete | github_search_recent |
-| xw7872081123/wallpaper-engine-steam | 157 | 29 | 8.9% | 18.5% | 1 | complete | github_search_recent |
-| haiddrrs/Steam-Tools | 158 | 27 | 10.8% | 17.1% | 1 | complete | github_search_recent |
-| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 166 | 27 | 10.2% | 16.3% | 1 | complete | github_search_recent |
-| thongthaibm/Lossless-Scaling-LSFG | 160 | 26 | 6.2% | 16.3% | 1 | complete | github_search_recent |
-| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 164 | 25 | 11.0% | 15.2% | 1 | complete | github_search_recent |
-| pro-tech-killers/binance-trading-bot | 32 | 23 | 46.9% | 71.9% | 1 | complete | github_search_recent |
-| dex-original/okx-agent-trade-kit | 33 | 23 | 45.5% | 69.7% | 1 | complete | github_search_recent |
-| heyFive-dev/Polymarket-Arbitrage-Trading-Bot-v2 | 33 | 23 | 60.6% | 69.7% | 1 | complete | github_search_recent |
-| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 109 | 20 | 8.3% | 18.3% | 1 | complete | github_search_recent |
-| BasZ4ll/Stable-Diffusion-WebUI | 115 | 20 | 7.0% | 17.4% | 1 | complete | github_search_recent |
-| trading-2028/polymarket-ai-trading | 24 | 18 | 41.7% | 75.0% | 1 | complete | github_search_recent |
-| arbitrageBot-group/Polymarket-trading-bot | 28 | 18 | 35.7% | 64.3% | 1 | complete | github_search_recent |
-| arnabchoudhury404/hydra-launcher | 108 | 18 | 6.5% | 16.7% | 1 | complete | github_search_recent |
-| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 108 | 17 | 4.6% | 15.7% | 1 | complete | github_search_recent |
-| Multichain-Bot-Lab/polymarket-copy-trading-bot | 17 | 16 | 70.6% | 94.1% | 1 | complete | github_search_recent |
-| pedrodg28/yuzu-emu | 113 | 16 | 6.2% | 14.2% | 1 | complete | github_search_recent |
-| microsoft/ai-agents-for-beginners | 289 | 14 | 0.3% | 4.8% | 1 | capped | github_trending |
-| POLYMARKET-TRADER-LAB/Polymarket-trading-bot | 18 | 13 | 38.9% | 72.2% | 1 | complete | github_search_recent |
+| CylinderChairman/aida64 | 298 | 56 | 21.8% | 18.8% | 1 | complete | github_search_recent |
+| uktrash/LSFG-Desktop | 300 | 53 | 20.3% | 17.7% | 1 | capped | github_search_recent |
+| MFS9628/Deepseek-v4-pro-app | 299 | 52 | 22.1% | 17.4% | 1 | complete | github_search_recent |
+| rahul03524/YellowKey-Bitlocker | 298 | 51 | 21.8% | 17.1% | 1 | complete | github_search_recent |
+| AppleOnFire/JennyMod-All-Versions | 297 | 50 | 21.5% | 16.8% | 1 | complete | github_search_recent |
+| ZettPW/KMSTools | 297 | 49 | 19.2% | 16.5% | 1 | complete | github_search_recent |
+| texsellix/polymarket-trading-bot | 269 | 47 | 21.6% | 17.5% | 1 | complete | github_search_recent |
+| cat9999aaa/thinshell | 123 | 42 | 1.6% | 34.1% | 1 | complete | github_search_recent |
+| littlefrogyq/UE4SS-Subnautica-2 | 157 | 34 | 13.4% | 21.7% | 1 | complete | github_search_recent |
+| SalhaNabil/CloakBrowser | 165 | 34 | 13.3% | 20.6% | 1 | complete | github_search_recent |
+| D7EAD/mkPIVM | 239 | 34 | 0.0% | 14.2% | 1 | complete | github_search_recent |
+| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 96 | 32 | 9.4% | 33.3% | 1 | complete | github_search_recent |
+| xw7872081123/wallpaper-engine-steam | 101 | 31 | 7.9% | 30.7% | 1 | complete | github_search_recent |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 129 | 30 | 7.0% | 23.3% | 1 | complete | github_search_recent |
+| haiddrrs/Steam-Tools | 100 | 29 | 10.0% | 29.0% | 1 | complete | github_search_recent |
+| Glazenovatag/hyperliquid-whale-order-tracking | 129 | 29 | 11.6% | 22.5% | 1 | complete | github_search_recent |
+| arnabchoudhury404/hydra-launcher | 93 | 28 | 6.5% | 30.1% | 1 | complete | github_search_recent |
+| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 121 | 28 | 7.4% | 23.1% | 1 | complete | github_search_recent |
+| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 92 | 27 | 5.4% | 29.3% | 1 | complete | github_search_recent |
+| internetkafe/vpnhostinglist | 206 | 27 | 21.4% | 13.1% | 1 | complete | github_search_recent |
+| BasZ4ll/Stable-Diffusion-WebUI | 95 | 24 | 5.3% | 25.3% | 1 | complete | github_search_recent |
+| pro-tech-killers/coinbase-trading-bot | 21 | 18 | 33.3% | 85.7% | 1 | complete | github_search_recent |
+| Dangerous-hole/Pumpfun_AI_Trading_Bot | 22 | 18 | 31.8% | 81.8% | 1 | complete | github_search_recent |
+| Multichain-Bot-Lab/polymarket-trading-bot | 23 | 15 | 26.1% | 65.2% | 1 | complete | github_search_recent |
+| money-takers/polymarket-arbitrage-trading-bot | 21 | 14 | 33.3% | 66.7% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
