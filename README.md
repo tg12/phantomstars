@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-23 | 2548 | 426 | 2122 | 43 | 317 |
 | 2026-05-22 | 2318 | 340 | 1978 | 47 | 247 |
 | 2026-05-21 | 1981 | 348 | 1633 | 25 | 277 |
 | 2026-05-20 | 1613 | 268 | 1345 | 23 | 163 |
@@ -126,31 +127,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| jazzband/web3-devkit-cli | 139 | 63 | 68.3% | 45.3% | 1 | complete | github_search_recent |
-| LUPUL64348/NTE-cheat | 274 | 31 | 17.2% | 11.3% | 1 | complete | github_search_recent |
-| Boob025/peace-equalizer-APO | 219 | 25 | 17.4% | 11.4% | 1 | complete | github_search_recent |
-| uktrash/LSFG-Desktop | 130 | 24 | 14.6% | 18.5% | 1 | complete | github_search_recent |
-| AresLeVrai/celestial-launcher-releases | 217 | 24 | 17.1% | 11.1% | 1 | complete | github_search_recent |
-| BlueSharks-apps/Gemini-app-windows | 222 | 24 | 16.7% | 10.8% | 1 | complete | github_search_recent |
-| mrgummy007/Yoshi-pc | 218 | 23 | 16.5% | 10.6% | 1 | complete | github_search_recent |
-| ZettPW/KMSTools | 129 | 21 | 16.3% | 16.3% | 1 | complete | github_search_recent |
-| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 86 | 20 | 2.3% | 23.3% | 1 | complete | github_search_recent |
-| CylinderChairman/aida64 | 126 | 20 | 13.5% | 15.9% | 1 | complete | github_search_recent |
-| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 84 | 18 | 2.4% | 21.4% | 1 | complete | github_search_recent |
-| Code-Leafy/G2rayXCodeLeafy | 43 | 16 | 2.3% | 37.2% | 1 | complete | github_search_recent |
-| xw7872081123/wallpaper-engine-steam | 81 | 16 | 2.5% | 19.8% | 1 | complete | github_search_recent |
-| littlefrogyq/UE4SS-Subnautica-2 | 98 | 16 | 7.1% | 16.3% | 1 | complete | github_search_recent |
-| BasZ4ll/Stable-Diffusion-WebUI | 63 | 15 | 0.0% | 23.8% | 1 | complete | github_search_recent |
-| arnabchoudhury404/hydra-launcher | 68 | 15 | 0.0% | 22.1% | 1 | complete | github_search_recent |
-| haiddrrs/Steam-Tools | 83 | 15 | 2.4% | 18.1% | 1 | complete | github_search_recent |
-| SalhaNabil/CloakBrowser | 106 | 15 | 9.4% | 14.2% | 1 | complete | github_search_recent |
-| Sunislazi/rbxfpsunlocker-boost-More-240FPS | 66 | 14 | 1.5% | 21.2% | 1 | complete | github_search_recent |
-| Flizorules05/ROM-MGBA-Pokemon-Emulator-PC | 68 | 14 | 0.0% | 20.6% | 1 | complete | github_search_recent |
-| ZypherHQ/agent-orchestration-skill | 58 | 13 | 0.0% | 22.4% | 2 | complete | github_search_recent |
-| trimstray/the-book-of-secret-knowledge | 285 | 13 | 0.0% | 4.6% | 1 | complete | github_trending |
-| truelockmc/streambert | 288 | 13 | 0.3% | 4.5% | 1 | complete | github_trending |
-| obra/superpowers | 292 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
-| nikvpn-iran/nikvpn-codespace | 49 | 12 | 0.0% | 24.5% | 2 | complete | github_search_recent |
+| 0xSynX/pumpfun-bundler-pump.fun-bundler-bonkfun-bundler-bonk.fun-bundler-solana-token-bundler | 137 | 53 | 67.2% | 38.7% | 1 | complete | github_search_recent |
+| edgenuitybot/exodusbot | 256 | 49 | 9.8% | 19.1% | 1 | complete | github_search_recent |
+| PredictiveFlow-Labs/polymarket-arbitrage-bot | 116 | 47 | 53.4% | 40.5% | 1 | complete | github_search_recent |
+| chefkannofriend-source/lcb-baker-agent | 80 | 46 | 0.0% | 57.5% | 1 | complete | github_search_recent |
+| Polymarket-Trading-kit/sports-trading-bot | 100 | 43 | 69.0% | 43.0% | 1 | complete | github_search_recent |
+| jazzband/web3-devkit-cli | 87 | 32 | 29.9% | 36.8% | 1 | complete | github_search_recent |
+| Frank-Masciopinto/no-kings | 158 | 26 | 5.1% | 16.5% | 1 | complete | github_search_recent |
+| Polymarket-Trading-kit/crypto-trading-bot | 50 | 24 | 58.0% | 48.0% | 1 | capped | github_search_recent |
+| judithsulfan/trading-bot | 128 | 24 | 32.0% | 18.8% | 1 | capped | github_search_recent |
+| trimstray/the-book-of-secret-knowledge | 296 | 24 | 0.3% | 8.1% | 1 | capped | github_trending |
+| Satomoit/LCE-Emerald-Launcher | 168 | 18 | 12.5% | 10.7% | 1 | complete | github_search_recent |
+| ruvnet/RuView | 271 | 18 | 0.4% | 6.6% | 1 | complete | github_trending |
+| littlefrogyq/UE4SS-Subnautica-2 | 58 | 17 | 10.3% | 29.3% | 1 | complete | github_search_recent |
+| Qwilxy/paralives-release | 154 | 17 | 13.0% | 11.0% | 1 | complete | github_search_recent |
+| aayan555/DS4Windows | 164 | 17 | 12.2% | 10.4% | 1 | complete | github_search_recent |
+| ShinyaTomitsuka/arbitrage-trading-bot | 53 | 16 | 52.8% | 30.2% | 1 | capped | github_search_recent |
+| haiddrrs/Steam-Tools | 57 | 16 | 7.0% | 28.1% | 1 | complete | github_search_recent |
+| SalhaNabil/CloakBrowser | 58 | 16 | 12.1% | 27.6% | 1 | complete | github_search_recent |
+| CEOHarvey242/cheat-engine-7.5 | 163 | 16 | 12.3% | 9.8% | 1 | complete | github_search_recent |
+| testerlingcodo/gemini-antigravity-cli | 170 | 16 | 12.4% | 9.4% | 1 | complete | github_search_recent |
+| AbhishekK130804/Claude-Mythos-AI-Anthropic-App | 58 | 14 | 5.2% | 24.1% | 1 | complete | github_search_recent |
+| WUBING2023/PaperSpine | 133 | 14 | 1.5% | 10.5% | 2 | complete | github_search_recent |
+| xw7872081123/wallpaper-engine-steam | 51 | 13 | 5.9% | 25.5% | 1 | complete | github_search_recent |
+| ZoyaMalhotra/DualSenseX-DSX-Steam-Edition | 54 | 13 | 3.7% | 24.1% | 1 | complete | github_search_recent |
+| ZettPW/KMSTools | 66 | 13 | 15.2% | 19.7% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
