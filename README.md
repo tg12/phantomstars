@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-26 | 1930 | 236 | 1694 | 43 | 190 |
 | 2026-05-25 | 1526 | 214 | 1312 | 32 | 158 |
 | 2026-05-24 | 2170 | 358 | 1812 | 39 | 265 |
 | 2026-05-23 | 2548 | 426 | 2122 | 43 | 317 |
@@ -129,31 +130,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| bakkesmodrocketleague/bakkesmod | 186 | 49 | 23.1% | 26.3% | 1 | complete | github_search_recent |
-| lce-emerald-launcher/LCE-Emerald-Launcher | 183 | 47 | 22.4% | 25.7% | 1 | complete | github_search_recent |
-| XboxMode/Windows-Xbox-Mode | 184 | 47 | 22.3% | 25.5% | 1 | complete | github_search_recent |
-| heroicgameslauncher/HeroicGamesLauncher | 177 | 46 | 22.0% | 26.0% | 1 | complete | github_search_recent |
-| osu-lazer-download/osu-lazer | 189 | 46 | 21.7% | 24.3% | 1 | complete | github_search_recent |
-| Astraltenprosper/uncensored-ai-image-video-generator | 127 | 37 | 20.5% | 29.1% | 1 | complete | github_search_recent |
-| ensigncocoonenergy/Undown-tool | 108 | 32 | 23.1% | 29.6% | 1 | complete | github_search_recent |
-| RayceAnderson/tomodachi-pc | 139 | 26 | 10.8% | 18.7% | 1 | complete | github_search_recent |
-| 6537445/jenny-mod-minecraft- | 128 | 25 | 14.1% | 19.5% | 1 | complete | github_search_recent |
-| wallpapers-engine/Wallpaper-Engine | 129 | 25 | 13.2% | 19.4% | 1 | complete | github_search_recent |
-| mikaeldengale-cloud/Deepseek-v4-Pro-App | 135 | 25 | 11.1% | 18.5% | 1 | complete | github_search_recent |
-| Mclisterjoeh2o/yellowkey-bitlocker | 142 | 24 | 10.6% | 16.9% | 1 | complete | github_search_recent |
-| Biplobsarker/Umbrella-HWID | 98 | 20 | 15.3% | 20.4% | 1 | complete | github_search_recent |
-| testerlingcodo/gemini-antigravity-cli | 116 | 13 | 9.5% | 11.2% | 1 | complete | github_search_recent |
-| dotnet/skills | 238 | 13 | 0.4% | 5.5% | 1 | complete | github_trending |
-| aayan555/DS4Windows | 116 | 12 | 9.5% | 10.3% | 1 | complete | github_search_recent |
-| shiyu-coder/Kronos | 238 | 12 | 0.4% | 5.0% | 1 | complete | github_trending |
-| Alishahryar1/free-claude-code | 287 | 12 | 0.0% | 4.2% | 1 | complete | github_trending |
-| resonancegnatassess/Lossless-Scaling | 83 | 11 | 13.3% | 13.3% | 1 | complete | github_search_recent |
-| Qwilxy/paralives-release | 108 | 11 | 8.3% | 10.2% | 1 | complete | github_search_recent |
-| CEOHarvey242/cheat-engine-7.5 | 122 | 11 | 9.0% | 9.0% | 1 | complete | github_search_recent |
-| 666ghj/MiroFish | 289 | 11 | 0.0% | 3.8% | 1 | complete | github_trending |
-| Satomoit/LCE-Emerald-Launcher | 69 | 10 | 15.9% | 14.5% | 1 | complete | github_search_recent |
-| ShinyaTomitsuka/arbitrage-trading-bot | 30 | 9 | 56.7% | 30.0% | 1 | complete | github_search_recent |
-| Polymarket-Trading-kit/crypto-trading-bot | 42 | 9 | 76.2% | 21.4% | 1 | complete | github_search_recent |
+| lceminecraft-launcher/LCE-Emerald-Launcher | 119 | 46 | 10.1% | 38.7% | 1 | complete | github_search_recent |
+| Monke-Manager/MonkeModManager | 108 | 44 | 11.1% | 40.7% | 1 | complete | github_search_recent |
+| OldenEraTemplateGenerator/Olden-Era-Template-Generator | 112 | 44 | 10.7% | 39.3% | 1 | complete | github_search_recent |
+| osulazerdownload/osulazer | 115 | 44 | 10.4% | 38.3% | 1 | complete | github_search_recent |
+| 007FirstLight/007-First-Light-Release | 107 | 42 | 11.2% | 39.3% | 1 | complete | github_search_recent |
+| HeroicLauncher/HeroicGamesLauncher | 77 | 39 | 16.9% | 50.6% | 1 | complete | github_search_recent |
+| veryyoldman/Genspark-AI | 68 | 35 | 17.6% | 51.5% | 1 | complete | github_search_recent |
+| moeru-ai/airi | 285 | 29 | 0.4% | 10.2% | 1 | complete | github_trending |
+| Mclisterjoeh2o/yellowkey-bitlocker | 117 | 22 | 10.3% | 18.8% | 1 | complete | github_search_recent |
+| mikaeldengale-cloud/Deepseek-v4-Pro-App | 109 | 21 | 11.0% | 19.3% | 1 | complete | github_search_recent |
+| RayceAnderson/tomodachi-pc | 110 | 21 | 10.9% | 19.1% | 1 | complete | github_search_recent |
+| 6537445/jenny-mod-minecraft- | 101 | 20 | 11.9% | 19.8% | 1 | complete | github_search_recent |
+| Novaquant-labs/hyperliquid-trading-bot | 73 | 19 | 69.9% | 26.0% | 1 | capped | github_search_recent |
+| SigmaTradeLabs/aster-bot | 73 | 19 | 71.2% | 26.0% | 1 | capped | github_search_recent |
+| Astraltenprosper/uncensored-ai-image-video-generator | 86 | 18 | 14.0% | 20.9% | 1 | complete | github_search_recent |
+| wallpapers-engine/Wallpaper-Engine | 100 | 17 | 11.0% | 17.0% | 1 | complete | github_search_recent |
+| NanoFlow-io/engram | 112 | 17 | 16.1% | 15.2% | 1 | complete | github_search_recent |
+| ensigncocoonenergy/Undown-tool | 76 | 15 | 13.2% | 19.7% | 1 | complete | github_search_recent |
+| Biplobsarker/Umbrella-HWID | 81 | 15 | 14.8% | 18.5% | 1 | complete | github_search_recent |
+| resonancegnatassess/Lossless-Scaling | 74 | 13 | 14.9% | 17.6% | 1 | complete | github_search_recent |
+| anthropics/claude-cookbooks | 287 | 13 | 0.3% | 4.5% | 1 | complete | github_trending |
+| Qwilxy/paralives-release | 64 | 11 | 17.2% | 17.2% | 1 | complete | github_search_recent |
+| CylinderChairman/aida64 | 45 | 9 | 8.9% | 20.0% | 1 | complete | github_search_recent |
+| mukul975/Anthropic-Cybersecurity-Skills | 293 | 9 | 0.3% | 3.1% | 1 | complete | github_trending |
+| md0070/polymarket-trading-bot | 38 | 8 | 31.6% | 21.1% | 1 | capped | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
