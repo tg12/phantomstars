@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-27 | 2193 | 560 | 1633 | 32 | 491 |
 | 2026-05-26 | 1930 | 236 | 1694 | 43 | 190 |
 | 2026-05-25 | 1526 | 214 | 1312 | 32 | 158 |
 | 2026-05-24 | 2170 | 358 | 1812 | 39 | 265 |
@@ -130,31 +131,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| lceminecraft-launcher/LCE-Emerald-Launcher | 119 | 46 | 10.1% | 38.7% | 1 | complete | github_search_recent |
-| Monke-Manager/MonkeModManager | 108 | 44 | 11.1% | 40.7% | 1 | complete | github_search_recent |
-| OldenEraTemplateGenerator/Olden-Era-Template-Generator | 112 | 44 | 10.7% | 39.3% | 1 | complete | github_search_recent |
-| osulazerdownload/osulazer | 115 | 44 | 10.4% | 38.3% | 1 | complete | github_search_recent |
-| 007FirstLight/007-First-Light-Release | 107 | 42 | 11.2% | 39.3% | 1 | complete | github_search_recent |
-| HeroicLauncher/HeroicGamesLauncher | 77 | 39 | 16.9% | 50.6% | 1 | complete | github_search_recent |
-| veryyoldman/Genspark-AI | 68 | 35 | 17.6% | 51.5% | 1 | complete | github_search_recent |
-| moeru-ai/airi | 285 | 29 | 0.4% | 10.2% | 1 | complete | github_trending |
-| Mclisterjoeh2o/yellowkey-bitlocker | 117 | 22 | 10.3% | 18.8% | 1 | complete | github_search_recent |
-| mikaeldengale-cloud/Deepseek-v4-Pro-App | 109 | 21 | 11.0% | 19.3% | 1 | complete | github_search_recent |
-| RayceAnderson/tomodachi-pc | 110 | 21 | 10.9% | 19.1% | 1 | complete | github_search_recent |
-| 6537445/jenny-mod-minecraft- | 101 | 20 | 11.9% | 19.8% | 1 | complete | github_search_recent |
-| Novaquant-labs/hyperliquid-trading-bot | 73 | 19 | 69.9% | 26.0% | 1 | capped | github_search_recent |
-| SigmaTradeLabs/aster-bot | 73 | 19 | 71.2% | 26.0% | 1 | capped | github_search_recent |
-| Astraltenprosper/uncensored-ai-image-video-generator | 86 | 18 | 14.0% | 20.9% | 1 | complete | github_search_recent |
-| wallpapers-engine/Wallpaper-Engine | 100 | 17 | 11.0% | 17.0% | 1 | complete | github_search_recent |
-| NanoFlow-io/engram | 112 | 17 | 16.1% | 15.2% | 1 | complete | github_search_recent |
-| ensigncocoonenergy/Undown-tool | 76 | 15 | 13.2% | 19.7% | 1 | complete | github_search_recent |
-| Biplobsarker/Umbrella-HWID | 81 | 15 | 14.8% | 18.5% | 1 | complete | github_search_recent |
-| resonancegnatassess/Lossless-Scaling | 74 | 13 | 14.9% | 17.6% | 1 | complete | github_search_recent |
-| anthropics/claude-cookbooks | 287 | 13 | 0.3% | 4.5% | 1 | complete | github_trending |
-| Qwilxy/paralives-release | 64 | 11 | 17.2% | 17.2% | 1 | complete | github_search_recent |
-| CylinderChairman/aida64 | 45 | 9 | 8.9% | 20.0% | 1 | complete | github_search_recent |
-| mukul975/Anthropic-Cybersecurity-Skills | 293 | 9 | 0.3% | 3.1% | 1 | complete | github_trending |
-| md0070/polymarket-trading-bot | 38 | 8 | 31.6% | 21.1% | 1 | capped | github_search_recent |
+| matildagrahamgraham5131/FN-Panel-D-M-A-2026 | 246 | 246 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| brulagi731069/Warzone-2026-DMA-Version | 246 | 246 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| cortneymanieri50677828029/RBX-Executor-Version-2026 | 246 | 246 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| harrietteehisqu7759383/kms-pico-latest-april-2026 | 245 | 245 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| terry4369mika0464/CCLean-Latest-2026 | 245 | 245 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| martawewqc7692530/MineCraft-Collection-C-Client | 244 | 244 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| hallieongibson4690/R6S-D-M-A-2026 | 244 | 244 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| anjelisembiring651624/Lossless-Scaling-Util-V2.0 | 187 | 183 | 0.0% | 97.9% | 1 | complete | github_search_recent |
+| palmaregner3119896/cybaS3-V26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| chiekomoroni5289/cinema-4D-Ver26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| terraboleyn8685/obsid-ianPR26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| cirakoglugunesdogdu6888/real-tek-bluetooth-driverV3 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| grinsteadileen1660/ffxIV-V26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| tarenbodda2423/Acunetix-AV-2026-Latest-v2 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| agalkayaadmc7707/gran-turismo-V26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| shanklesarmanda8338/rem0-repa1r-VQ12 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| chungtorrie8731/bmw-idr1ve-V254 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| donettenin92933416461/cl1pstud1opa1nt-v3 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| ozgurcirkin882756/intelarc-graphicV32 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| lolagnerachelle0330/L0L-Vers26-L-O-L | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| belleherrara0525/Voidstrap-EnG26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| keiperdarcie4222/MWA-2026-Office-Word | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| donettenin92933416461/cl1pstud1opa1nt-v2 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| zarifoglunil8190/sibel1us-vers26 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| faustinasailor24402/f1nger-pr1nt-readerV2 | 140 | 140 | 0.0% | 100.0% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
