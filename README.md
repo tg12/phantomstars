@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-05-29 | 2838 | 733 | 2105 | 42 | 369 |
 | 2026-05-28 | 2748 | 694 | 2054 | 39 | 396 |
 | 2026-05-27 | 2193 | 560 | 1633 | 32 | 491 |
 | 2026-05-26 | 1930 | 236 | 1694 | 43 | 190 |
@@ -132,31 +133,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| tanekaverd64170803960/Lossless-Scaling-Util-V3.0 | 232 | 231 | 79.7% | 99.6% | 2 | complete | github_search_recent |
-| soumyagrawall/CMS | 100 | 64 | 0.0% | 64.0% | 2 | complete | github_search_recent |
-| ace-trump-tech/DeltaForce-OBS-Locker | 136 | 54 | 0.0% | 39.7% | 1 | complete | github_search_recent |
-| Szili1994/create-aeronautics-minecraft-mod | 118 | 53 | 46.6% | 44.9% | 1 | complete | github_search_recent |
-| Noahmusahdevs/roblox-account-manager | 120 | 53 | 47.5% | 44.2% | 1 | complete | github_search_recent |
-| oyunhacktr/Windows-Xbox-Mode | 115 | 50 | 46.1% | 43.5% | 1 | complete | github_search_recent |
-| Bartates/lunar-client-minecraft | 112 | 49 | 46.4% | 43.8% | 1 | complete | github_search_recent |
-| Harkirat1462/claude-code-cli | 113 | 49 | 46.9% | 43.4% | 1 | complete | github_search_recent |
-| AadarshSoni24/Lumora | 80 | 47 | 0.0% | 58.8% | 2 | complete | github_search_recent |
-| Signal-Market-Engine/polymarket-arbitrage-trading-bot | 142 | 36 | 71.8% | 25.4% | 1 | complete | github_search_recent |
-| PolyMomentum/polymarket-momentum-mispricing-bot | 130 | 33 | 70.0% | 25.4% | 1 | complete | github_search_recent |
-| ikeda042/PhenoPixel | 194 | 28 | 20.6% | 14.4% | 1 | complete | github_search_recent |
-| Bhojendra-dev/LSFG-Desktop | 74 | 23 | 23.0% | 31.1% | 1 | complete | github_search_recent |
-| zhristophe/Claude-Mythos-AI-Anthropic-App | 71 | 22 | 23.9% | 31.0% | 1 | complete | github_search_recent |
-| Stellarwolf001/forza-horizon-6-spotify-radio | 72 | 22 | 23.6% | 30.6% | 1 | complete | github_search_recent |
-| Dharyen/ryujinx-emu | 70 | 21 | 22.9% | 30.0% | 1 | complete | github_search_recent |
-| PolyMomentum/polymarket-btc-5min-15min-arbitrage-trading-bot | 119 | 20 | 49.6% | 16.8% | 1 | complete | github_search_recent |
-| SigmaTradeLabs/aster-bot | 62 | 19 | 56.5% | 30.6% | 1 | complete | github_search_recent |
-| Novaquant-labs/hyperliquid-trading-bot | 63 | 19 | 57.1% | 30.2% | 1 | complete | github_search_recent |
-| moeru-ai/airi | 214 | 19 | 0.5% | 8.9% | 1 | complete | github_trending |
-| neuralCPL/polymarket-trading-bot | 55 | 17 | 61.8% | 30.9% | 1 | complete | github_search_recent |
-| 5-m0cftvuvif/stake-monthly | 95 | 16 | 17.9% | 16.8% | 1 | complete | github_search_recent |
-| ensigncocoonenergy/Undown-tool | 48 | 15 | 14.6% | 31.2% | 1 | complete | github_search_recent |
-| lceminecraft-launcher/LCE-Emerald-Launcher | 51 | 15 | 9.8% | 29.4% | 1 | complete | github_search_recent |
-| veryyoldman/Genspark-AI | 56 | 14 | 7.1% | 25.0% | 1 | complete | github_search_recent |
+| deckerpaislee89916/AI-Voice-Mod-Pro-Studio-2 | 202 | 202 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| toridawson1907244/XVapeV4-Client-2026 | 202 | 202 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| manuelageske58246958801/DeepFake-AI-2026-RealTime | 202 | 202 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| lawson8451jour1871/FL-Product-Version-26 | 202 | 202 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| beykantemel0702azfy8144/WorpGPT-Latest-2026-AllPrompts | 203 | 202 | 98.0% | 99.5% | 1 | complete | github_search_recent |
+| alfiyahkamilah1239298/WallpaperDownloader-26 | 300 | 202 | 66.3% | 67.3% | 1 | capped | github_search_recent |
+| jackquelineheth08161673473/discord-server-booster-2 | 201 | 201 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| odinsalazar964150/Gemini-Pro-Desktop-2026 | 300 | 201 | 66.0% | 67.0% | 1 | capped | github_search_recent |
+| solomondurham854062/Cursor-AI-Pro-Download-2026 | 200 | 200 | 98.5% | 100.0% | 1 | complete | github_search_recent |
+| VtrAha/bybit-trading-bot | 227 | 88 | 75.3% | 38.8% | 1 | complete | github_search_recent |
+| tor-browsers/tor-browser | 143 | 63 | 46.2% | 44.1% | 1 | complete | github_search_recent |
+| Beam-NG-Drive/BeamMP | 134 | 61 | 47.0% | 45.5% | 1 | complete | github_search_recent |
+| Jadoox3/Mina-The-Hollower-Release | 133 | 59 | 47.4% | 44.4% | 1 | complete | github_search_recent |
+| malk190/Romestead-Game-Release | 133 | 59 | 47.4% | 44.4% | 1 | complete | github_search_recent |
+| anthropic-claude-code-ai/free-claude-code-ai-desktop-app | 129 | 58 | 47.3% | 45.0% | 1 | complete | github_search_recent |
+| ace-trump-tech/DeltaForce-OBS-Locker | 142 | 51 | 0.7% | 35.9% | 1 | complete | github_search_recent |
+| metavault-fi/solana-pumpfun-bundler | 93 | 44 | 66.7% | 47.3% | 1 | complete | github_search_recent |
+| Harkirat1462/claude-code-cli | 90 | 40 | 35.6% | 44.4% | 1 | complete | github_search_recent |
+| oyunhacktr/Windows-Xbox-Mode | 85 | 38 | 37.6% | 44.7% | 1 | complete | github_search_recent |
+| Bartates/lunar-client-minecraft | 87 | 36 | 36.8% | 41.4% | 1 | complete | github_search_recent |
+| Noahmusahdevs/roblox-account-manager | 87 | 36 | 33.3% | 41.4% | 1 | complete | github_search_recent |
+| Szili1994/create-aeronautics-minecraft-mod | 84 | 34 | 33.3% | 40.5% | 1 | complete | github_search_recent |
+| zhristophe/Claude-Mythos-AI-Anthropic-App | 73 | 33 | 28.8% | 45.2% | 1 | complete | github_search_recent |
+| Anand9981/NexusCloudGallery | 38 | 31 | 0.0% | 81.6% | 1 | complete | github_search_recent |
+| Dharyen/ryujinx-emu | 69 | 31 | 30.4% | 44.9% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
