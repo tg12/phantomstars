@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-01 | 2490 | 533 | 1957 | 39 | 355 |
 | 2026-05-31 | 2302 | 458 | 1844 | 32 | 280 |
 | 2026-05-30 | 2576 | 530 | 2046 | 20 | 356 |
 | 2026-05-29 | 2838 | 733 | 2105 | 42 | 369 |
@@ -135,31 +136,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| BlackCandleLab/polymarket-trading-bot | 126 | 61 | 69.0% | 48.4% | 1 | complete | github_search_recent |
-| ace-trump-tech/DeltaForce-OBS-Locker | 158 | 60 | 1.9% | 38.0% | 1 | complete | github_search_recent |
-| faldyrd/Auto-2026 | 183 | 58 | 45.9% | 31.7% | 1 | complete | github_search_recent |
-| paralives-free/Paralives-Money-Cheats | 184 | 58 | 45.7% | 31.5% | 1 | complete | github_search_recent |
-| yapeth/MaaNTE | 186 | 58 | 45.2% | 31.2% | 1 | complete | github_search_recent |
-| TaiwanBoss/DualSenseX-Steam-PC-Controller | 186 | 58 | 45.2% | 31.2% | 1 | complete | github_search_recent |
-| veryyoldman/metamask-openclaw | 109 | 38 | 50.5% | 34.9% | 1 | complete | github_search_recent |
-| LawmakerTreasure/deepseek-openclaw | 114 | 38 | 51.8% | 33.3% | 1 | complete | github_search_recent |
-| metanode-trade/hyperliquid-trading-bot | 73 | 37 | 74.0% | 50.7% | 1 | complete | github_search_recent |
-| TYOPxyz/solana-trading-bot | 85 | 37 | 69.4% | 43.5% | 1 | complete | github_search_recent |
-| metanode-trade/asterdex-trading-bot | 69 | 36 | 72.5% | 52.2% | 1 | complete | github_search_recent |
-| apex-dao/limitless-trading-bot | 70 | 30 | 65.7% | 42.9% | 1 | capped | github_search_recent |
-| Signal-Trade-Core/weather-prediction-bot | 76 | 29 | 53.9% | 38.2% | 1 | capped | github_search_recent |
-| Allanlv5324F/Lossless-Scaling-Github | 100 | 22 | 30.0% | 22.0% | 1 | complete | github_search_recent |
-| rasoir0591/Crosshair-X | 97 | 21 | 30.9% | 21.6% | 1 | complete | github_search_recent |
-| 2aronS/Duel-Agents | 79 | 20 | 3.8% | 25.3% | 1 | complete | github_search_recent |
-| yuyefeiyu/yt-downloader | 96 | 20 | 31.2% | 20.8% | 1 | complete | github_search_recent |
-| anthropics/skills | 288 | 18 | 0.3% | 6.2% | 1 | complete | github_trending |
-| osulazerdownload/osulazer | 68 | 15 | 14.7% | 22.1% | 1 | complete | github_search_recent |
-| WaveStoryCourtyard/DiscordFix | 90 | 15 | 24.4% | 16.7% | 1 | complete | github_search_recent |
-| bakkesmodrocketleague/bakkesmod | 62 | 14 | 14.5% | 22.6% | 1 | complete | github_search_recent |
-| MatinSenPai/SenPaiScanner | 247 | 14 | 0.4% | 5.7% | 1 | complete | github_search_recent |
-| lceminecraft-launcher/LCE-Emerald-Launcher | 65 | 13 | 15.4% | 20.0% | 1 | complete | github_search_recent |
-| Beam-NG-Drive/BeamMP | 70 | 13 | 22.9% | 18.6% | 1 | complete | github_search_recent |
-| Jadoox3/Mina-The-Hollower-Release | 70 | 13 | 25.7% | 18.6% | 1 | complete | github_search_recent |
+| BarneyD66/open-warehouse-system | 217 | 85 | 74.2% | 39.2% | 1 | complete | github_search_recent |
+| cochransullivan52536512/LEGO-Batman-Legacy-of-the-Dark-Knight-PC-2026 | 77 | 77 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| rona6314clayt8402/Jenny-Mine-MOD-2026-MoreGirls | 76 | 76 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| elfriedarosner02320114921/Easy-Anime-Downloader-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| zyairpope7277763/RL-AI-Latest | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| sipaaryadi06864/Email-Security-Auditor | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| lilliancrivaro27064501728/AI-Photo-Background-Remover | 76 | 74 | 0.0% | 97.4% | 1 | complete | github_search_recent |
+| optiscalerclient/optiscaler-client | 191 | 62 | 45.0% | 32.5% | 1 | complete | github_search_recent |
+| docker-desktop-windows/docker-desktop | 192 | 62 | 46.4% | 32.3% | 1 | complete | github_search_recent |
+| slippilaucnherapp/slippi-launcher | 185 | 60 | 45.9% | 32.4% | 1 | complete | github_search_recent |
+| cslol-manager/ltk-manager | 184 | 59 | 46.2% | 32.1% | 1 | complete | github_search_recent |
+| antigravity-cli-google/antigravity-cli | 182 | 58 | 45.6% | 31.9% | 1 | complete | github_search_recent |
+| ace-trump-tech/DeltaForce-OBS-Locker | 132 | 47 | 0.0% | 35.6% | 1 | complete | github_search_recent |
+| BlackCandleLab/polymarket-trading-bot | 97 | 43 | 53.6% | 44.3% | 1 | complete | github_search_recent |
+| veryyoldman/metamask-openclaw | 135 | 38 | 38.5% | 28.1% | 1 | complete | github_search_recent |
+| LawmakerTreasure/deepseek-openclaw | 123 | 35 | 37.4% | 28.5% | 1 | complete | github_search_recent |
+| TaiwanBoss/DualSenseX-Steam-PC-Controller | 129 | 33 | 37.2% | 25.6% | 1 | complete | github_search_recent |
+| github/docs | 219 | 32 | 0.9% | 14.6% | 1 | complete | github_trending |
+| 2aronS/Duel-Agents | 110 | 31 | 4.5% | 28.2% | 1 | complete | github_search_recent |
+| paralives-free/Paralives-Money-Cheats | 89 | 20 | 34.8% | 22.5% | 1 | complete | github_search_recent |
+| yapeth/MaaNTE | 86 | 19 | 34.9% | 22.1% | 1 | complete | github_search_recent |
+| faldyrd/Auto-2026 | 88 | 19 | 34.1% | 21.6% | 1 | complete | github_search_recent |
+| TYOPxyz/solana-trading-bot | 27 | 13 | 74.1% | 48.1% | 1 | complete | github_search_recent |
+| D4Vinci/Scrapling | 289 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
+| OldenEraTemplateGenerator/Olden-Era-Template-Generator | 59 | 11 | 15.3% | 18.6% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
