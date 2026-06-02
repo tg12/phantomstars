@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-02 | 2795 | 773 | 2022 | 37 | 616 |
 | 2026-06-01 | 2490 | 533 | 1957 | 39 | 355 |
 | 2026-05-31 | 2302 | 458 | 1844 | 32 | 280 |
 | 2026-05-30 | 2576 | 530 | 2046 | 20 | 356 |
@@ -136,31 +137,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| BarneyD66/open-warehouse-system | 217 | 85 | 74.2% | 39.2% | 1 | complete | github_search_recent |
-| cochransullivan52536512/LEGO-Batman-Legacy-of-the-Dark-Knight-PC-2026 | 77 | 77 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| rona6314clayt8402/Jenny-Mine-MOD-2026-MoreGirls | 76 | 76 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| elfriedarosner02320114921/Easy-Anime-Downloader-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| zyairpope7277763/RL-AI-Latest | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| sipaaryadi06864/Email-Security-Auditor | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| lilliancrivaro27064501728/AI-Photo-Background-Remover | 76 | 74 | 0.0% | 97.4% | 1 | complete | github_search_recent |
-| optiscalerclient/optiscaler-client | 191 | 62 | 45.0% | 32.5% | 1 | complete | github_search_recent |
-| docker-desktop-windows/docker-desktop | 192 | 62 | 46.4% | 32.3% | 1 | complete | github_search_recent |
-| slippilaucnherapp/slippi-launcher | 185 | 60 | 45.9% | 32.4% | 1 | complete | github_search_recent |
-| cslol-manager/ltk-manager | 184 | 59 | 46.2% | 32.1% | 1 | complete | github_search_recent |
-| antigravity-cli-google/antigravity-cli | 182 | 58 | 45.6% | 31.9% | 1 | complete | github_search_recent |
-| ace-trump-tech/DeltaForce-OBS-Locker | 132 | 47 | 0.0% | 35.6% | 1 | complete | github_search_recent |
-| BlackCandleLab/polymarket-trading-bot | 97 | 43 | 53.6% | 44.3% | 1 | complete | github_search_recent |
-| veryyoldman/metamask-openclaw | 135 | 38 | 38.5% | 28.1% | 1 | complete | github_search_recent |
-| LawmakerTreasure/deepseek-openclaw | 123 | 35 | 37.4% | 28.5% | 1 | complete | github_search_recent |
-| TaiwanBoss/DualSenseX-Steam-PC-Controller | 129 | 33 | 37.2% | 25.6% | 1 | complete | github_search_recent |
-| github/docs | 219 | 32 | 0.9% | 14.6% | 1 | complete | github_trending |
-| 2aronS/Duel-Agents | 110 | 31 | 4.5% | 28.2% | 1 | complete | github_search_recent |
-| paralives-free/Paralives-Money-Cheats | 89 | 20 | 34.8% | 22.5% | 1 | complete | github_search_recent |
-| yapeth/MaaNTE | 86 | 19 | 34.9% | 22.1% | 1 | complete | github_search_recent |
-| faldyrd/Auto-2026 | 88 | 19 | 34.1% | 21.6% | 1 | complete | github_search_recent |
-| TYOPxyz/solana-trading-bot | 27 | 13 | 74.1% | 48.1% | 1 | complete | github_search_recent |
-| D4Vinci/Scrapling | 289 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
-| OldenEraTemplateGenerator/Olden-Era-Template-Generator | 59 | 11 | 15.3% | 18.6% | 1 | complete | github_search_recent |
+| stormneonnightraven4640692/DeepFake-AI-RealTime | 182 | 182 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| teresiapeetz53968036169/WallpaperDownloader-Version-Pro-2 | 181 | 181 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| elvirarolando64992854260/IDM-6.42-Patch-Lifetime-Ver-26 | 180 | 180 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| gerardapennant96075336582/CapC-Pro-2 | 180 | 180 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| mavi9727stoke6893/Acrobat-Version-Pro-2 | 180 | 180 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| turbodragonecholegend2914353/Roblox-Exec-Collection-Desktop | 181 | 180 | 0.0% | 99.4% | 2 | complete | github_search_recent |
+| raffaellamattice38362023450/Lossless-Scaling-Git-Version-2 | 178 | 178 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| c873089902979/NS-FW-AI-Image-and-Video-Generator-Uncens | 178 | 178 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| pattieatengco27671636211/kms-pico-latest-m4 | 176 | 176 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| knackstedtlivia3560/Gemini-Pro-Desktop | 171 | 171 | 0.0% | 100.0% | 2 | complete | github_search_recent |
+| Trade-Execution-Labs/polymarket-sports-trading-bot | 130 | 57 | 73.1% | 43.8% | 1 | complete | github_search_recent |
+| CANA-dao/polymarket-trade-bot | 90 | 48 | 76.7% | 53.3% | 1 | capped | github_search_recent |
+| F001net/polymarket-trade-bot | 89 | 47 | 77.5% | 52.8% | 1 | capped | github_search_recent |
+| Forlives/pearl-proxy-release | 107 | 41 | 0.0% | 38.3% | 1 | complete | github_search_recent |
+| BarneyD66/open-warehouse-system | 61 | 37 | 60.7% | 60.7% | 1 | complete | github_search_recent |
+| gothic-remake/Gothic-1-Remake-Release | 224 | 36 | 36.2% | 16.1% | 1 | complete | github_search_recent |
+| safeboundai/vibe-scanner | 97 | 35 | 0.0% | 36.1% | 2 | complete | github_search_recent |
+| clash-windows-download/Clash-for-Windows | 188 | 35 | 38.3% | 18.6% | 1 | complete | github_search_recent |
+| build-poe2/PathOfBuilding-PoE2 | 229 | 35 | 35.4% | 15.3% | 1 | complete | github_search_recent |
+| BlackCandleLab/polymarket-trading-bot | 63 | 32 | 52.4% | 50.8% | 1 | complete | github_search_recent |
+| 2aronS/Duel-Agents | 78 | 31 | 12.8% | 39.7% | 1 | complete | github_search_recent |
+| cron-defi/polymarket-pnl-tracker | 56 | 30 | 75.0% | 53.6% | 1 | complete | github_search_recent |
+| tradeonmeta/pumpfun-sniper | 59 | 30 | 74.6% | 50.8% | 1 | complete | github_search_recent |
+| Mohamed-Alaa90/ltk-manager | 149 | 29 | 52.3% | 19.5% | 1 | complete | github_search_recent |
+| kigumotvc/cslol-manager | 160 | 29 | 52.5% | 18.1% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
