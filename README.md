@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-04 | 2237 | 441 | 1796 | 41 | 367 |
 | 2026-06-03 | 2331 | 488 | 1843 | 53 | 431 |
 | 2026-06-02 | 2795 | 773 | 2022 | 37 | 616 |
 | 2026-06-01 | 2490 | 533 | 1957 | 39 | 355 |
@@ -138,31 +139,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| BarneyD66/open-warehouse-system | 173 | 127 | 19.1% | 73.4% | 1 | complete | github_search_recent |
-| sherylgrieb76021176098/Pro-NanoBanana | 85 | 85 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| gunnardorsey36725068/VapeV4-Client-2026 | 85 | 85 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| hiljadelullo06060650479/Steam-KG-2026M1 | 84 | 84 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| brennan5775cal3899/CC-Gen-Checker | 84 | 84 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| etta913109223/Rust-External-26 | 83 | 83 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| tools-lua/steam-tools | 131 | 48 | 13.0% | 36.6% | 1 | complete | github_search_recent |
-| shaorman/Internet-DM | 132 | 47 | 12.1% | 35.6% | 1 | complete | github_search_recent |
-| mrmichwong/Zelda-TP-PC-Port | 126 | 45 | 11.9% | 35.7% | 1 | complete | github_search_recent |
-| GODDAMNBOI/Lossless-Scaling-Github | 137 | 45 | 16.1% | 32.8% | 1 | complete | github_search_recent |
-| SenhorH/tab-labeler | 174 | 28 | 25.9% | 16.1% | 1 | complete | github_search_recent |
-| Mohamed-Alaa90/ltk-manager | 119 | 21 | 15.1% | 17.6% | 1 | complete | github_search_recent |
-| 2aronS/Duel-Agents | 48 | 20 | 18.8% | 41.7% | 1 | complete | github_search_recent |
-| optiscalerclient/optiscaler-client | 105 | 17 | 8.6% | 16.2% | 1 | complete | github_search_recent |
-| slippilaucnherapp/slippi-launcher | 108 | 17 | 8.3% | 15.7% | 1 | complete | github_search_recent |
-| V0id-v2/Void-Tools-v2.0 | 55 | 16 | 0.0% | 29.1% | 2 | complete | github_search_recent |
-| WUBING2023/ExamPass-Assistant | 98 | 16 | 0.0% | 16.3% | 2 | complete | github_search_recent |
-| Open-LLM-VTuber/Open-LLM-VTuber | 279 | 16 | 0.0% | 5.7% | 1 | complete | github_trending |
-| faldyrd/Auto-2026 | 109 | 15 | 9.2% | 13.8% | 1 | complete | github_search_recent |
-| yapeth/MaaNTE | 107 | 14 | 9.3% | 13.1% | 1 | complete | github_search_recent |
-| TaiwanBoss/DualSenseX-Steam-PC-Controller | 107 | 14 | 8.4% | 13.1% | 1 | complete | github_search_recent |
-| rasoir0591/Crosshair-X | 106 | 13 | 9.4% | 12.3% | 1 | complete | github_search_recent |
-| Sendmux/sendmux-sdk | 113 | 13 | 20.4% | 11.5% | 1 | complete | github_search_recent |
-| D4Vinci/Scrapling | 292 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
-| supermemoryai/supermemory | 284 | 11 | 0.0% | 3.9% | 1 | complete | github_trending |
+| wangyzfy/peace-equalizer-APO | 212 | 72 | 5.2% | 34.0% | 1 | complete | github_search_recent |
+| UzuMathieu/ryujinx-emu | 206 | 66 | 5.3% | 32.0% | 1 | complete | github_search_recent |
+| toledomartin/Forza-Horizon-Spotify-Radio | 210 | 66 | 5.2% | 31.4% | 1 | complete | github_search_recent |
+| isvylaur/LSFG-Github | 209 | 65 | 4.8% | 31.1% | 1 | complete | github_search_recent |
+| mrmichwong/Zelda-TP-PC-Port | 300 | 60 | 2.7% | 20.0% | 1 | capped | github_search_recent |
+| tools-lua/steam-tools | 211 | 59 | 3.3% | 28.0% | 1 | complete | github_search_recent |
+| SenhorH/tab-labeler | 294 | 55 | 11.6% | 18.7% | 1 | capped | github_search_recent |
+| LGDW777/KMSTool | 183 | 54 | 4.9% | 29.5% | 1 | complete | github_search_recent |
+| Signal-Matrix-Core/trading-bot | 74 | 50 | 43.2% | 67.6% | 1 | capped | github_search_recent |
+| BarneyD66/open-warehouse-system | 59 | 39 | 23.7% | 66.1% | 1 | complete | github_search_recent |
+| kigumotvc/cslol-manager | 167 | 35 | 3.6% | 21.0% | 1 | complete | github_search_recent |
+| V0id-v2/Void-Tools-v2.0 | 92 | 32 | 0.0% | 34.8% | 1 | complete | github_search_recent |
+| Beam-NG-Drive/BeamMP | 238 | 32 | 0.0% | 13.4% | 1 | complete | github_search_recent |
+| anthropic-claude-code-ai/free-claude-code-ai-desktop-app | 259 | 30 | 0.0% | 11.6% | 1 | complete | github_search_recent |
+| tor-browsers/tor-browser | 259 | 29 | 0.4% | 11.2% | 1 | complete | github_search_recent |
+| bernardohcrocha/persistia-for-claude-code | 223 | 27 | 20.6% | 12.1% | 1 | complete | github_search_recent |
+| Jadoox3/Mina-The-Hollower-Release | 228 | 24 | 0.0% | 10.5% | 1 | complete | github_search_recent |
+| yuyefeiyu/yt-downloader | 225 | 21 | 0.0% | 9.3% | 1 | complete | github_search_recent |
+| malk190/Romestead-Game-Release | 228 | 21 | 0.0% | 9.2% | 1 | complete | github_search_recent |
+| MatinSenPai/SenPaiScanner | 151 | 19 | 0.0% | 12.6% | 1 | complete | github_search_recent |
+| Open-LLM-VTuber/Open-LLM-VTuber | 289 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
+| jwasham/coding-interview-university | 286 | 12 | 0.0% | 4.2% | 1 | capped | github_trending |
+| WUBING2023/ExamPass-Assistant | 43 | 10 | 4.7% | 23.3% | 2 | complete | github_search_recent |
+| zgwl/chinese-buy-us-stock-guide | 275 | 10 | 0.0% | 3.6% | 1 | complete | github_search_recent |
+| D4Vinci/Scrapling | 292 | 10 | 0.0% | 3.4% | 1 | complete | github_trending |
 <!-- REPO_STATS:END -->
 
 ---
