@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-05 | 2403 | 673 | 1730 | 53 | 617 |
 | 2026-06-04 | 2237 | 441 | 1796 | 41 | 367 |
 | 2026-06-03 | 2331 | 488 | 1843 | 53 | 431 |
 | 2026-06-02 | 2795 | 773 | 2022 | 37 | 616 |
@@ -139,31 +140,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| wangyzfy/peace-equalizer-APO | 212 | 72 | 5.2% | 34.0% | 1 | complete | github_search_recent |
-| UzuMathieu/ryujinx-emu | 206 | 66 | 5.3% | 32.0% | 1 | complete | github_search_recent |
-| toledomartin/Forza-Horizon-Spotify-Radio | 210 | 66 | 5.2% | 31.4% | 1 | complete | github_search_recent |
-| isvylaur/LSFG-Github | 209 | 65 | 4.8% | 31.1% | 1 | complete | github_search_recent |
-| mrmichwong/Zelda-TP-PC-Port | 300 | 60 | 2.7% | 20.0% | 1 | capped | github_search_recent |
-| tools-lua/steam-tools | 211 | 59 | 3.3% | 28.0% | 1 | complete | github_search_recent |
-| SenhorH/tab-labeler | 294 | 55 | 11.6% | 18.7% | 1 | capped | github_search_recent |
-| LGDW777/KMSTool | 183 | 54 | 4.9% | 29.5% | 1 | complete | github_search_recent |
-| Signal-Matrix-Core/trading-bot | 74 | 50 | 43.2% | 67.6% | 1 | capped | github_search_recent |
-| BarneyD66/open-warehouse-system | 59 | 39 | 23.7% | 66.1% | 1 | complete | github_search_recent |
-| kigumotvc/cslol-manager | 167 | 35 | 3.6% | 21.0% | 1 | complete | github_search_recent |
-| V0id-v2/Void-Tools-v2.0 | 92 | 32 | 0.0% | 34.8% | 1 | complete | github_search_recent |
-| Beam-NG-Drive/BeamMP | 238 | 32 | 0.0% | 13.4% | 1 | complete | github_search_recent |
-| anthropic-claude-code-ai/free-claude-code-ai-desktop-app | 259 | 30 | 0.0% | 11.6% | 1 | complete | github_search_recent |
-| tor-browsers/tor-browser | 259 | 29 | 0.4% | 11.2% | 1 | complete | github_search_recent |
-| bernardohcrocha/persistia-for-claude-code | 223 | 27 | 20.6% | 12.1% | 1 | complete | github_search_recent |
-| Jadoox3/Mina-The-Hollower-Release | 228 | 24 | 0.0% | 10.5% | 1 | complete | github_search_recent |
-| yuyefeiyu/yt-downloader | 225 | 21 | 0.0% | 9.3% | 1 | complete | github_search_recent |
-| malk190/Romestead-Game-Release | 228 | 21 | 0.0% | 9.2% | 1 | complete | github_search_recent |
-| MatinSenPai/SenPaiScanner | 151 | 19 | 0.0% | 12.6% | 1 | complete | github_search_recent |
-| Open-LLM-VTuber/Open-LLM-VTuber | 289 | 13 | 0.0% | 4.5% | 1 | complete | github_trending |
-| jwasham/coding-interview-university | 286 | 12 | 0.0% | 4.2% | 1 | capped | github_trending |
-| WUBING2023/ExamPass-Assistant | 43 | 10 | 4.7% | 23.3% | 2 | complete | github_search_recent |
-| zgwl/chinese-buy-us-stock-guide | 275 | 10 | 0.0% | 3.6% | 1 | complete | github_search_recent |
-| D4Vinci/Scrapling | 292 | 10 | 0.0% | 3.4% | 1 | complete | github_trending |
+| V0id-v2/Void-Tools-v2.0 | 215 | 101 | 2.3% | 47.0% | 1 | complete | github_search_recent |
+| elaynearns40356016406/MicrosoftWord-Manager | 100 | 100 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| ghostvenomzeroreaperhaz9131197/Obsidian-Center | 100 | 100 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| c308472221075/Photoshop-ManagerV26 | 100 | 100 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| knox342857733/GhostHardware-V26 | 100 | 100 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| a458378326454/Windows-Optimizer | 100 | 100 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| sheilahkohrman00668990569/Hardware-HardSp00f | 99 | 99 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| ravenvoiddragonchaosinferno5668907/Driver-Updater | 100 | 99 | 0.0% | 99.0% | 1 | complete | github_search_recent |
+| SasbadiOnline/trading-bot | 104 | 79 | 29.8% | 76.0% | 1 | complete | github_search_recent |
+| sdfewrerrre/EhlersHunt | 100 | 78 | 31.0% | 78.0% | 1 | complete | github_search_recent |
+| brennaclaudio96211111037/universal-fps-tweak-26 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| nellyhilkert14374041315/Hard-UmbrellaWare-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| janisefearn58218993113/cinema-3ds-manager | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| strikeinfernohunter7074309/valo-ai-assistant-2026 | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| emrekaya567787616/Cursor-AI-Pro-Download-2026 | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| Debimbo/Peace-Equalizer-Apo | 73 | 34 | 9.6% | 46.6% | 1 | complete | github_search_recent |
+| Mmesser01/kmstool | 74 | 33 | 9.5% | 44.6% | 1 | complete | github_search_recent |
+| UzuMathieu/ryujinx-emu | 102 | 32 | 37.3% | 31.4% | 1 | complete | github_search_recent |
+| ConiferKit/sage | 115 | 28 | 32.2% | 24.3% | 1 | complete | github_search_recent |
+| veryyoldman/undress-ai-image-video-generator | 139 | 23 | 5.0% | 16.5% | 1 | complete | github_search_recent |
+| BarneyD66/open-warehouse-system | 30 | 15 | 23.3% | 50.0% | 1 | complete | github_search_recent |
+| xqnode/codex-helper | 80 | 13 | 0.0% | 16.3% | 2 | complete | github_search_recent |
+| Forlives/cloudsight-ai | 84 | 13 | 0.0% | 15.5% | 1 | complete | github_search_recent |
+| jwasham/coding-interview-university | 285 | 13 | 0.7% | 4.6% | 1 | capped | github_trending |
+| github/copilot-sdk | 139 | 11 | 1.4% | 7.9% | 1 | complete | github_trending |
 <!-- REPO_STATS:END -->
 
 ---
