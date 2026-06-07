@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-07 | 1797 | 658 | 1139 | 30 | 618 |
 | 2026-06-06 | 2625 | 712 | 1913 | 40 | 620 |
 | 2026-06-05 | 2403 | 673 | 1730 | 53 | 617 |
 | 2026-06-04 | 2237 | 441 | 1796 | 41 | 367 |
@@ -141,31 +142,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| Obsidian-Trades/polymarket-copy-trading-bot | 163 | 116 | 36.2% | 71.2% | 1 | complete | github_search_recent |
-| V0id-v2/Void-Tools-v2.0 | 232 | 104 | 1.3% | 44.8% | 1 | complete | github_search_recent |
-| VoidSignals/Polymarket-trading-bot | 126 | 90 | 38.1% | 71.4% | 1 | complete | github_search_recent |
-| HTX-Trading-ToolKit/HTX-human-elite-copy-trading-bot | 122 | 84 | 39.3% | 68.9% | 1 | complete | github_search_recent |
-| shadowphantomturbos2466724/Cubase-Hub | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| o22190549276/Minecraft-Mod-Manager | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| kristybilbrew14180044521/Minecraft-Server-Optimizer-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| hunternightechozerozero2057154/Easy-Anime-Downloader-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| v76268930518/VisualStudio-Center | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| virgenbonte83296013091/Stake-Predictor | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| lashaundashirk67060242607/SpotAd-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| bender00gungormezias0431/Ping-Optimizer | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| ghostzeroragefrostzerosile0111567/Crypto-Mining-Node-Utility | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| johnettesadorra45447443493/BeamMP-Hub | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| legenddriftragemystic6648212/PH-Content-Download-2026 | 72 | 72 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| github/copilot-sdk | 253 | 43 | 0.8% | 17.0% | 1 | complete | github_trending |
-| best-spicy-ai/ai-naughty-tools | 202 | 41 | 7.9% | 20.3% | 2 | complete | github_search_recent |
-| CWS6206/ai-coding-starter-kit | 294 | 37 | 17.7% | 12.6% | 1 | capped | github_search_recent |
-| Forlives/21-day-self-interview | 135 | 33 | 4.4% | 24.4% | 1 | complete | github_search_recent |
-| Trade-of-Economics-in-Warsaw/market-sniping-trading-bot | 67 | 32 | 19.4% | 47.8% | 1 | capped | github_search_recent |
-| ConiferKit/sage | 270 | 28 | 17.0% | 10.4% | 1 | complete | github_search_recent |
-| zzzhhh1/free-nodes | 188 | 15 | 0.5% | 8.0% | 1 | complete | github_search_recent |
-| affaan-m/ECC | 261 | 14 | 0.8% | 5.4% | 1 | complete | github_trending |
-| openai/plugins | 205 | 12 | 0.0% | 5.9% | 1 | complete | github_trending |
-| 666ghj/MiroFish | 293 | 12 | 0.7% | 4.1% | 1 | complete | github_trending |
+| rolandojesus6666-star/system-repair-tool-2 | 95 | 95 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| tupopacherryy9-cloud/metamask-openclaw-desktop | 95 | 95 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| souzazuzucalhlr/sketchfab-downloader-utility | 95 | 95 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| joseflachendro/DrFone-Screen-Unlock-ToolKit-2 | 95 | 95 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| junjie8/robloxaccountmanager-desktop-app | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| violadunnigan83888912091/Tomadach-PC-2026-M2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| Flavian2222/lunarclientminecraft-windows-installer | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| Dogexxxe/optiscalerclient-desktop-setup | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| alfhamdy515-svg/monkemodmanager-windows-installer-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| mavi9727stoke6893/Acrobat-Version-Pro-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| melojuve31-source/kahoottoolsai-desktop-app | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| Aluccard992ad/twitchdropminer-desktop-setup | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| gerardapennant96075336582/CapC-Pro-2 | 76 | 75 | 0.0% | 98.7% | 1 | complete | github_search_recent |
+| aaviasulin123-design/kms-pico-latest-m6 | 76 | 75 | 0.0% | 98.7% | 1 | complete | github_search_recent |
+| rosalynsheler19155568057/ComfyUI-Center | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| tabethasaucier88944885816/Voidstrap-PetSimulator-Hub | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| germainenarvaez46414207185/HomeAssistant-V26 | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| angelikapaup18086645729/Godot-Center | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| georgemccloy72990017530/TikTok-Live-RecorderV26 | 70 | 70 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| c873089902979/NS-FW-AI-Image-and-Video-Generator-Uncens | 65 | 60 | 0.0% | 92.3% | 1 | complete | github_search_recent |
+| Trade-of-Economics-in-Warsaw/market-sniping-trading-bot | 53 | 43 | 49.1% | 81.1% | 1 | complete | github_search_recent |
+| best-spicy-ai/ai-naughty-tools | 129 | 39 | 9.3% | 30.2% | 1 | complete | github_search_recent |
+| VoidSignals/Polymarket-trading-bot | 43 | 36 | 37.2% | 83.7% | 1 | complete | github_search_recent |
+| sveltejs/svelte | 232 | 25 | 0.9% | 10.8% | 1 | complete | github_trending |
+| obra/superpowers | 291 | 20 | 0.0% | 6.9% | 1 | complete | github_trending |
 <!-- REPO_STATS:END -->
 
 ---
