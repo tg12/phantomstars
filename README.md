@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-09 | 2199 | 690 | 1509 | 44 | 632 |
 | 2026-06-08 | 1913 | 450 | 1463 | 50 | 424 |
 | 2026-06-07 | 1797 | 658 | 1139 | 30 | 618 |
 | 2026-06-06 | 2625 | 712 | 1913 | 40 | 620 |
@@ -143,31 +144,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| Unicornronote/Microsoft-Office-Activated | 128 | 82 | 3.9% | 64.1% | 1 | complete | github_search_recent |
-| lopacachonda0891-art/honkaistarrailexternalcheatmenu-overlay | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| Shahamat21201839/sims4-dls-unlocker-desktop-2 | 76 | 75 | 0.0% | 98.7% | 1 | complete | github_search_recent |
-| Capminal/capminal-contracts | 77 | 75 | 0.0% | 97.4% | 1 | complete | github_search_recent |
-| openai/plugins | 296 | 24 | 0.3% | 8.1% | 1 | complete | github_trending |
-| ridgekhanice/undress-ai-image-video-generator | 167 | 18 | 1.2% | 10.8% | 1 | complete | github_search_recent |
-| Trade-of-Economics-in-Warsaw/market-sniping-trading-bot | 21 | 15 | 47.6% | 71.4% | 2 | complete | github_search_recent |
-| YuvBindal/produck-oss | 266 | 15 | 0.0% | 5.6% | 1 | complete | github_search_recent |
-| Parcle-AI/parcle-memory | 266 | 15 | 0.0% | 5.6% | 1 | complete | github_search_recent |
-| VoidSignals/Polymarket-trading-bot | 17 | 13 | 47.1% | 76.5% | 1 | complete | github_search_recent |
-| HunxByts/GhostTrack | 293 | 13 | 1.0% | 4.4% | 1 | capped | github_trending |
-| yikart/AiToEarn | 286 | 12 | 0.7% | 4.2% | 1 | complete | github_trending |
-| ggml-org/llama.cpp | 180 | 11 | 0.0% | 6.1% | 1 | complete | github_trending |
-| Leonxlnx/taste-skill | 297 | 11 | 0.7% | 3.7% | 1 | capped | github_trending |
-| IvanSobolev/Neo3dEngine | 125 | 10 | 0.0% | 8.0% | 1 | complete | github_search_recent |
-| sautrikroy17/DSA-Interview-Playbook | 11 | 9 | 0.0% | 81.8% | 1 | complete | github_search_recent |
-| opencv/opencv | 270 | 8 | 0.4% | 3.0% | 1 | complete | github_trending |
-| TapXWorld/ChinaTextbook | 282 | 8 | 0.4% | 2.8% | 1 | complete | github_trending |
-| Crosstalk-Solutions/project-nomad | 244 | 7 | 1.2% | 2.9% | 1 | complete | github_trending |
-| HTX-Trading-ToolKit/HTX-human-elite-copy-trading-bot | 6 | 6 | 33.3% | 100.0% | 1 | complete | github_search_recent |
-| UzuMathieu/ryujinx-emu | 134 | 6 | 2.2% | 4.5% | 1 | complete | github_search_recent |
-| aaif-goose/goose | 260 | 6 | 0.4% | 2.3% | 1 | complete | github_trending |
-| refactoringhq/tolaria | 283 | 6 | 0.0% | 2.1% | 1 | complete | github_trending |
-| microsoft/pg_durable | 294 | 6 | 0.0% | 2.0% | 1 | complete | github_trending |
-| ZadAnthony/serenity-skill | 31 | 5 | 0.0% | 16.1% | 2 | complete | github_search_recent |
+| Unicornronote/Microsoft-Office-Activated | 219 | 198 | 6.8% | 90.4% | 2 | complete | github_search_recent |
+| ai-best-websites/AI-SpicyLabs | 138 | 81 | 24.6% | 58.7% | 1 | complete | github_search_recent |
+| alfhamdy515-svg/NS-FW-AI-Image-and-Video-Generator-Uncensd | 80 | 77 | 0.0% | 96.3% | 1 | complete | github_search_recent |
+| mehock582/RB-Coll-Desktop-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| jessyujvcdw4279606/OF-Content-Downloader-2 | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| ai-git-toolz/AI-NR1-Apps | 119 | 68 | 21.8% | 57.1% | 1 | complete | github_search_recent |
+| trading-agent-lab/polymarket-crypto-market-trading-bot | 84 | 61 | 13.1% | 72.6% | 1 | capped | github_search_recent |
+| CopilotKit/CopilotKit | 257 | 14 | 0.8% | 5.4% | 1 | complete | github_trending |
+| codeteacher330/EasyAIVid | 85 | 13 | 0.0% | 15.3% | 1 | complete | github_search_recent |
+| openai/plugins | 258 | 13 | 0.0% | 5.0% | 1 | complete | github_trending |
+| TapXWorld/ChinaTextbook | 278 | 12 | 0.7% | 4.3% | 1 | capped | github_trending |
+| Panniantong/Agent-Reach | 296 | 12 | 0.3% | 4.1% | 1 | complete | github_trending |
+| VoidSignals/Polymarket-trading-bot | 15 | 9 | 26.7% | 60.0% | 1 | complete | github_search_recent |
+| Grabgreplait/uncensored-ai-image-video-generator | 66 | 9 | 0.0% | 13.6% | 2 | complete | github_search_recent |
+| google/skills | 289 | 9 | 0.7% | 3.1% | 1 | complete | github_trending |
+| luongnv89/claude-howto | 292 | 8 | 1.0% | 2.7% | 1 | capped | github_trending |
+| vicky142803/makethembroke | 7 | 7 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| mythicguruforge/CapC-Pro | 108 | 7 | 3.7% | 6.5% | 1 | complete | github_search_recent |
+| IvanSobolev/Neo3dEngine | 128 | 7 | 0.0% | 5.5% | 1 | complete | github_search_recent |
+| danielmiessler/Personal_AI_Infrastructure | 293 | 7 | 1.4% | 2.4% | 1 | complete | github_trending |
+| mvanhorn/last30days-skill | 290 | 7 | 0.0% | 2.4% | 1 | complete | github_trending |
+| Debimbo/Peace-Equalizer-Apo | 38 | 6 | 7.9% | 15.8% | 1 | complete | github_search_recent |
+| ZackTheHack362B/Forza-Horizon-Spotify-Radio | 39 | 6 | 7.7% | 15.4% | 1 | complete | github_search_recent |
+| santifer/career-ops | 196 | 6 | 0.0% | 3.1% | 1 | complete | github_trending |
+| yux1azhengye/BestSerenitySkillFromAT | 29 | 5 | 3.4% | 17.2% | 2 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
