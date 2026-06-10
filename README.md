@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-10 | 2043 | 687 | 1356 | 50 | 665 |
 | 2026-06-09 | 2199 | 690 | 1509 | 44 | 632 |
 | 2026-06-08 | 1913 | 450 | 1463 | 50 | 424 |
 | 2026-06-07 | 1797 | 658 | 1139 | 30 | 618 |
@@ -144,31 +145,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| Unicornronote/Microsoft-Office-Activated | 219 | 198 | 6.8% | 90.4% | 2 | complete | github_search_recent |
-| ai-best-websites/AI-SpicyLabs | 138 | 81 | 24.6% | 58.7% | 1 | complete | github_search_recent |
-| alfhamdy515-svg/NS-FW-AI-Image-and-Video-Generator-Uncensd | 80 | 77 | 0.0% | 96.3% | 1 | complete | github_search_recent |
-| mehock582/RB-Coll-Desktop-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| jessyujvcdw4279606/OF-Content-Downloader-2 | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| ai-git-toolz/AI-NR1-Apps | 119 | 68 | 21.8% | 57.1% | 1 | complete | github_search_recent |
-| trading-agent-lab/polymarket-crypto-market-trading-bot | 84 | 61 | 13.1% | 72.6% | 1 | capped | github_search_recent |
-| CopilotKit/CopilotKit | 257 | 14 | 0.8% | 5.4% | 1 | complete | github_trending |
-| codeteacher330/EasyAIVid | 85 | 13 | 0.0% | 15.3% | 1 | complete | github_search_recent |
-| openai/plugins | 258 | 13 | 0.0% | 5.0% | 1 | complete | github_trending |
-| TapXWorld/ChinaTextbook | 278 | 12 | 0.7% | 4.3% | 1 | capped | github_trending |
-| Panniantong/Agent-Reach | 296 | 12 | 0.3% | 4.1% | 1 | complete | github_trending |
-| VoidSignals/Polymarket-trading-bot | 15 | 9 | 26.7% | 60.0% | 1 | complete | github_search_recent |
-| Grabgreplait/uncensored-ai-image-video-generator | 66 | 9 | 0.0% | 13.6% | 2 | complete | github_search_recent |
-| google/skills | 289 | 9 | 0.7% | 3.1% | 1 | complete | github_trending |
-| luongnv89/claude-howto | 292 | 8 | 1.0% | 2.7% | 1 | capped | github_trending |
-| vicky142803/makethembroke | 7 | 7 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| mythicguruforge/CapC-Pro | 108 | 7 | 3.7% | 6.5% | 1 | complete | github_search_recent |
-| IvanSobolev/Neo3dEngine | 128 | 7 | 0.0% | 5.5% | 1 | complete | github_search_recent |
-| danielmiessler/Personal_AI_Infrastructure | 293 | 7 | 1.4% | 2.4% | 1 | complete | github_trending |
-| mvanhorn/last30days-skill | 290 | 7 | 0.0% | 2.4% | 1 | complete | github_trending |
-| Debimbo/Peace-Equalizer-Apo | 38 | 6 | 7.9% | 15.8% | 1 | complete | github_search_recent |
-| ZackTheHack362B/Forza-Horizon-Spotify-Radio | 39 | 6 | 7.7% | 15.4% | 1 | complete | github_search_recent |
-| santifer/career-ops | 196 | 6 | 0.0% | 3.1% | 1 | complete | github_trending |
-| yux1azhengye/BestSerenitySkillFromAT | 29 | 5 | 3.4% | 17.2% | 2 | complete | github_search_recent |
+| Unicornronote/Microsoft-Office-Activated | 95 | 91 | 0.0% | 95.8% | 2 | complete | github_search_recent |
+| mestankunter321391207/SketchUp-Vortex-Pro-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| mailfrsh409330/ios-jailbreak-software | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| kubraberberoglu988540743/gacha-game-simul-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| esmabakircioglu474573898/revo-uninstaller | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| g69995865146/paint-ai-3d | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| jericho9464reed4431/kms-pico-latest-vers-m2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| kadirtopaloglu668878815/team-fortress-2-modding | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| okxfilipina27079627/Splatoon-raiders-pc | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| kerimkuday145606706/Spoof-H-W-I-D-2 | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
+| secret-tools/secret-tool | 150 | 62 | 0.7% | 41.3% | 1 | complete | github_search_recent |
+| ChenJazzyBoss/superSpec | 61 | 58 | 0.0% | 95.1% | 1 | complete | github_search_recent |
+| AI-BestTools/AI-SpicyGen | 96 | 36 | 12.5% | 37.5% | 1 | complete | github_search_recent |
+| valkor-ai/loom | 160 | 34 | 0.6% | 21.2% | 2 | complete | github_search_recent |
+| alfhamdy515-svg/NS-FW-AI-Image-and-Video-Generator-Uncensd | 77 | 25 | 10.4% | 32.5% | 1 | complete | github_search_recent |
+| openai/plugins | 272 | 23 | 0.0% | 8.5% | 1 | complete | github_trending |
+| ziqihe10-droid/xuefeng-agent | 206 | 22 | 0.5% | 10.7% | 2 | complete | github_search_recent |
+| RafDDB18/Delta-Exec-PC | 49 | 12 | 8.2% | 24.5% | 1 | complete | github_search_recent |
+| PWMH4/DualSenseX-Steam-PC-Controller | 46 | 10 | 6.5% | 21.7% | 1 | complete | github_search_recent |
+| gothic-remake-lockbreaker/gothic-remake-lockpicking-tool | 48 | 10 | 8.3% | 20.8% | 1 | complete | github_search_recent |
+| yux1azhengye/BestSerenitySkillFromAT | 57 | 9 | 1.8% | 15.8% | 2 | complete | github_search_recent |
+| addyosmani/agent-skills | 282 | 9 | 1.1% | 3.2% | 1 | complete | github_trending |
+| yikart/AiToEarn | 286 | 9 | 0.7% | 3.1% | 1 | complete | github_trending |
+| LeoLope-z/CrosshairX | 47 | 8 | 6.4% | 17.0% | 1 | complete | github_search_recent |
+| GordenSun/GordenSuperPPTSkills | 193 | 8 | 0.0% | 4.1% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
