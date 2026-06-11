@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-11 | 1957 | 385 | 1572 | 42 | 356 |
 | 2026-06-10 | 2043 | 687 | 1356 | 50 | 665 |
 | 2026-06-09 | 2199 | 690 | 1509 | 44 | 632 |
 | 2026-06-08 | 1913 | 450 | 1463 | 50 | 424 |
@@ -145,31 +146,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| Unicornronote/Microsoft-Office-Activated | 95 | 91 | 0.0% | 95.8% | 2 | complete | github_search_recent |
-| mestankunter321391207/SketchUp-Vortex-Pro-2026 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| mailfrsh409330/ios-jailbreak-software | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| kubraberberoglu988540743/gacha-game-simul-2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| esmabakircioglu474573898/revo-uninstaller | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| g69995865146/paint-ai-3d | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| jericho9464reed4431/kms-pico-latest-vers-m2 | 75 | 75 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| kadirtopaloglu668878815/team-fortress-2-modding | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| okxfilipina27079627/Splatoon-raiders-pc | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| kerimkuday145606706/Spoof-H-W-I-D-2 | 74 | 74 | 0.0% | 100.0% | 1 | complete | github_search_recent |
-| secret-tools/secret-tool | 150 | 62 | 0.7% | 41.3% | 1 | complete | github_search_recent |
-| ChenJazzyBoss/superSpec | 61 | 58 | 0.0% | 95.1% | 1 | complete | github_search_recent |
-| AI-BestTools/AI-SpicyGen | 96 | 36 | 12.5% | 37.5% | 1 | complete | github_search_recent |
-| valkor-ai/loom | 160 | 34 | 0.6% | 21.2% | 2 | complete | github_search_recent |
-| alfhamdy515-svg/NS-FW-AI-Image-and-Video-Generator-Uncensd | 77 | 25 | 10.4% | 32.5% | 1 | complete | github_search_recent |
-| openai/plugins | 272 | 23 | 0.0% | 8.5% | 1 | complete | github_trending |
-| ziqihe10-droid/xuefeng-agent | 206 | 22 | 0.5% | 10.7% | 2 | complete | github_search_recent |
-| RafDDB18/Delta-Exec-PC | 49 | 12 | 8.2% | 24.5% | 1 | complete | github_search_recent |
-| PWMH4/DualSenseX-Steam-PC-Controller | 46 | 10 | 6.5% | 21.7% | 1 | complete | github_search_recent |
-| gothic-remake-lockbreaker/gothic-remake-lockpicking-tool | 48 | 10 | 8.3% | 20.8% | 1 | complete | github_search_recent |
-| yux1azhengye/BestSerenitySkillFromAT | 57 | 9 | 1.8% | 15.8% | 2 | complete | github_search_recent |
-| addyosmani/agent-skills | 282 | 9 | 1.1% | 3.2% | 1 | complete | github_trending |
-| yikart/AiToEarn | 286 | 9 | 0.7% | 3.1% | 1 | complete | github_trending |
-| LeoLope-z/CrosshairX | 47 | 8 | 6.4% | 17.0% | 1 | complete | github_search_recent |
-| GordenSun/GordenSuperPPTSkills | 193 | 8 | 0.0% | 4.1% | 1 | complete | github_search_recent |
+| AI-CoolTools/AI-GoldenAPP | 143 | 81 | 18.9% | 56.6% | 1 | complete | github_search_recent |
+| priscilla6930reed6237/SpotAd-2026 | 75 | 71 | 0.0% | 94.7% | 1 | complete | github_search_recent |
+| AI-NextGenApps/AI-IMG-VID-App | 104 | 59 | 19.2% | 56.7% | 1 | complete | github_search_recent |
+| secret-tools/secret-tool | 97 | 46 | 0.0% | 47.4% | 2 | complete | github_search_recent |
+| alfhamdy515-svg/NS-FW-AI-Image-and-Video-Generator-Uncensd | 45 | 25 | 13.3% | 55.6% | 1 | complete | github_search_recent |
+| ruvnet/RuView | 264 | 18 | 0.4% | 6.8% | 1 | complete | github_trending |
+| harry0703/MoneyPrinterTurbo | 277 | 15 | 0.7% | 5.4% | 1 | complete | github_trending |
+| masterking32/MasterDnsVPN | 297 | 12 | 0.3% | 4.0% | 1 | capped | github_trending |
+| google/skills | 292 | 11 | 1.4% | 3.8% | 1 | complete | github_trending |
+| yux1azhengye/BestSerenitySkillFromAT | 88 | 10 | 1.1% | 11.4% | 1 | complete | github_search_recent |
+| luongnv89/claude-howto | 293 | 10 | 0.0% | 3.4% | 1 | capped | github_trending |
+| ziqihe10-droid/xuefeng-agent | 143 | 9 | 0.0% | 6.3% | 2 | complete | github_search_recent |
+| mvanhorn/last30days-skill | 295 | 9 | 0.7% | 3.1% | 1 | complete | github_trending |
+| phuryn/pm-skills | 296 | 8 | 0.7% | 2.7% | 1 | capped | github_trending |
+| x1xhlol/system-prompts-and-models-of-ai-tools | 292 | 7 | 0.3% | 2.4% | 1 | complete | github_trending |
+| soxoj/maigret | 286 | 7 | 0.7% | 2.4% | 1 | complete | github_trending |
+| obra/superpowers | 277 | 6 | 0.0% | 2.2% | 1 | complete | github_trending |
+| FareedKhan-dev/train-llm-from-scratch | 294 | 6 | 0.3% | 2.0% | 1 | complete | github_trending |
+| apple/container | 295 | 6 | 0.3% | 2.0% | 1 | complete | github_trending |
+| mythicguruforge/CapC-Pro | 10 | 5 | 10.0% | 50.0% | 1 | complete | github_search_recent |
+| joker01728/robloxfpsunlocker | 30 | 5 | 6.7% | 16.7% | 1 | complete | github_search_recent |
+| XBuilderLAB/cheat-on-money | 137 | 5 | 0.0% | 3.6% | 2 | complete | github_search_recent |
+| activeloopai/hivemind | 245 | 5 | 0.4% | 2.0% | 1 | complete | github_trending |
+| alex7e98/Manager-6.42 | 30 | 4 | 6.7% | 13.3% | 1 | complete | github_search_recent |
+| addyosmani/agent-skills | 292 | 4 | 0.0% | 1.4% | 1 | complete | github_trending |
 <!-- REPO_STATS:END -->
 
 ---
