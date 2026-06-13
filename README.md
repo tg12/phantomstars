@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-13 | 2012 | 301 | 1711 | 47 | 251 |
 | 2026-06-12 | 2298 | 336 | 1962 | 57 | 300 |
 | 2026-06-11 | 1957 | 385 | 1572 | 42 | 356 |
 | 2026-06-10 | 2043 | 687 | 1356 | 50 | 665 |
@@ -147,31 +148,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| Open-Builders/pumpfun-bundler-pump.fun-bundler-solana-token-bundler-bot | 81 | 69 | 9.9% | 85.2% | 1 | complete | github_search_recent |
-| inbrainfun/inbrain | 87 | 62 | 20.7% | 71.3% | 1 | complete | github_search_recent |
-| SignalTradingLab/world-cup-2026-arbitrage-trading-bot | 62 | 40 | 16.1% | 64.5% | 1 | complete | github_search_recent |
-| taisly/agent | 127 | 25 | 20.5% | 19.7% | 2 | complete | github_search_recent |
-| msitarzewski/agency-agents | 281 | 16 | 0.7% | 5.7% | 1 | complete | github_trending |
-| masterking32/MasterDnsVPN | 292 | 16 | 0.7% | 5.5% | 1 | complete | github_trending |
-| bannedbook/fanqiang | 288 | 12 | 0.3% | 4.2% | 1 | complete | github_trending |
-| secret-tools/secret-tool | 30 | 11 | 6.7% | 36.7% | 1 | complete | github_search_recent |
-| Cognivo-Future-Technologies-CFT/AwardX | 37 | 11 | 0.0% | 29.7% | 1 | complete | github_search_recent |
-| alchaincyf/zhangxuefeng-skill | 280 | 11 | 0.7% | 3.9% | 1 | complete | github_trending |
-| TapXWorld/ChinaTextbook | 238 | 10 | 0.4% | 4.2% | 1 | complete | github_trending |
-| soxoj/maigret | 286 | 9 | 0.3% | 3.1% | 1 | complete | github_trending |
-| yux1azhengye/BestSerenitySkillFromAT | 66 | 8 | 0.0% | 12.1% | 2 | complete | github_search_recent |
-| viitor-ai/viitor-voice-nar | 78 | 8 | 19.2% | 10.3% | 2 | complete | github_search_recent |
-| NVIDIA/SkillSpector | 285 | 8 | 0.4% | 2.8% | 1 | complete | github_trending |
-| obra/superpowers | 289 | 8 | 0.3% | 2.8% | 1 | complete | github_trending |
-| joker01728/robloxfpsunlocker | 41 | 6 | 7.3% | 14.6% | 1 | complete | github_search_recent |
-| NoopApp/noop | 84 | 6 | 1.2% | 7.1% | 3 | complete | github_search_recent |
-| x1xhlol/system-prompts-and-models-of-ai-tools | 287 | 6 | 0.7% | 2.1% | 1 | complete | github_trending |
-| chatwoot/chatwoot | 223 | 5 | 0.0% | 2.2% | 1 | complete | github_trending |
-| refactoringhq/tolaria | 274 | 5 | 0.7% | 1.8% | 1 | complete | github_trending |
-| addyosmani/agent-skills | 297 | 5 | 0.7% | 1.7% | 1 | capped | github_trending |
-| hexo-ai/sia | 292 | 5 | 0.0% | 1.7% | 1 | complete | github_trending |
-| phuryn/pm-skills | 289 | 5 | 0.0% | 1.7% | 1 | complete | github_trending |
-| alex7e98/Manager-6.42 | 37 | 4 | 8.1% | 10.8% | 1 | complete | github_search_recent |
+| inbrainfun/inbrain | 223 | 105 | 26.0% | 47.1% | 1 | complete | github_search_recent |
+| Open-Builders/pumpfun-bundler-pump.fun-bundler-solana-token-bundler-bot | 45 | 33 | 31.1% | 73.3% | 1 | complete | github_search_recent |
+| microsoft/PowerToys | 160 | 18 | 0.6% | 11.3% | 1 | complete | github_trending |
+| obra/superpowers | 287 | 18 | 0.0% | 6.3% | 1 | complete | github_trending |
+| onfable/onfable | 119 | 15 | 21.0% | 12.6% | 1 | complete | github_search_recent |
+| masterking32/MasterDnsVPN | 292 | 12 | 0.0% | 4.1% | 1 | complete | github_trending |
+| DensityChiefFortress/Lossless-Scaling-Download-2026 | 65 | 10 | 0.0% | 15.4% | 2 | complete | github_search_recent |
+| msitarzewski/agency-agents | 292 | 10 | 0.7% | 3.4% | 1 | complete | github_trending |
+| TradingAi666/worldcup2026-prediction-skill | 49 | 8 | 0.0% | 16.3% | 2 | complete | github_search_recent |
+| mattermost/mattermost | 131 | 8 | 0.0% | 6.1% | 1 | complete | github_trending |
+| desktop-hermes/hermes-agent-desktop | 38 | 7 | 5.3% | 18.4% | 2 | complete | github_search_recent |
+| controllervr/yuzu-emu | 39 | 7 | 5.1% | 17.9% | 2 | complete | github_search_recent |
+| Fernandokernelsroms/lsfg-git | 42 | 7 | 4.8% | 16.7% | 2 | complete | github_search_recent |
+| iptv-org/iptv | 168 | 7 | 0.0% | 4.2% | 1 | complete | github_trending |
+| addyosmani/agent-skills | 285 | 7 | 0.4% | 2.5% | 1 | complete | github_trending |
+| joker01728/robloxfpsunlocker | 42 | 6 | 2.4% | 14.3% | 2 | complete | github_search_recent |
+| taisly/agent | 42 | 6 | 4.8% | 14.3% | 3 | complete | github_search_recent |
+| gothic-remake-lockbreaker/gothic-remake-lockpicking-tool | 44 | 6 | 2.3% | 13.6% | 2 | complete | github_search_recent |
+| Sun067/UmbrellaSpoof | 45 | 6 | 4.4% | 13.3% | 2 | complete | github_search_recent |
+| PWMH4/DualSenseX-Steam-PC-Controller | 46 | 6 | 4.3% | 13.0% | 2 | complete | github_search_recent |
+| alex7e98/Manager-6.42 | 46 | 6 | 4.3% | 13.0% | 2 | complete | github_search_recent |
+| maziyarpanahi/openmed | 243 | 6 | 0.8% | 2.5% | 1 | complete | github_trending |
+| phuryn/pm-skills | 288 | 6 | 0.7% | 2.1% | 1 | capped | github_trending |
+| tomodachi-life/tomodachi-pc | 23 | 5 | 0.0% | 21.7% | 1 | complete | github_search_recent |
+| voidstrap-roblox/voidstrap-github | 23 | 5 | 0.0% | 21.7% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
