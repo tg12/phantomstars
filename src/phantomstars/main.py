@@ -14,6 +14,7 @@ from pathlib import Path
 
 from phantomstars.campaigns import detect_campaigns
 from phantomstars.config import (
+    EXCLUDED_ISSUE_OWNERS,
     LIFETIME_ANALYSIS_MODE,
     MAX_EVENTS_PER_REPO,
     RECENT_ANALYSIS_MODE,
@@ -422,8 +423,18 @@ def main() -> None:
     # 10. Update README dashboard
     update_readme(suspects_path, repos_path)
 
-    # 11. Create/update GitHub Issues for targeted repos
-    notify_all(client, repo_reports, suspects)
+    # 11. Create/update GitHub Issues for targeted repos (skip big-org repos)
+    issueable_reports = [
+        r for r in repo_reports
+        if r.full_name.split("/")[0].lower() not in EXCLUDED_ISSUE_OWNERS
+    ]
+    excluded_count = len(repo_reports) - len(issueable_reports)
+    if excluded_count:
+        _log.info(
+            "Skipping issue notifications for %d repo(s) owned by excluded organisations",
+            excluded_count,
+        )
+    notify_all(client, issueable_reports, suspects)
 
     # 12. Write GitHub Actions step summary
     _write_step_summary(suspects, repo_reports, campaign_map, scan_date, analysis_mode)
