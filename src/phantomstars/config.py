@@ -57,6 +57,58 @@ DATA_DIR: str = "data"
 SUSPECTS_FILE: str = "data/suspects.jsonl"
 REPOS_FILE: str = "data/repos.jsonl"
 
+# Repo owner exclusions — large, well-known organisations whose repos are scanned
+# for engagement signals but should never receive an automated issue report.
+# Fake stars on these repos are still detected and stored in the ledger; they
+# are simply not surfaced as GitHub issues on the host repo.
+EXCLUDED_ISSUE_OWNERS: frozenset[str] = frozenset(
+    {
+        "microsoft",
+        "google",
+        "apache",
+        "facebook",
+        "meta",
+        "aws",
+        "amazon",
+        "netflix",
+        "twitter",
+        "x",
+        "apple",
+        "ibm",
+        "oracle",
+        "salesforce",
+        "adobe",
+        "shopify",
+        "airbnb",
+        "uber",
+        "lyft",
+        "spotify",
+        "linkedin",
+        "stripe",
+        "square",
+        "dropbox",
+        "atlassian",
+        "elastic",
+        "hashicorp",
+        "grafana",
+        "kubernetes",
+        "docker",
+        "golang",
+        "rust-lang",
+        "python",
+        "nodejs",
+        "mozilla",
+        "torvalds",
+        "github",
+        "azure",
+        "vercel",
+        "jetbrains",
+        "openai",
+        "anthropics",
+        "huggingface",
+    }
+)
+
 # Issue notifier
 MIN_FAKENESS_FOR_ISSUE: float = 0.40  # repos below this threshold are not reported as issues
 MAX_ISSUES_PER_SCAN: int = 20  # cap to prevent flooding on high-activity days
