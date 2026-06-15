@@ -111,6 +111,7 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- STATS:START -->
 | Date | Scanned | Likely Fake | Suspicious | Campaigns | New Fakes (24h) |
 |------|---------|-------------|------------|-----------|-----------------|
+| 2026-06-15 | 2274 | 418 | 1856 | 61 | 397 |
 | 2026-06-14 | 1953 | 355 | 1598 | 44 | 310 |
 | 2026-06-13 | 2012 | 301 | 1711 | 47 | 251 |
 | 2026-06-12 | 2298 | 336 | 1962 | 57 | 300 |
@@ -149,31 +150,31 @@ The data is always probabilistic. The issue bodies say so explicitly. The goal i
 <!-- REPO_STATS:START -->
 | Repo | Engagers | Likely Fake | Known Fake % | Fakeness % | Campaigns | Coverage | Sources |
 |------|----------|-------------|--------------|------------|-----------|----------|---------|
-| inbrainfun/inbrain | 105 | 61 | 23.8% | 58.1% | 2 | complete | github_search_recent |
-| minerd/CmdManager | 67 | 51 | 4.5% | 76.1% | 1 | complete | github_search_recent |
-| eli-labz/Third-Eye | 286 | 38 | 28.0% | 13.3% | 1 | complete | github_search_recent |
-| taphix/amneziawg-api | 52 | 37 | 5.8% | 71.2% | 1 | complete | github_search_recent |
-| bannedbook/fanqiang | 295 | 29 | 1.7% | 9.8% | 1 | capped | github_trending |
-| microsoft/PowerToys | 202 | 21 | 0.5% | 10.4% | 1 | complete | github_trending |
-| hvardhan878/ghostwork | 121 | 19 | 19.8% | 15.7% | 1 | complete | github_search_recent |
-| x1xhlol/system-prompts-and-models-of-ai-tools | 268 | 19 | 0.7% | 7.1% | 1 | complete | github_trending |
-| Open-Builders/pumpfun-bundler-pump.fun-bundler-solana-token-bundler-bot | 29 | 16 | 10.3% | 55.2% | 2 | complete | github_search_recent |
-| clarilayer/clarilayer | 122 | 16 | 22.1% | 13.1% | 1 | complete | github_search_recent |
-| obra/superpowers | 293 | 14 | 0.7% | 4.8% | 1 | complete | github_trending |
-| chatwoot/chatwoot | 254 | 13 | 0.8% | 5.1% | 1 | complete | github_trending |
-| nader0913/ocpp-rag | 99 | 12 | 27.3% | 12.1% | 1 | complete | github_search_recent |
-| richardchanjr90-cpu/ddd-by-example | 58 | 8 | 10.3% | 13.8% | 1 | complete | github_search_recent |
-| LMCache/LMCache | 231 | 8 | 1.3% | 3.5% | 1 | complete | github_trending |
-| swc-project/swc | 149 | 7 | 0.7% | 4.7% | 1 | complete | github_trending |
-| andrewyng/aisuite | 264 | 7 | 0.4% | 2.7% | 1 | complete | github_trending |
-| addyosmani/agent-skills | 287 | 7 | 0.3% | 2.4% | 1 | complete | github_trending |
-| NVIDIA/SkillSpector | 289 | 6 | 0.3% | 2.1% | 1 | complete | github_trending |
-| T2HASH/T2HASH-CORE | 76 | 5 | 0.0% | 6.6% | 1 | complete | github_search_recent |
-| music-assistant/server | 152 | 5 | 2.0% | 3.3% | 1 | complete | github_trending |
-| kenn-io/agentsview | 204 | 5 | 0.0% | 2.5% | 1 | complete | github_trending |
-| Fernandokernelsroms/lsfg-git | 12 | 4 | 8.3% | 33.3% | 3 | complete | github_search_recent |
-| nolangz/pixel2motion | 201 | 4 | 0.5% | 2.0% | 1 | complete | github_search_recent |
-| alchaincyf/fanbox | 254 | 4 | 0.0% | 1.6% | 1 | complete | github_search_recent |
+| akula-atlasair/-zapret-discord-youtube | 300 | 222 | 9.3% | 74.0% | 1 | capped | github_search_recent |
+| inbrainfun/inbrain | 60 | 32 | 25.0% | 53.3% | 1 | complete | github_search_recent |
+| freeCodeCamp/freeCodeCamp | 242 | 19 | 0.8% | 7.9% | 1 | complete | github_trending |
+| Free-TV/IPTV | 297 | 18 | 0.3% | 6.1% | 1 | complete | github_trending |
+| cypress-io/cypress | 236 | 17 | 0.8% | 7.2% | 1 | complete | github_trending |
+| Open-Builders/pumpfun-bundler-pump.fun-bundler-solana-token-bundler-bot | 29 | 13 | 27.6% | 44.8% | 1 | complete | github_search_recent |
+| swc-project/swc | 178 | 11 | 0.0% | 6.2% | 1 | complete | github_trending |
+| shiyu-coder/Kronos | 289 | 10 | 0.7% | 3.5% | 1 | complete | github_trending |
+| chatwoot/chatwoot | 262 | 8 | 0.4% | 3.1% | 1 | complete | github_trending |
+| puppeteer/puppeteer | 184 | 7 | 0.5% | 3.8% | 1 | complete | github_trending |
+| bingook/bingo | 74 | 6 | 5.4% | 8.1% | 1 | complete | github_search_recent |
+| meshery/meshery | 141 | 6 | 0.7% | 4.3% | 1 | complete | github_trending |
+| pytest-dev/pytest | 193 | 6 | 0.0% | 3.1% | 1 | complete | github_trending |
+| andrewyng/aisuite | 291 | 6 | 1.0% | 2.1% | 1 | complete | github_trending |
+| claude-code-ai-anthropic/free-claude-code-ai-desktop-app | 25 | 4 | 0.0% | 16.0% | 1 | complete | github_search_recent |
+| iDesignStudioz/yellowkey-bitlocker | 25 | 4 | 0.0% | 16.0% | 1 | complete | github_search_recent |
+| tengo77/auto-2026 | 26 | 4 | 0.0% | 15.4% | 1 | complete | github_search_recent |
+| Adtyahac/Acrobat-Editor | 26 | 4 | 0.0% | 15.4% | 1 | complete | github_search_recent |
+| snanas/Forza-Horizon-Spotify-Radio | 26 | 4 | 0.0% | 15.4% | 1 | complete | github_search_recent |
+| ZcythierO/Delta-Exec-PC | 27 | 4 | 0.0% | 14.8% | 1 | complete | github_search_recent |
+| imohammedyasin/steam-tools | 28 | 4 | 0.0% | 14.3% | 1 | complete | github_search_recent |
+| tor-browser-download/tor-browser | 28 | 4 | 0.0% | 14.3% | 1 | complete | github_search_recent |
+| Inproger/ryujinx-emulator | 28 | 4 | 0.0% | 14.3% | 1 | complete | github_search_recent |
+| clash-for-windows-download/clash-for-windows | 28 | 4 | 0.0% | 14.3% | 1 | complete | github_search_recent |
+| devassisthub/Zelda-TP-PC-Port | 28 | 4 | 0.0% | 14.3% | 1 | complete | github_search_recent |
 <!-- REPO_STATS:END -->
 
 ---
