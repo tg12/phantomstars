@@ -110,7 +110,7 @@ EXCLUDED_ISSUE_OWNERS: frozenset[str] = frozenset(
 )
 
 # Issue notifier
-MIN_FAKENESS_FOR_ISSUE: float = 0.40  # repos below this threshold are not reported as issues
+MIN_FAKENESS_FOR_ISSUE: float = 0.25  # repos below this threshold are not reported as issues
 MAX_ISSUES_PER_SCAN: int = 20  # cap to prevent flooding on high-activity days
 
 # README injection markers

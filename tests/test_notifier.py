@@ -50,7 +50,9 @@ def test_issue_body_mentions_discovery_sources_allowlist_and_capped_coverage() -
     assert "Allowlisted accounts excluded | 2" in body
     assert "github_search_recent, reddit_osinttools" in body
     assert "capped by the recent-events API limit" in body
-    assert "exclude accounts present on the current false-positive allowlist" in body
+    assert "exclude accounts on the current false-positive allowlist" in body
+    assert "for information only" in body.lower()
+    assert "no action is required" in body.lower()
 
 
 def test_comment_body_mentions_complete_coverage_when_not_capped() -> None:

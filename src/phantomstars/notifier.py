@@ -23,7 +23,7 @@ from phantomstars.models import RepoReport, SuspicionScore
 _log = logging.getLogger(__name__)
 
 _SUSPECT_TABLE_LIMIT = 30
-_ISSUE_TITLE = "[phantomstars] Fake engagement detected on this repository"
+_ISSUE_TITLE = "[phantomstars] Automated fake-engagement analysis — for information only"
 _PHANTOMSTARS_REPO = "tg12/phantomstars"
 
 
@@ -82,10 +82,15 @@ def _issue_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
         f"{report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%)"
     )
     return f"""\
-## Fake Engagement Alert for `{report.full_name}`
+> **This issue is filed for information only.**
+> It is an automated observation, not an accusation or complaint.
+> No action is required from the repository owner or maintainers.
+> If the findings are inaccurate, please report a false positive using the link at the bottom of this issue.
 
-[phantomstars](https://github.com/{_PHANTOMSTARS_REPO}) has detected a likely fake star/fork campaign \
-targeting this repository.
+## Fake-Engagement Analysis for `{report.full_name}`
+
+[phantomstars](https://github.com/{_PHANTOMSTARS_REPO}) has flagged statistical indicators of \
+a possible fake star/fork campaign targeting this repository.
 
 **Scan date:** {report.scan_date}
 
@@ -115,9 +120,10 @@ targeting this repository.
 
 ---
 
-> **All findings are probabilistic indicators, not accusations. False positives exist.**
+> **All findings are probabilistic indicators only — not accusations.**
 > Individual accounts should be treated as suspicious signals, not confirmed fake actors.
-> Repo-level counts in this report exclude accounts present on the current false-positive allowlist.
+> False positives are expected; scores are derived from public account metadata, not intent.
+> Repo-level counts exclude accounts on the current false-positive allowlist.
 >
 > Automated scan by
 > [phantomstars](https://github.com/{_PHANTOMSTARS_REPO}).
@@ -133,7 +139,9 @@ def _comment_body(report: RepoReport, suspects: list[SuspicionScore]) -> str:
         f"{report.known_likely_fake} ({report.known_likely_fake_ratio * 100:.1f}%)"
     )
     return f"""\
-### Scan update: {report.scan_date}
+### Scan update: {report.scan_date} — for information only
+
+> This is an automated update to the analysis above. No action is required.
 
 | Metric | Value |
 |--------|-------|
